@@ -1,0 +1,699 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GDVM · Oportunidades em Estoque</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..500;9..600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#080809;--bg2:#0F0F11;--surface:#141417;--surface2:#1B1B1F;
+  --border:#252528;--border2:#2E2E33;
+  --text:#F0EFE9;--muted:#6E6E78;--faint:#2E2E35;
+  --gold:#C9A84C;--gold2:#A8872A;--gold-glow:rgba(201,168,76,.10);
+  --green:#22C55E;--amber:#F59E0B;
+  --font-d:'Cormorant Garamond',Georgia,serif;
+  --font-b:'DM Sans',sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:var(--font-b);font-size:14px;overflow-x:hidden;cursor:none}
+::selection{background:var(--gold);color:#000}
+::-webkit-scrollbar{width:3px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:var(--faint)}
+
+/* CURSOR */
+#cur{position:fixed;top:0;left:0;width:8px;height:8px;border-radius:50%;background:var(--gold);pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:width .25s,height .25s,opacity .25s}
+#cur-ring{position:fixed;top:0;left:0;width:40px;height:40px;border-radius:50%;border:1px solid rgba(201,168,76,.35);pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:border-color .3s}
+body.hovering #cur{width:3px;height:3px;opacity:.6}
+
+/* NOISE */
+body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");opacity:.4}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:22px 52px;background:linear-gradient(to bottom,rgba(8,8,9,.98),rgba(8,8,9,0))}
+.logo{font-family:var(--font-d);font-size:22px;font-weight:600;letter-spacing:5px;text-decoration:none;color:var(--text)}
+.logo span{color:var(--gold)}
+.filters{display:flex;gap:3px;background:rgba(255,255,255,.04);padding:4px;border-radius:999px;border:1px solid var(--border2)}
+.f-btn{border:none;background:transparent;font-family:var(--font-b);font-size:11px;font-weight:500;color:var(--muted);padding:7px 18px;border-radius:999px;cursor:pointer;letter-spacing:.5px;transition:all .2s}
+.f-btn.active{background:var(--text);color:var(--bg)}
+.f-btn:hover:not(.active){color:var(--text)}
+.nav-right{font-size:10px;font-weight:500;color:var(--muted);letter-spacing:2.5px;text-transform:uppercase}
+
+/* HERO */
+.hero{min-height:100vh;display:flex;flex-direction:column;justify-content:flex-end;padding:52px;padding-bottom:56px;position:relative;overflow:hidden}
+.hero-glow{position:absolute;top:-20%;left:-10%;width:600px;height:600px;border-radius:50%;background:radial-gradient(circle,rgba(201,168,76,.07) 0%,transparent 70%);pointer-events:none;animation:pulse 6s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:.5;transform:scale(1)}50%{opacity:1;transform:scale(1.08)}}
+.hero-num{position:absolute;right:52px;top:50%;transform:translateY(-50%);font-family:var(--font-d);font-size:clamp(160px,22vw,320px);font-weight:700;color:transparent;-webkit-text-stroke:1px rgba(201,168,76,.07);line-height:1;letter-spacing:-8px;pointer-events:none;user-select:none}
+.hero-eyebrow{font-size:10px;font-weight:500;letter-spacing:4px;text-transform:uppercase;color:var(--gold);margin-bottom:18px;opacity:0;animation:fadeUp .7s ease forwards .15s}
+.hero-title{font-family:var(--font-d);font-size:clamp(64px,10.5vw,148px);font-weight:300;line-height:.88;letter-spacing:-2px;margin-bottom:52px;opacity:0;animation:fadeUp .7s ease forwards .3s}
+.hero-title em{font-style:italic;color:var(--gold)}
+.hero-stats{display:flex;gap:52px;align-items:flex-end;opacity:0;animation:fadeUp .7s ease forwards .5s}
+.stat{display:flex;flex-direction:column;gap:5px}
+.stat-n{font-family:var(--font-d);font-size:56px;font-weight:600;line-height:1}
+.stat-l{font-size:9px;font-weight:500;letter-spacing:3px;text-transform:uppercase;color:var(--muted)}
+.stat-dot{display:inline-block;width:6px;height:6px;border-radius:50%;margin-right:5px;vertical-align:middle}
+.hero-scroll{position:absolute;bottom:28px;right:52px;display:flex;align-items:center;gap:14px;font-size:9px;letter-spacing:2.5px;color:var(--muted);text-transform:uppercase;opacity:0;animation:fadeUp .7s ease forwards .8s}
+.scroll-line{width:48px;height:1px;background:var(--gold)}
+
+/* TICKER */
+.ticker{border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:13px 0;overflow:hidden;white-space:nowrap;position:relative;z-index:1}
+.ticker-inner{display:inline-flex;animation:ticker 35s linear infinite}
+.ticker-item{display:inline-flex;align-items:center;gap:28px;padding:0 28px;font-family:var(--font-d);font-size:17px;font-weight:400;color:var(--muted);letter-spacing:.5px}
+.ticker-item .sep{color:var(--gold);font-size:8px}
+
+/* MAIN */
+main{padding:0 52px 100px;position:relative;z-index:1}
+.section-head{display:flex;align-items:baseline;justify-content:space-between;padding:56px 0 28px;border-bottom:1px solid var(--border);margin-bottom:36px}
+.section-title{font-family:var(--font-d);font-size:38px;font-weight:400}
+.section-cnt{font-size:10px;font-weight:500;letter-spacing:3px;text-transform:uppercase;color:var(--muted)}
+
+/* GRID */
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+@media(max-width:1100px){.grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:640px){.grid{grid-template-columns:1fr}}
+
+/* CARD */
+.card{background:var(--surface);border:1px solid var(--border);border-radius:2px;overflow:hidden;cursor:pointer;transition:transform .35s,border-color .35s,box-shadow .35s;opacity:0;animation:fadeUp .55s ease forwards}
+.card:hover{transform:translateY(-5px);border-color:rgba(201,168,76,.35);box-shadow:0 20px 60px rgba(0,0,0,.5),0 0 0 1px rgba(201,168,76,.12)}
+.card-img{height:210px;background:var(--surface2);position:relative;overflow:hidden}
+.card-img img{width:100%;height:100%;object-fit:cover;transition:transform .5s}
+.card:hover .card-img img{transform:scale(1.06)}
+.ph{width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;background:linear-gradient(145deg,var(--surface),var(--surface2))}
+.ph-icon{font-size:26px;opacity:.25}
+.ph-txt{font-size:8px;letter-spacing:2.5px;color:var(--faint);text-transform:uppercase}
+.badge{position:absolute;top:12px;left:12px;font-size:8px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;padding:4px 11px;border-radius:999px}
+.badge.pronto{background:rgba(34,197,94,.12);color:#22C55E;border:1px solid rgba(34,197,94,.22)}
+.badge.obras{background:rgba(245,158,11,.12);color:#F59E0B;border:1px solid rgba(245,158,11,.22)}
+.tag{position:absolute;top:12px;right:12px;font-size:8px;font-weight:500;letter-spacing:1px;color:var(--muted);background:rgba(0,0,0,.55);padding:4px 10px;border-radius:2px;backdrop-filter:blur(6px)}
+.card-body{padding:18px 20px 20px}
+.card-name{font-family:var(--font-d);font-size:19px;font-weight:600;line-height:1.2;margin-bottom:3px}
+.card-addr{font-size:11px;color:var(--muted);margin-bottom:14px}
+.divider{height:1px;background:var(--border);margin-bottom:14px}
+.specs{display:flex;gap:18px;margin-bottom:14px}
+.spec-v{font-size:13px;font-weight:500}
+.spec-l{font-size:8px;font-weight:500;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-top:2px}
+.card-foot{display:flex;align-items:center;justify-content:space-between;padding-top:12px;border-top:1px solid var(--border)}
+.price{font-family:var(--font-d);font-size:20px;font-weight:600;color:var(--gold)}
+.arrow-btn{width:30px;height:30px;border-radius:50%;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:13px;transition:all .25s}
+.card:hover .arrow-btn{border-color:var(--gold);color:var(--gold);background:var(--gold-glow)}
+
+/* ══════════════════════════════════════════════════ MODAL ══ */
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.88);z-index:200;display:flex;align-items:center;justify-content:center;padding:24px;opacity:0;pointer-events:none;transition:opacity .3s;backdrop-filter:blur(12px)}
+.overlay.open{opacity:1;pointer-events:all}
+.modal{background:var(--bg2);border:1px solid var(--border2);border-radius:3px;width:100%;max-width:900px;max-height:92vh;display:flex;flex-direction:column;transform:translateY(22px) scale(.97);transition:transform .38s cubic-bezier(.22,1,.36,1);overflow:hidden}
+.overlay.open .modal{transform:translateY(0) scale(1)}
+
+/* Modal header bar */
+.m-topbar{display:flex;align-items:center;justify-content:space-between;padding:14px 22px;border-bottom:1px solid var(--border);flex-shrink:0}
+.m-breadcrumb{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--muted)}
+.m-close{width:30px;height:30px;border-radius:50%;background:var(--faint);border:1px solid var(--border2);color:var(--muted);font-size:14px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s;line-height:1}
+.m-close:hover{background:var(--surface2);color:var(--text)}
+
+/* Modal scroll area */
+.m-scroll{overflow-y:auto;flex:1}
+.m-scroll::-webkit-scrollbar{width:3px}
+.m-scroll::-webkit-scrollbar-thumb{background:var(--faint)}
+
+/* Modal tabs */
+.m-tabs{display:flex;gap:0;border-bottom:1px solid var(--border);padding:0 22px;flex-shrink:0;position:sticky;top:0;background:var(--bg2);z-index:10}
+.m-tab{padding:14px 20px;font-size:11px;font-weight:500;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;transition:all .2s;margin-bottom:-1px}
+.m-tab.active{color:var(--gold);border-bottom-color:var(--gold)}
+.m-tab:hover:not(.active){color:var(--text)}
+
+/* Tab panels */
+.t-panel{display:none;padding:24px 22px}
+.t-panel.active{display:block}
+
+/* ── OVERVIEW ── */
+.m-hero-img{height:320px;background:var(--surface);border-radius:2px;overflow:hidden;margin-bottom:22px;position:relative}
+.m-hero-img img{width:100%;height:100%;object-fit:cover}
+.m-hero-ph{width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px}
+.m-hero-ph .ph-icon{font-size:48px;opacity:.12}
+.m-hero-ph .ph-txt{font-size:9px;letter-spacing:2px;color:var(--faint)}
+.m-badge-row{display:flex;gap:8px;align-items:center;margin-bottom:10px}
+.m-name{font-family:var(--font-d);font-size:32px;font-weight:600;line-height:1.1;margin-bottom:4px}
+.m-addr{font-size:12px;color:var(--muted);margin-bottom:2px}
+.m-unit{font-size:11px;color:var(--faint);margin-bottom:18px}
+.m-specs-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:20px}
+.m-spec{background:var(--surface);border:1px solid var(--border);border-radius:2px;padding:14px 16px}
+.m-spec-l{font-size:8px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
+.m-spec-v{font-size:13px;font-weight:500}
+.m-price-row{display:flex;align-items:center;justify-content:space-between;padding:20px 22px;background:var(--surface);border:1px solid rgba(201,168,76,.15);border-radius:2px;margin-bottom:16px}
+.m-price-l{font-size:9px;letter-spacing:2.5px;text-transform:uppercase;color:var(--muted)}
+.m-price{font-family:var(--font-d);font-size:32px;font-weight:600;color:var(--gold)}
+.m-cta{display:flex;gap:8px}
+.btn-p{flex:1;padding:14px 22px;background:var(--gold);color:#000;font-family:var(--font-b);font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;border:none;border-radius:2px;cursor:pointer;text-decoration:none;display:flex;align-items:center;justify-content:center;gap:8px;transition:background .2s}
+.btn-p:hover{background:#E8C97A}
+.btn-s{padding:14px 18px;background:transparent;border:1px solid var(--border2);color:var(--muted);font-family:var(--font-b);font-size:11px;border-radius:2px;cursor:pointer;transition:all .2s}
+.btn-s:hover{border-color:var(--gold);color:var(--gold)}
+
+/* ── FOTOS ── */
+.photo-hero{height:400px;border-radius:2px;overflow:hidden;margin-bottom:10px;position:relative;background:var(--surface);cursor:pointer}
+.photo-hero img{width:100%;height:100%;object-fit:cover;transition:transform .4s}
+.photo-hero:hover img{transform:scale(1.03)}
+.photo-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:24px}
+.photo-thumb{height:100px;border-radius:2px;overflow:hidden;background:var(--surface);cursor:pointer;border:2px solid transparent;transition:border-color .2s;position:relative}
+.photo-thumb.active{border-color:var(--gold)}
+.photo-thumb img{width:100%;height:100%;object-fit:cover;transition:transform .3s}
+.photo-thumb:hover img{transform:scale(1.08)}
+.photo-ph{width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;background:var(--surface2)}
+.photo-ph .ph-icon{font-size:22px;opacity:.2}
+.photo-ph .ph-txt{font-size:7px;letter-spacing:2px;color:var(--faint)}
+.photo-label{font-size:10px;letter-spacing:2.5px;text-transform:uppercase;color:var(--muted);margin-bottom:8px}
+.photo-hero-ph{width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px}
+.photo-hero-ph .ph-icon{font-size:52px;opacity:.1}
+.photo-hero-ph .ph-txt{font-size:9px;letter-spacing:2px;color:var(--faint)}
+.photo-count{position:absolute;bottom:12px;right:12px;background:rgba(0,0,0,.65);backdrop-filter:blur(6px);font-size:10px;font-weight:500;color:var(--text);padding:5px 12px;border-radius:999px}
+
+/* ── PLANTAS ── */
+.plant-main{height:480px;background:var(--surface);border-radius:2px;overflow:hidden;margin-bottom:10px;display:flex;align-items:center;justify-content:center;position:relative}
+.plant-main img{max-width:100%;max-height:100%;object-fit:contain;padding:20px}
+.plant-main .ph{background:var(--surface)}
+.plant-tabs{display:flex;gap:6px;margin-bottom:14px}
+.p-tab{padding:7px 16px;font-size:10px;font-weight:500;letter-spacing:1px;text-transform:uppercase;color:var(--muted);background:var(--surface);border:1px solid var(--border);border-radius:999px;cursor:pointer;transition:all .2s}
+.p-tab.active{background:var(--faint);color:var(--text);border-color:var(--border2)}
+.plant-specs{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:14px}
+.p-spec{text-align:center;padding:14px;background:var(--surface);border-radius:2px;border:1px solid var(--border)}
+.p-spec-v{font-family:var(--font-d);font-size:22px;font-weight:600;color:var(--text)}
+.p-spec-l{font-size:8px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-top:4px}
+
+/* ── MAPA ── */
+.map-wrap{border-radius:2px;overflow:hidden;border:1px solid var(--border);margin-bottom:18px;position:relative}
+.map-frame{width:100%;height:380px;border:none;display:block;filter:grayscale(30%) contrast(1.05)}
+.map-overlay-btn{position:absolute;bottom:14px;right:14px;padding:10px 18px;background:rgba(8,8,9,.85);border:1px solid var(--border2);border-radius:2px;color:var(--gold);font-size:10px;font-weight:500;letter-spacing:1.5px;text-transform:uppercase;text-decoration:none;backdrop-filter:blur(8px);transition:background .2s}
+.map-overlay-btn:hover{background:rgba(201,168,76,.12)}
+.map-address{background:var(--surface);border:1px solid var(--border);border-radius:2px;padding:18px 20px;margin-bottom:14px}
+.map-addr-label{font-size:9px;letter-spacing:2.5px;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
+.map-addr-val{font-family:var(--font-d);font-size:18px;font-weight:600}
+.map-addr-sub{font-size:11px;color:var(--muted);margin-top:2px}
+.poi-list{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
+.poi{display:flex;align-items:center;gap:10px;padding:12px 14px;background:var(--surface);border:1px solid var(--border);border-radius:2px}
+.poi-icon{font-size:16px;width:28px;text-align:center;flex-shrink:0}
+.poi-info{flex:1}
+.poi-name{font-size:11px;font-weight:500}
+.poi-dist{font-size:9px;letter-spacing:1px;color:var(--muted);margin-top:1px}
+.poi-badge{font-size:8px;font-weight:600;color:var(--bg);background:var(--gold);padding:2px 8px;border-radius:999px}
+
+/* FOOTER */
+footer{border-top:1px solid var(--border);padding:28px 52px;display:flex;align-items:center;justify-content:space-between;position:relative;z-index:1}
+.f-logo{font-family:var(--font-d);font-size:18px;font-weight:600;letter-spacing:4px}
+.f-logo span{color:var(--gold)}
+.f-meta{font-size:10px;color:var(--muted)}
+
+/* ANIMATIONS */
+@keyframes fadeUp{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:translateY(0)}}
+@keyframes ticker{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+.card.hidden{display:none!important}
+.no-res{grid-column:1/-1;text-align:center;padding:80px;color:var(--muted);font-size:13px;display:none}
+
+/* Lightbox */
+.lbox{position:fixed;inset:0;background:rgba(0,0,0,.96);z-index:500;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .25s}
+.lbox.open{opacity:1;pointer-events:all}
+.lbox img{max-width:90vw;max-height:88vh;object-fit:contain;border-radius:2px}
+.lbox-close{position:absolute;top:20px;right:24px;width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);color:#fff;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .2s}
+.lbox-close:hover{background:rgba(255,255,255,.18)}
+</style>
+</head>
+<body>
+
+<div id="cur"></div>
+<div id="cur-ring"></div>
+
+<nav>
+  <a class="logo" href="#">G<span>D</span>VM</a>
+  <div class="filters">
+    <button class="f-btn active" data-f="all">Todas</button>
+    <button class="f-btn" data-f="pronto">Pronto</button>
+    <button class="f-btn" data-f="obras">Em Obras</button>
+  </div>
+  <div class="nav-right">Portfólio</div>
+</nav>
+
+<section class="hero">
+  <div class="hero-glow"></div>
+  <div class="hero-num">9</div>
+  <p class="hero-eyebrow">Portfólio de Oportunidades · 2025</p>
+  <h1 class="hero-title">Em<br><em>Estoque</em></h1>
+  <div class="hero-stats">
+    <div class="stat"><div class="stat-n">9</div><div class="stat-l">Unidades</div></div>
+    <div class="stat"><div class="stat-n" style="color:var(--green)">5</div><div class="stat-l"><span class="stat-dot" style="background:var(--green)"></span>Pronto</div></div>
+    <div class="stat"><div class="stat-n" style="color:var(--amber)">4</div><div class="stat-l"><span class="stat-dot" style="background:var(--amber)"></span>Em Obras</div></div>
+    <div class="stat"><div class="stat-n" style="font-size:30px;color:var(--muted);padding-top:14px">R$260K — 3,3M</div><div class="stat-l">Faixa de Preço</div></div>
+  </div>
+  <div class="hero-scroll"><div class="scroll-line"></div>Scroll para explorar</div>
+</section>
+
+<div class="ticker"><div class="ticker-inner" id="ticker"></div></div>
+
+<main>
+  <div class="section-head">
+    <h2 class="section-title">Oportunidades</h2>
+    <span class="section-cnt" id="cnt">9 imóveis</span>
+  </div>
+  <div class="grid" id="grid">
+    <div class="no-res" id="noRes">Nenhum imóvel encontrado.</div>
+  </div>
+</main>
+
+<footer>
+  <div class="f-logo">G<span>D</span>VM</div>
+  <div class="f-meta">Atualizado em <span id="dt"></span> · Valores sujeitos a alteração</div>
+</footer>
+
+<!-- MODAL -->
+<div class="overlay" id="ov">
+  <div class="modal">
+    <div class="m-topbar">
+      <span class="m-breadcrumb" id="mBread">Portfólio · Detalhes</span>
+      <button class="m-close" onclick="closeModal()">✕</button>
+    </div>
+    <div class="m-tabs" id="mTabs">
+      <div class="m-tab active" data-t="overview">Visão Geral</div>
+      <div class="m-tab" data-t="fotos">Fotos</div>
+      <div class="m-tab" data-t="plantas">Plantas</div>
+      <div class="m-tab" data-t="mapa">Mapa</div>
+    </div>
+    <div class="m-scroll" id="mScroll">
+      <div class="t-panel active" id="t-overview"></div>
+      <div class="t-panel" id="t-fotos"></div>
+      <div class="t-panel" id="t-plantas"></div>
+      <div class="t-panel" id="t-mapa"></div>
+    </div>
+  </div>
+</div>
+
+<!-- LIGHTBOX -->
+<div class="lbox" id="lbox">
+  <button class="lbox-close" onclick="closeLbox()">✕</button>
+  <img id="lbox-img" src="" alt="">
+</div>
+
+<script>
+/* ╔══════════════════════════════════════════════════════════════════════╗
+   ║  DADOS DO PORTFÓLIO — Edite este array para atualizar o estoque     ║
+   ╚══════════════════════════════════════════════════════════════════════╝
+
+   Campos:
+   ─ nome, bairro, endereco, unidade: textos
+   ─ status: "pronto" | "obras"
+   ─ entrega: "Pronto" | "mai/26" | "ago/27" ...
+   ─ tipo: "Tipo" | "NR" | "Studio"
+   ─ mobiliado: true | false
+   ─ metragem, dorms, vaga: textos
+   ─ deposito: true | false
+   ─ valor: "800.000,00"
+   ─ link: URL do Google Drive (null = sem link)
+   ─ mapQuery: endereço para o Google Maps embed
+   ─ coords: { lat, lng } para o link do Maps (opcional, ajuda precisão)
+   ─ pois: pontos de interesse [{ icon, nome, dist }]
+   ─ fotos: [ "URL1", "URL2", ... ]  — null ou [] = placeholder
+   ─ plantas: [ { label:"Planta Tipo", img:"URL" } ] — null ou [] = placeholder
+*/
+const DATA = [
+  {
+    nome:"URBO VILA PRUDENTE", bairro:"Vila Prudente",
+    endereco:"Avenida Vila Ema, 850", unidade:"Unidade 178 · 17° Andar",
+    status:"pronto", entrega:"Pronto", tipo:"Tipo", mobiliado:true,
+    metragem:"63m²", deposito:true, dorms:"2 Dorms", vaga:"01 Vaga Det.",
+    valor:"800.000,00", link:null,
+    mapQuery:"Avenida Vila Ema, 850, Vila Prudente, São Paulo, SP",
+    coords:{lat:-23.5800,lng:-46.5680},
+    pois:[
+      {icon:"🚇",nome:"Metrô Vila Prudente",dist:"350m"},
+      {icon:"🏥",nome:"Hospital do Servidor",dist:"1,2km"},
+      {icon:"🛒",nome:"Shopping Anália Franco",dist:"1,8km"},
+      {icon:"🏫",nome:"Escola Est. Vila Ema",dist:"600m"},
+      {icon:"🌳",nome:"Parque do Ibirapuera",dist:"5km"},
+      {icon:"🛣️",nome:"Acesso Radial Leste",dist:"800m"},
+    ],
+    fotos:[], plantas:[]
+  },
+  {
+    nome:"URBO VILA PRUDENTE", bairro:"Vila Prudente",
+    endereco:"Avenida Vila Ema, 850", unidade:"Unidade 178 · 17° Andar",
+    status:"pronto", entrega:"Pronto", tipo:"Tipo", mobiliado:true,
+    metragem:"63m²", deposito:true, dorms:"2 Dorms", vaga:"01 Vaga Det.",
+    valor:"800.000,00", link:null,
+    mapQuery:"Avenida Vila Ema, 850, Vila Prudente, São Paulo, SP",
+    coords:{lat:-23.5800,lng:-46.5680},
+    pois:[
+      {icon:"🚇",nome:"Metrô Vila Prudente",dist:"350m"},
+      {icon:"🏥",nome:"Hospital do Servidor",dist:"1,2km"},
+      {icon:"🛒",nome:"Shopping Anália Franco",dist:"1,8km"},
+      {icon:"🏫",nome:"Escola Est. Vila Ema",dist:"600m"},
+    ],
+    fotos:[], plantas:[]
+  },
+  {
+    nome:"HAUS MITRE JARDINS", bairro:"Bela Vista",
+    endereco:"Rua Itapeva, 350", unidade:"Unidade 418 · 4° Andar",
+    status:"pronto", entrega:"Pronto", tipo:"NR", mobiliado:false,
+    metragem:"54m²", deposito:false, dorms:"1 Dorm", vaga:"Sem Vaga",
+    valor:"1.367.000,00", link:null,
+    mapQuery:"Rua Itapeva, 350, Bela Vista, São Paulo, SP",
+    coords:{lat:-23.5620,lng:-46.6520},
+    pois:[
+      {icon:"🚇",nome:"Metrô Trianon-Masp",dist:"250m"},
+      {icon:"🎭",nome:"MASP",dist:"300m"},
+      {icon:"🛒",nome:"Iguatemi Paulista",dist:"1km"},
+      {icon:"🌳",nome:"Parque Trianon",dist:"400m"},
+      {icon:"🍽️",nome:"Av. Paulista gastro",dist:"100m"},
+      {icon:"🏥",nome:"Hospital Sirio-Libanês",dist:"600m"},
+    ],
+    fotos:[], plantas:[]
+  },
+  {
+    nome:"HAUS MITRE JARDINS", bairro:"Bela Vista",
+    endereco:"Rua Itapeva, 350", unidade:"Unidade 518 · 5° Andar",
+    status:"pronto", entrega:"Pronto", tipo:"NR", mobiliado:false,
+    metragem:"54m²", deposito:false, dorms:"1 Dorm", vaga:"Sem Vaga",
+    valor:"1.367.000,00", link:null,
+    mapQuery:"Rua Itapeva, 350, Bela Vista, São Paulo, SP",
+    coords:{lat:-23.5620,lng:-46.6520},
+    pois:[
+      {icon:"🚇",nome:"Metrô Trianon-Masp",dist:"250m"},
+      {icon:"🎭",nome:"MASP",dist:"300m"},
+      {icon:"🛒",nome:"Iguatemi Paulista",dist:"1km"},
+      {icon:"🌳",nome:"Parque Trianon",dist:"400m"},
+    ],
+    fotos:[], plantas:[]
+  },
+  {
+    nome:"TRIUNFO CAMPO BELO", bairro:"Campo Belo",
+    endereco:"Rua Barão do Triunfo, 551", unidade:"Unidade 53 · 5° Andar",
+    status:"pronto", entrega:"Pronto", tipo:"Tipo", mobiliado:false,
+    metragem:"81m²", deposito:false, dorms:"2 Dorms", vaga:"01 Vaga Det.",
+    valor:"1.450.000,00", link:null,
+    mapQuery:"Rua Barão do Triunfo, 551, Campo Belo, São Paulo, SP",
+    coords:{lat:-23.6220,lng:-46.6640},
+    pois:[
+      {icon:"🚇",nome:"Metrô Campo Belo",dist:"500m"},
+      {icon:"🛒",nome:"Shopping Campo Belo",dist:"400m"},
+      {icon:"🏥",nome:"Hospital Israelita",dist:"2km"},
+      {icon:"🌳",nome:"Parque do Ibirapuera",dist:"2,5km"},
+      {icon:"✈️",nome:"Aeroporto Congonhas",dist:"3km"},
+      {icon:"🍽️",nome:"Av. Santo Amaro",dist:"600m"},
+    ],
+    fotos:[], plantas:[]
+  },
+  {
+    nome:"RAÍZES RESERVE – MITRE", bairro:"Vila Prudente",
+    endereco:"Rua José Zappi, 363", unidade:"Unidade 710 · 7° Andar",
+    status:"obras", entrega:"mai/26", tipo:"Studio", mobiliado:false,
+    metragem:"26m²", deposito:false, dorms:"Studio", vaga:"Sem Vaga",
+    valor:"260.000,00", link:null,
+    mapQuery:"Rua José Zappi, 363, Vila Prudente, São Paulo, SP",
+    coords:{lat:-23.5830,lng:-46.5720},
+    pois:[
+      {icon:"🚇",nome:"Metrô Vila Prudente",dist:"400m"},
+      {icon:"🏥",nome:"UBS Vila Prudente",dist:"600m"},
+      {icon:"🛒",nome:"Mercado",dist:"200m"},
+      {icon:"🏫",nome:"Escola Vila Zappi",dist:"350m"},
+    ],
+    fotos:[], plantas:[]
+  },
+  {
+    nome:"RAÍZES RESERVE – MITRE", bairro:"Vila Prudente",
+    endereco:"Rua José Zappi, 363", unidade:"Unidade 809 · 8° Andar",
+    status:"obras", entrega:"mai/26", tipo:"Studio", mobiliado:false,
+    metragem:"26m²", deposito:false, dorms:"Studio", vaga:"Sem Vaga",
+    valor:"260.000,00", link:null,
+    mapQuery:"Rua José Zappi, 363, Vila Prudente, São Paulo, SP",
+    coords:{lat:-23.5830,lng:-46.5720},
+    pois:[
+      {icon:"🚇",nome:"Metrô Vila Prudente",dist:"400m"},
+      {icon:"🛒",nome:"Mercado",dist:"200m"},
+      {icon:"🌳",nome:"Parque linear",dist:"700m"},
+      {icon:"🏫",nome:"Escola Vila Zappi",dist:"350m"},
+    ],
+    fotos:[], plantas:[]
+  },
+  {
+    nome:"CAVOUR", bairro:"Vila Prudente",
+    endereco:"Rua Cavour, 439", unidade:"Unidade 82 · 8° Andar",
+    status:"obras", entrega:"ago/27", tipo:"Tipo", mobiliado:false,
+    metragem:"83m²", deposito:false, dorms:"3 Dorms", vaga:"01 Vaga Det.",
+    valor:"830.000,00", link:null,
+    mapQuery:"Rua Cavour, 439, Vila Prudente, São Paulo, SP",
+    coords:{lat:-23.5810,lng:-46.5700},
+    pois:[
+      {icon:"🚇",nome:"Metrô Vila Prudente",dist:"300m"},
+      {icon:"🛒",nome:"Comércio local",dist:"150m"},
+      {icon:"🏥",nome:"UBS",dist:"500m"},
+      {icon:"🌳",nome:"Parque do Povo",dist:"1,2km"},
+      {icon:"🏫",nome:"Escola estadual",dist:"400m"},
+      {icon:"🛣️",nome:"Radial Leste",dist:"900m"},
+    ],
+    fotos:[], plantas:[]
+  },
+  {
+    nome:"HAUS MITRE EDITION NY", bairro:"Brooklin",
+    endereco:"Rua Michigan, 962", unidade:"Unidade 143 · 14° Andar · Torre B",
+    status:"obras", entrega:"set/27", tipo:"Tipo", mobiliado:false,
+    metragem:"164m²", deposito:false, dorms:"4 Suítes", vaga:"03 Vagas",
+    valor:"3.300.000,00", link:null,
+    mapQuery:"Rua Michigan, 962, Brooklin, São Paulo, SP",
+    coords:{lat:-23.6148,lng:-46.6967},
+    pois:[
+      {icon:"🚇",nome:"Metrô Brooklin",dist:"600m"},
+      {icon:"🛒",nome:"Shopping Market Place",dist:"500m"},
+      {icon:"🍽️",nome:"Rua Funchal",dist:"800m"},
+      {icon:"✈️",nome:"Aeroporto Congonhas",dist:"4km"},
+      {icon:"🏥",nome:"Fleury",dist:"700m"},
+      {icon:"🌳",nome:"Parque Burle Marx",dist:"2km"},
+    ],
+    fotos:[], plantas:[]
+  }
+];
+
+/* ────────────── RENDER CARDS ────────────── */
+function render(f) {
+  const grid = document.getElementById('grid');
+  grid.querySelectorAll('.card').forEach(c => c.remove());
+  const items = DATA.filter(d => f==='all' || d.status===f);
+  document.getElementById('cnt').textContent = items.length + (items.length!==1?' imóveis':' imóvel');
+  items.forEach((d,i)=>{
+    const extra = [d.mobiliado?'Mobiliado':'',d.deposito?'+Dep.':''].filter(Boolean).join(' · ');
+    const idx = DATA.indexOf(d);
+    const c = document.createElement('div');
+    c.className = 'card';
+    c.style.animationDelay=(i*.06)+'s';
+    const thumb = d.fotos && d.fotos.length ? `<img src="${d.fotos[0]}" alt="${d.nome}">` :
+      `<div class="ph"><div class="ph-icon">🏙</div><div class="ph-txt">Adicionar foto</div></div>`;
+    const stLbl = d.status==='pronto'?'Pronto':'Em Obras · '+d.entrega;
+    c.innerHTML=`
+      <div class="card-img">
+        ${thumb}
+        <div class="badge ${d.status}">${stLbl}</div>
+        <div class="tag">${d.tipo}${extra?' · '+extra:''}</div>
+      </div>
+      <div class="card-body">
+        <div class="card-name">${d.nome}</div>
+        <div class="card-addr">${d.bairro} · ${d.endereco}</div>
+        <div class="divider"></div>
+        <div class="specs">
+          <div><div class="spec-v">${d.metragem}</div><div class="spec-l">Área</div></div>
+          <div><div class="spec-v">${d.dorms}</div><div class="spec-l">Dorms</div></div>
+          <div><div class="spec-v">${d.vaga}</div><div class="spec-l">Garagem</div></div>
+        </div>
+        <div class="card-foot">
+          <div class="price">R$ ${d.valor}</div>
+          <div class="arrow-btn">→</div>
+        </div>
+      </div>`;
+    c.addEventListener('click',()=>openModal(idx));
+    c.addEventListener('mouseenter',()=>document.body.classList.add('hovering'));
+    c.addEventListener('mouseleave',()=>document.body.classList.remove('hovering'));
+    grid.appendChild(c);
+  });
+  document.getElementById('noRes').style.display=items.length?'none':'block';
+}
+
+/* ────────────── MODAL ────────────── */
+let activePTab=0;
+function openModal(idx) {
+  const d = DATA[idx];
+  document.getElementById('mBread').textContent = d.bairro + ' · ' + d.nome;
+  buildOverview(d);
+  buildFotos(d,0);
+  buildPlantas(d,0);
+  buildMapa(d);
+  switchTab('overview');
+  document.getElementById('ov').classList.add('open');
+  document.getElementById('mScroll').scrollTop=0;
+}
+function closeModal(){document.getElementById('ov').classList.remove('open');}
+document.getElementById('ov').addEventListener('click',e=>{if(e.target.id==='ov')closeModal();});
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal();});
+
+/* Tabs */
+document.querySelectorAll('.m-tab').forEach(t=>{
+  t.addEventListener('click',()=>switchTab(t.dataset.t));
+});
+function switchTab(name){
+  document.querySelectorAll('.m-tab').forEach(t=>t.classList.toggle('active',t.dataset.t===name));
+  document.querySelectorAll('.t-panel').forEach(p=>p.classList.toggle('active',p.id==='t-'+name));
+  document.getElementById('mScroll').scrollTop=0;
+}
+
+/* ── OVERVIEW ── */
+function buildOverview(d){
+  const hImg = d.fotos&&d.fotos.length
+    ? `<img src="${d.fotos[0]}" alt="${d.nome}" style="width:100%;height:100%;object-fit:cover">`
+    : `<div class="photo-hero-ph"><div class="ph-icon">🏙</div><div class="ph-txt">Adicionar foto principal</div></div>`;
+  const stLbl = d.status==='pronto'?'Pronto para Morar':`Em Obras · Entrega ${d.entrega}`;
+  const mLink = `https://maps.google.com/?q=${encodeURIComponent(d.mapQuery)}`;
+  document.getElementById('t-overview').innerHTML=`
+    <div class="m-hero-img">${hImg}</div>
+    <div class="m-badge-row"><span class="badge ${d.status}" style="position:static;display:inline-block">${stLbl}</span></div>
+    <div class="m-name">${d.nome}</div>
+    <div class="m-addr">${d.endereco} · ${d.bairro}</div>
+    <div class="m-unit">${d.unidade}</div>
+    <div class="m-specs-grid">
+      <div class="m-spec"><div class="m-spec-l">Metragem</div><div class="m-spec-v">${d.metragem}${d.deposito?' + Dep.':''}</div></div>
+      <div class="m-spec"><div class="m-spec-l">Dormitórios</div><div class="m-spec-v">${d.dorms}</div></div>
+      <div class="m-spec"><div class="m-spec-l">Garagem</div><div class="m-spec-v">${d.vaga}</div></div>
+      <div class="m-spec"><div class="m-spec-l">Tipo</div><div class="m-spec-v">${d.tipo}</div></div>
+      <div class="m-spec"><div class="m-spec-l">Mobiliado</div><div class="m-spec-v">${d.mobiliado?'Sim':'Não'}</div></div>
+      <div class="m-spec"><div class="m-spec-l">Entrega</div><div class="m-spec-v">${d.entrega}</div></div>
+    </div>
+    <div class="m-price-row">
+      <div class="m-price-l">Valor da Unidade</div>
+      <div class="m-price">R$ ${d.valor}</div>
+    </div>
+    <div class="m-cta">
+      ${d.link?`<a href="${d.link}" target="_blank" class="btn-p">Ver Materiais → </a>`:''}
+      <a href="${mLink}" target="_blank" class="btn-s" style="text-decoration:none;display:flex;align-items:center;justify-content:center;gap:6px">📍 Ver no Mapa</a>
+      <button class="btn-s" onclick="closeModal()">Fechar</button>
+    </div>`;
+}
+
+/* ── FOTOS ── */
+function buildFotos(d,active){
+  const fotos = d.fotos&&d.fotos.length?d.fotos:[];
+  const heroHTML = fotos.length
+    ? `<img src="${fotos[active]}" alt="Foto ${active+1}"><div class="photo-count">${active+1} / ${fotos.length}</div>`
+    : `<div class="photo-hero-ph"><div class="ph-icon">📷</div><div class="ph-txt">Adicionar fotos ao campo "fotos" no DATA</div></div>`;
+  const thumbs = fotos.map((f,i)=>`
+    <div class="photo-thumb ${i===active?'active':''}" onclick="selectFoto(${i})">
+      <img src="${f}" alt="Foto ${i+1}">
+    </div>`).join('');
+  const ph4 = !fotos.length ? Array(4).fill(`<div class="photo-thumb"><div class="photo-ph"><div class="ph-icon">📷</div></div></div>`).join('') : thumbs;
+  document.getElementById('t-fotos').innerHTML=`
+    <div class="photo-label">Galeria de Fotos</div>
+    <div class="photo-hero" id="photoHero" ${fotos.length?`onclick="openLbox('${fotos[active]}')"`:''}>
+      ${heroHTML}
+    </div>
+    <div class="photo-grid" id="photoGrid">${ph4||thumbs}</div>
+    <div class="photo-label" style="margin-top:8px">Decorados & Ambientes</div>
+    <div class="photo-grid">
+      ${Array(4).fill(`<div class="photo-thumb"><div class="photo-ph"><div class="ph-icon">🛋</div><div class="ph-txt">Adicionar decorado</div></div></div>`).join('')}
+    </div>`;
+  window._curFotos = fotos;
+  window._curD = d;
+}
+
+window.selectFoto = function(i){
+  const fotos = window._curFotos;
+  if(!fotos.length) return;
+  document.getElementById('photoHero').innerHTML=`<img src="${fotos[i]}" alt="Foto ${i+1}" style="width:100%;height:100%;object-fit:cover"><div class="photo-count">${i+1} / ${fotos.length}</div>`;
+  document.getElementById('photoHero').onclick=()=>openLbox(fotos[i]);
+  document.querySelectorAll('.photo-thumb').forEach((t,j)=>t.classList.toggle('active',j===i));
+};
+
+/* ── PLANTAS ── */
+function buildPlantas(d,active){
+  const plantas = d.plantas&&d.plantas.length?d.plantas:[];
+  const mainHTML = plantas.length
+    ? `<img src="${plantas[active].img}" alt="${plantas[active].label}" style="max-width:100%;max-height:100%;object-fit:contain;padding:20px">`
+    : `<div class="ph"><div class="ph-icon">📐</div><div class="ph-txt">Adicionar plantas ao campo "plantas" no DATA</div></div>`;
+  const tabsHTML = plantas.length
+    ? plantas.map((p,i)=>`<div class="p-tab ${i===active?'active':''}" onclick="selectPlanta(${i})">${p.label}</div>`).join('')
+    : '<div class="p-tab active">Planta Tipo</div>';
+  document.getElementById('t-plantas').innerHTML=`
+    <div class="photo-label">Plantas da Unidade</div>
+    <div class="plant-tabs">${tabsHTML}</div>
+    <div class="plant-main" id="plantMain">${mainHTML}</div>
+    <div class="plant-specs">
+      <div class="p-spec"><div class="p-spec-v">${d.metragem}</div><div class="p-spec-l">Área Privativa</div></div>
+      <div class="p-spec"><div class="p-spec-v">${d.dorms}</div><div class="p-spec-l">Dormitórios</div></div>
+      <div class="p-spec"><div class="p-spec-v">${d.vaga}</div><div class="p-spec-l">Garagem</div></div>
+    </div>`;
+  window._curPlantas = plantas;
+}
+
+window.selectPlanta = function(i){
+  const plantas = window._curPlantas;
+  if(!plantas.length) return;
+  document.getElementById('plantMain').innerHTML=`<img src="${plantas[i].img}" alt="${plantas[i].label}" style="max-width:100%;max-height:100%;object-fit:contain;padding:20px">`;
+  document.querySelectorAll('.p-tab').forEach((t,j)=>t.classList.toggle('active',j===i));
+};
+
+/* ── MAPA ── */
+function buildMapa(d){
+  const q = encodeURIComponent(d.mapQuery);
+  const mapsLink = `https://maps.google.com/?q=${q}`;
+  const embedURL = `https://maps.google.com/maps?q=${q}&output=embed&z=16`;
+  const poisHTML = (d.pois||[]).map(p=>`
+    <div class="poi">
+      <div class="poi-icon">${p.icon}</div>
+      <div class="poi-info">
+        <div class="poi-name">${p.nome}</div>
+        <div class="poi-dist">${p.dist}</div>
+      </div>
+      <div class="poi-badge">${p.dist}</div>
+    </div>`).join('');
+  document.getElementById('t-mapa').innerHTML=`
+    <div class="photo-label">Localização</div>
+    <div class="map-address">
+      <div class="map-addr-label">Endereço</div>
+      <div class="map-addr-val">${d.endereco}</div>
+      <div class="map-addr-sub">${d.bairro} · São Paulo – SP</div>
+    </div>
+    <div class="map-wrap">
+      <iframe class="map-frame" src="${embedURL}" allowfullscreen loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+      <a href="${mapsLink}" target="_blank" class="map-overlay-btn">Abrir no Google Maps →</a>
+    </div>
+    ${d.pois&&d.pois.length?`<div class="photo-label" style="margin-top:4px">Pontos de Interesse</div><div class="poi-list">${poisHTML}</div>`:''}`;
+}
+
+/* ── LIGHTBOX ── */
+function openLbox(src){
+  document.getElementById('lbox-img').src=src;
+  document.getElementById('lbox').classList.add('open');
+}
+window.closeLbox=function(){document.getElementById('lbox').classList.remove('open');};
+document.getElementById('lbox').addEventListener('click',e=>{if(e.target.id==='lbox')closeLbox();});
+
+/* ── TICKER ── */
+const t=document.getElementById('ticker');
+const items=DATA.map(d=>`<span class="ticker-item">${d.nome}<span class="sep">◆</span>${d.bairro}</span>`);
+t.innerHTML=[...items,...items].join('');
+
+/* ── FILTERS ── */
+let curF='all';
+document.querySelectorAll('.f-btn').forEach(b=>{
+  b.addEventListener('click',()=>{
+    document.querySelectorAll('.f-btn').forEach(x=>x.classList.remove('active'));
+    b.classList.add('active');
+    curF=b.dataset.f;
+    render(curF);
+  });
+});
+
+/* ── CURSOR ── */
+const cur=document.getElementById('cur'),ring=document.getElementById('cur-ring');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cur.style.left=mx+'px';cur.style.top=my+'px';});
+(function loop(){rx+=(mx-rx)*.12;ry+=(my-ry)*.12;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(loop);})();
+
+/* ── INIT ── */
+document.getElementById('dt').textContent=new Date().toLocaleDateString('pt-BR');
+render('all');
+</script>
+</body>
+</html>
