@@ -5,6 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>UNA Corp · Oportunidades 2026</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
+
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,300;1,400&display=swap" rel="stylesheet">
 <style>
 :root{
@@ -18,14 +21,14 @@
 }
 *{margin:0;padding:0;box-sizing:border-box}
 html{scroll-behavior:smooth}
-body{background:var(--bg);color:var(--text);font-family:var(--font-b);font-size:14px;font-weight:400;overflow-x:hidden;cursor:none}
+body{background:var(--bg);color:var(--text);font-family:var(--font-b);font-size:14px;font-weight:400;overflow-x:hidden}
 ::selection{background:var(--text);color:var(--bg)}
 ::-webkit-scrollbar{width:3px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:var(--faint)}
 
 /* CURSOR */
-#cur{position:fixed;top:0;left:0;width:8px;height:8px;border-radius:50%;background:var(--text);pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:width .25s,height .25s,opacity .25s;mix-blend-mode:difference}
-#cur-ring{position:fixed;top:0;left:0;width:40px;height:40px;border-radius:50%;border:1px solid rgba(0,0,0,.25);pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:border-color .3s;mix-blend-mode:difference}
-body.hovering #cur{width:3px;height:3px;opacity:.6}
+#cur{display:none}
+#cur-ring{display:none}
+
 
 /* NOISE */
 body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.025'/%3E%3C/svg%3E");opacity:.5}
@@ -211,6 +214,178 @@ main{padding:0 52px 100px;position:relative;z-index:1}
 .m-builder-logo{height:48px;max-width:140px;width:auto;object-fit:contain;background:#FFF;border-radius:4px;padding:6px 10px;border:1px solid var(--border)}
 .m-builder-logo-placeholder{height:48px;width:140px;background:repeating-linear-gradient(135deg,var(--surface2),var(--surface2) 6px,#E8E8E8 6px,#E8E8E8 12px);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:8px;color:var(--muted);letter-spacing:1.5px;text-transform:uppercase;font-weight:600;border:1px solid var(--border)}
 
+
+
+/* TABELÃO SECTION */
+.tab-section{padding:60px 52px 80px;background:var(--bg);border-top:1px solid var(--border);position:relative;z-index:1}
+.tab-head{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:8px;flex-wrap:wrap;gap:14px}
+.tab-title{font-family:var(--font-d);font-size:32px;font-weight:300;letter-spacing:-.8px;color:var(--text)}
+.tab-title em{font-style:italic;font-weight:200;color:#B8860B}
+.tab-sub{font-size:11px;color:var(--muted);letter-spacing:1.5px;text-transform:uppercase;font-weight:500;margin-bottom:6px}
+.tab-meta{font-size:11px;color:var(--muted);margin-bottom:24px}
+.tab-meta strong{color:var(--text);font-weight:600}
+.tab-actions{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:24px}
+.tab-btn{padding:9px 16px;background:var(--bg);border:1px solid var(--border);border-radius:4px;font-family:var(--font-b);font-size:10px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);cursor:pointer;transition:all .2s;display:inline-flex;align-items:center;gap:7px;text-decoration:none}
+.tab-btn:hover{border-color:var(--text);color:var(--text);background:var(--surface)}
+.tab-btn.active{background:var(--text);border-color:var(--text);color:var(--bg)}
+.tab-wrap{background:var(--bg);border:1px solid var(--border);border-radius:6px;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,.04)}
+.tab-table{width:100%;border-collapse:collapse;font-size:11px}
+.tab-table thead th{background:var(--surface);padding:14px 12px;font-size:8.5px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted);text-align:left;border-bottom:1px solid var(--border);white-space:nowrap}
+.tab-table thead th.right{text-align:right}
+.tab-table thead th.center{text-align:center}
+.tab-group-row td{padding:11px 18px;background:#0A0A0A;color:#FFF;font-size:9.5px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase}
+.tab-group-row.breve td{background:linear-gradient(90deg,#0A0A0A 0%,#1A1A1A 100%)}
+.tab-group-row.pronto td{background:linear-gradient(90deg,#0A0A0A 0%,#16A34A 100%)}
+.tab-group-row.obras td{background:linear-gradient(90deg,#0A0A0A 0%,#D97706 100%)}
+.tab-group-row td .grp-dot{display:inline-block;width:7px;height:7px;border-radius:50%;margin-right:8px;vertical-align:middle}
+.tab-group-row.breve .grp-dot{background:#B8860B}
+.tab-group-row.pronto .grp-dot{background:#16A34A}
+.tab-group-row.obras .grp-dot{background:#D97706}
+.tab-row{cursor:pointer;transition:background .15s}
+.tab-row:hover{background:#FFFBEC}
+.tab-row td{padding:14px 12px;border-bottom:1px solid var(--border);vertical-align:middle;color:var(--text2)}
+.tab-row td:first-child{padding-left:18px;font-weight:700;color:var(--text);font-size:11.5px;letter-spacing:.2px}
+.tab-row td:last-child{padding-right:18px}
+.tab-row .val{font-weight:600;color:var(--text);font-size:11.5px}
+.tab-row .val.right{text-align:right}
+.tab-row .ctr{text-align:center}
+.tab-row .stage{font-size:9px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:3px 8px;border-radius:3px;display:inline-block}
+.tab-row .stage.mobiliado{background:#FEF3C7;color:#92400E}
+.tab-row .stage.pronto{background:#DCFCE7;color:#15803D}
+.tab-row .stage.nr{background:#F3F4F6;color:#525252}
+.tab-row .stage.entrega{background:#FFE4B5;color:#9A6F00}
+.tab-row .stage.breve{background:#E0E7FF;color:#3730A3}
+.tab-link{display:inline-flex;align-items:center;gap:5px;padding:5px 11px;background:var(--text);color:var(--bg);border-radius:3px;font-size:9px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;text-decoration:none;transition:all .2s}
+.tab-link:hover{background:#B8860B;transform:translateX(2px)}
+.tab-link.disabled{background:#D4D4D4;color:#737373;cursor:not-allowed;pointer-events:none}
+.tab-footer{background:#0A0A0A;color:#FFF;padding:22px 28px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:18px}
+.tab-foot-left{display:flex;align-items:center;gap:18px;flex-wrap:wrap}
+.tab-foot-label{font-size:8px;letter-spacing:2.5px;text-transform:uppercase;color:rgba(255,255,255,.5);font-weight:600;margin-bottom:3px}
+.tab-foot-val{font-size:13px;font-weight:600;color:#FFF;letter-spacing:.3px}
+.tab-foot-val a{color:#FFF;text-decoration:none;transition:color .2s}
+.tab-foot-val a:hover{color:#B8860B}
+.tab-foot-divider{width:1px;height:32px;background:rgba(255,255,255,.15)}
+.tab-foot-comissao{display:flex;align-items:center;gap:14px;padding:10px 18px;background:rgba(184,134,11,.12);border:1px solid rgba(184,134,11,.3);border-radius:4px}
+.tab-foot-com-label{font-size:8px;letter-spacing:2.5px;text-transform:uppercase;color:#B8860B;font-weight:700}
+.tab-foot-com-val{font-family:'Montserrat';font-size:15px;font-weight:700;color:#FFF;letter-spacing:.2px}
+.tab-foot-com-val span{color:#B8860B;margin:0 4px}
+.tab-mobile-hint{display:none;font-size:10px;color:var(--muted);font-style:italic;text-align:center;padding:14px;background:var(--surface);border-top:1px solid var(--border)}
+@media(max-width:980px){
+  .tab-section{padding:50px 20px 60px}
+  .tab-wrap{overflow-x:auto}
+  .tab-table{min-width:900px}
+  .tab-mobile-hint{display:block}
+  .tab-footer{padding:18px 20px}
+}
+
+/* PORTFOLIO MAP SECTION */
+.pmap-section{padding:80px 52px 70px;background:var(--bg2);border-top:1px solid var(--border);position:relative;z-index:1}
+.pmap-head{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:8px;flex-wrap:wrap;gap:14px}
+.pmap-title{font-family:var(--font-d);font-size:32px;font-weight:300;letter-spacing:-.8px;color:var(--text)}
+.pmap-title em{font-style:italic;font-weight:200;color:#B8860B}
+.pmap-sub{font-size:11px;color:var(--muted);letter-spacing:1.5px;text-transform:uppercase;font-weight:500;margin-bottom:32px}
+.pmap-toolbar{display:flex;gap:18px;align-items:center}
+.pmap-legend{display:flex;gap:14px;flex-wrap:wrap}
+.pmap-leg{display:flex;align-items:center;gap:6px;font-size:10px;color:var(--muted);letter-spacing:.5px;font-weight:500}
+.pmap-leg-dot{width:9px;height:9px;border-radius:50%;display:inline-block}
+.pmap-wrap{display:grid;grid-template-columns:1fr 340px;gap:18px;height:560px}
+@media(max-width:980px){.pmap-wrap{grid-template-columns:1fr;height:auto}.pmap-canvas{height:420px}.pmap-list{max-height:340px}}
+.pmap-canvas{border:1px solid var(--border);border-radius:6px;overflow:hidden;background:#FAFAFA;position:relative;box-shadow:0 4px 24px rgba(0,0,0,.04)}
+#leafletMap{width:100%;height:100%}
+.pmap-side{display:flex;flex-direction:column;gap:10px;min-height:0}
+.pmap-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.pmap-stat{background:var(--bg);border:1px solid var(--border);border-radius:4px;padding:12px 14px;text-align:center}
+.pmap-stat-num{font-family:var(--font-d);font-size:22px;font-weight:300;line-height:1;letter-spacing:-.5px;color:var(--text)}
+.pmap-stat-num.green{color:#16A34A}
+.pmap-stat-num.amber{color:#D97706}
+.pmap-stat-l{font-size:8px;color:var(--muted);letter-spacing:1.5px;text-transform:uppercase;font-weight:600;margin-top:4px}
+.pmap-search{position:relative}
+.pmap-search input{width:100%;padding:11px 14px 11px 36px;background:var(--bg);border:1px solid var(--border);border-radius:4px;font-family:var(--font-b);font-size:11px;color:var(--text);outline:none;transition:border-color .2s}
+.pmap-search input:focus{border-color:var(--text)}
+.pmap-search-icon{position:absolute;left:13px;top:50%;transform:translateY(-50%);font-size:13px;color:var(--muted);pointer-events:none}
+.pmap-list{display:flex;flex-direction:column;gap:5px;overflow-y:auto;flex:1;padding-right:4px}
+.pmap-list::-webkit-scrollbar{width:4px}
+.pmap-list::-webkit-scrollbar-track{background:transparent}
+.pmap-list::-webkit-scrollbar-thumb{background:var(--border2);border-radius:999px}
+.pmap-item{background:var(--bg);border:1px solid var(--border);border-radius:4px;padding:11px 13px;cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:10px;text-align:left}
+.pmap-item:hover{border-color:var(--text);background:var(--surface);transform:translateX(3px)}
+.pmap-item.active{border-color:#B8860B;background:#FFFBEC;box-shadow:0 4px 14px rgba(184,134,11,.18);transform:translateX(3px)}
+.pmap-pin{width:24px;height:24px;border-radius:50%;color:#FFF;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;flex-shrink:0;box-shadow:0 1px 4px rgba(0,0,0,.15)}
+.pmap-item.pronto .pmap-pin{background:#16A34A}
+.pmap-item.obras .pmap-pin{background:#D97706}
+.pmap-item-info{flex:1;min-width:0}
+.pmap-item-name{font-size:11px;font-weight:700;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;letter-spacing:.2px}
+.pmap-item-addr{font-size:9px;color:var(--muted);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;letter-spacing:.2px}
+.pmap-item-meta{font-size:9px;font-weight:600;color:var(--text);white-space:nowrap}
+/* Leaflet custom marker icons */
+.lmark{display:flex;align-items:center;justify-content:center;width:34px;height:44px;position:relative}
+.lmark-pin{width:34px;height:34px;border-radius:50% 50% 50% 0;transform:rotate(-45deg);position:absolute;top:0;box-shadow:0 4px 10px rgba(0,0,0,.25);display:flex;align-items:center;justify-content:center}
+.lmark-num{transform:rotate(45deg);color:#FFF;font-family:'Montserrat';font-size:13px;font-weight:800;letter-spacing:-.5px}
+.lmark.pronto .lmark-pin{background:#16A34A;border:2px solid #fff}
+.lmark.obras .lmark-pin{background:#D97706;border:2px solid #fff}
+.lmark.active .lmark-pin{box-shadow:0 6px 18px rgba(0,0,0,.4);transform:rotate(-45deg) scale(1.2)}
+.leaflet-popup-content-wrapper{border-radius:6px;box-shadow:0 8px 24px rgba(0,0,0,.18);padding:0;overflow:hidden}
+.leaflet-popup-content{margin:0;width:240px!important;font-family:'Montserrat'}
+.leaflet-popup-tip{box-shadow:0 4px 10px rgba(0,0,0,.1)}
+.pop-card{padding:14px 16px}
+.pop-status{font-size:8px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:3px 8px;border-radius:999px;display:inline-block;margin-bottom:8px}
+.pop-status.pronto{background:#DCFCE7;color:#16A34A}
+.pop-status.obras{background:#FEF3C7;color:#D97706}
+.pop-name{font-size:13px;font-weight:700;color:#0A0A0A;line-height:1.25;letter-spacing:-.2px;margin-bottom:3px}
+.pop-addr{font-size:10px;color:#737373;margin-bottom:10px}
+.pop-specs{display:flex;gap:12px;padding:8px 0;border-top:1px solid #EEE;border-bottom:1px solid #EEE;margin-bottom:10px}
+.pop-spec-l{font-size:8px;letter-spacing:1.5px;text-transform:uppercase;color:#737373;font-weight:600}
+.pop-spec-v{font-size:11px;font-weight:600;color:#0A0A0A;margin-top:2px}
+.pop-price-row{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:10px}
+.pop-price-l{font-size:8px;letter-spacing:1.5px;text-transform:uppercase;color:#737373;font-weight:600}
+.pop-price{font-family:'Montserrat';font-size:16px;font-weight:600;color:#0A0A0A;letter-spacing:-.3px}
+.pop-btn{display:block;width:100%;padding:9px;background:#0A0A0A;color:#FFF;text-align:center;font-size:9px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;border-radius:3px;text-decoration:none;border:none;cursor:pointer;transition:background .2s;font-family:'Montserrat'}
+.pop-btn:hover{background:#262626}
+.pop-multi{font-size:9px;color:#737373;font-style:italic;margin-bottom:8px}
+
+
+
+/* CONTACT FAB (Floating Action Button) */
+.contact-fab{position:fixed;bottom:28px;right:28px;width:60px;height:60px;border-radius:50%;background:linear-gradient(135deg,#0A0A0A 0%,#1A1A1A 100%);color:#FFF;border:none;cursor:pointer;z-index:150;box-shadow:0 8px 24px rgba(0,0,0,.25),0 0 0 0 rgba(184,134,11,.5);display:flex;align-items:center;justify-content:center;font-size:24px;transition:all .3s ease;animation:fabPulse 2.5s ease-in-out infinite}
+.contact-fab:hover{transform:scale(1.08);box-shadow:0 12px 32px rgba(0,0,0,.35),0 0 0 8px rgba(184,134,11,.15)}
+.contact-fab::before{content:'';position:absolute;top:0;left:0;right:0;bottom:0;border-radius:50%;border:2px solid #B8860B;opacity:0;transition:opacity .3s}
+.contact-fab:hover::before{opacity:1}
+@keyframes fabPulse{0%,100%{box-shadow:0 8px 24px rgba(0,0,0,.25),0 0 0 0 rgba(184,134,11,.5)}50%{box-shadow:0 8px 24px rgba(0,0,0,.25),0 0 0 14px rgba(184,134,11,0)}}
+.contact-fab-tip{position:absolute;right:74px;top:50%;transform:translateY(-50%);background:#0A0A0A;color:#FFF;padding:8px 14px;border-radius:4px;font-size:10px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;white-space:nowrap;opacity:0;pointer-events:none;transition:opacity .25s,transform .25s;transform-origin:right center}
+.contact-fab-tip::after{content:'';position:absolute;right:-5px;top:50%;transform:translateY(-50%);border:5px solid transparent;border-left-color:#0A0A0A}
+.contact-fab:hover .contact-fab-tip{opacity:1;transform:translateY(-50%) translateX(-4px)}
+
+/* CONTACT MODAL */
+.contact-overlay{position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:300;display:flex;align-items:center;justify-content:center;padding:24px;opacity:0;pointer-events:none;transition:opacity .3s;backdrop-filter:blur(10px)}
+.contact-overlay.open{opacity:1;pointer-events:all}
+.contact-modal{background:linear-gradient(135deg,#0A0A0A 0%,#1A1A1A 100%);border-radius:8px;width:100%;max-width:480px;overflow:hidden;transform:translateY(22px) scale(.96);transition:transform .35s cubic-bezier(.22,1,.36,1);position:relative;box-shadow:0 30px 80px rgba(0,0,0,.5)}
+.contact-overlay.open .contact-modal{transform:translateY(0) scale(1)}
+.contact-modal::before{content:'';position:absolute;top:0;left:0;width:4px;height:100%;background:#B8860B}
+.contact-modal-head{padding:30px 32px 22px;position:relative;border-bottom:1px solid rgba(255,255,255,.08)}
+.contact-close{position:absolute;top:16px;right:16px;width:32px;height:32px;border-radius:50%;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);color:#FFF;font-size:14px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s;line-height:1}
+.contact-close:hover{background:rgba(255,255,255,.15);transform:rotate(90deg)}
+.contact-eyebrow{font-size:9px;letter-spacing:3px;text-transform:uppercase;color:#B8860B;font-weight:600;margin-bottom:10px}
+.contact-title{font-family:'Montserrat';font-size:24px;font-weight:300;color:#FFF;letter-spacing:-.5px;line-height:1.2;margin-bottom:6px}
+.contact-title em{font-style:italic;font-weight:200;color:#B8860B}
+.contact-subtitle{font-size:11px;color:rgba(255,255,255,.55);line-height:1.5}
+.contact-modal-body{padding:24px 32px 28px;display:flex;flex-direction:column;gap:10px}
+.contact-item{display:flex;align-items:center;gap:14px;padding:14px 16px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:6px;text-decoration:none;transition:all .25s;cursor:pointer}
+.contact-item:hover{background:rgba(255,255,255,.08);border-color:rgba(184,134,11,.4);transform:translateX(3px)}
+.contact-item-icon{width:42px;height:42px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;background:rgba(255,255,255,.06)}
+.contact-item-icon.wa{background:#25D366;color:#FFF}
+.contact-item-icon.tel{background:rgba(184,134,11,.18);color:#B8860B}
+.contact-item-icon.mail{background:rgba(255,255,255,.1);color:#FFF}
+.contact-item-info{flex:1;min-width:0}
+.contact-item-label{font-size:8px;letter-spacing:2.5px;text-transform:uppercase;color:rgba(255,255,255,.5);font-weight:600;margin-bottom:3px}
+.contact-item-value{font-size:14px;color:#FFF;font-weight:500;letter-spacing:.2px;word-break:break-all}
+.contact-item-arrow{font-size:14px;color:rgba(255,255,255,.4);transition:transform .25s,color .25s}
+.contact-item:hover .contact-item-arrow{color:#B8860B;transform:translateX(4px)}
+.contact-responsavel{display:flex;align-items:center;gap:14px;padding:18px 22px;background:rgba(184,134,11,.08);border:1px solid rgba(184,134,11,.25);border-radius:6px;margin-bottom:6px}
+.contact-resp-avatar{width:46px;height:46px;border-radius:50%;background:linear-gradient(135deg,#B8860B,#9A6F00);display:flex;align-items:center;justify-content:center;font-family:'Montserrat';font-size:18px;font-weight:700;color:#FFF;flex-shrink:0}
+.contact-resp-info{flex:1}
+.contact-resp-label{font-size:8px;letter-spacing:2.5px;text-transform:uppercase;color:rgba(255,255,255,.5);font-weight:600;margin-bottom:3px}
+.contact-resp-name{font-family:'Montserrat';font-size:16px;color:#FFF;font-weight:600;letter-spacing:-.2px}
+
 /* FOOTER */
 footer{border-top:1px solid var(--border);padding:28px 52px;display:flex;align-items:center;justify-content:space-between;position:relative;z-index:1}
 .f-logo{font-family:var(--font-d);font-size:18px;font-weight:600;letter-spacing:4px}
@@ -246,7 +421,11 @@ footer{border-top:1px solid var(--border);padding:28px 52px;display:flex;align-i
     <button class="f-btn" data-f="pronto">Pronto</button>
     <button class="f-btn" data-f="obras">Em Obras</button>
   </div>
-  <div class="nav-right">Portfólio</div>
+  <div style="display:flex;align-items:center;gap:18px">
+    <a href="#tabelao" style="font-size:10px;font-weight:600;color:var(--text);letter-spacing:2.5px;text-transform:uppercase;text-decoration:none;transition:color .2s" onmouseover="this.style.color='#B8860B'" onmouseout="this.style.color='var(--text)'">Tabelão</a>
+    <a href="#portfolioMap" style="font-size:10px;font-weight:600;color:var(--text);letter-spacing:2.5px;text-transform:uppercase;text-decoration:none;transition:color .2s" onmouseover="this.style.color='#B8860B'" onmouseout="this.style.color='var(--text)'">Mapa</a>
+    <div class="nav-right">Portfólio</div>
+  </div>
 </nav>
 
 <section class="hero">
@@ -254,11 +433,11 @@ footer{border-top:1px solid var(--border);padding:28px 52px;display:flex;align-i
     <img src="https://images.unsplash.com/photo-1486325212027-8081e485255e?w=1800&q=80" alt="hero">
   </div>
   <div class="hero-glow"></div>
-  <div class="hero-num">9</div>
+  <div class="hero-num">10</div>
   <p class="hero-eyebrow">Oportunidades 2026</p>
   <h1 class="hero-title">Em<br><em>Estoque</em></h1>
   <div class="hero-stats">
-    <div class="stat"><div class="stat-n">9</div><div class="stat-l">Unidades</div></div>
+    <div class="stat"><div class="stat-n">10</div><div class="stat-l">Unidades</div></div>
     <div class="stat"><div class="stat-n" style="color:var(--green)">5</div><div class="stat-l"><span class="stat-dot" style="background:var(--green)"></span>Pronto</div></div>
     <div class="stat"><div class="stat-n" style="color:var(--amber)">4</div><div class="stat-l"><span class="stat-dot" style="background:var(--amber)"></span>Em Obras</div></div>
     <div class="stat"><div class="stat-n" style="font-size:28px;color:var(--muted);padding-top:16px">R$260K — 3,3M</div><div class="stat-l">Faixa de Preço</div></div>
@@ -277,6 +456,168 @@ footer{border-top:1px solid var(--border);padding:28px 52px;display:flex;align-i
     <div class="no-res" id="noRes">Nenhum imóvel encontrado.</div>
   </div>
 </main>
+
+<section class="pmap-section" id="portfolioMap">
+  <div class="pmap-head">
+    <h2 class="pmap-title">Distribuição <em>Geográfica</em></h2>
+    <div class="pmap-toolbar">
+      <div class="pmap-legend">
+        <div class="pmap-leg"><span class="pmap-leg-dot" style="background:#16A34A"></span>Pronto para Morar</div>
+        <div class="pmap-leg"><span class="pmap-leg-dot" style="background:#D97706"></span>Em Obras</div>
+      </div>
+    </div>
+  </div>
+  <div class="pmap-sub">Onde estão nossas oportunidades em São Paulo</div>
+
+  <div class="pmap-wrap">
+    <div class="pmap-canvas">
+      <div id="leafletMap"></div>
+    </div>
+    <div class="pmap-side">
+      <div class="pmap-stats">
+        <div class="pmap-stat">
+          <div class="pmap-stat-num" id="pmStatTotal">9</div>
+          <div class="pmap-stat-l">Unidades</div>
+        </div>
+        <div class="pmap-stat">
+          <div class="pmap-stat-num green" id="pmStatPronto">5</div>
+          <div class="pmap-stat-l">Pronto</div>
+        </div>
+        <div class="pmap-stat">
+          <div class="pmap-stat-num amber" id="pmStatObras">4</div>
+          <div class="pmap-stat-l">Em Obras</div>
+        </div>
+      </div>
+      <div class="pmap-search">
+        <span class="pmap-search-icon">🔍</span>
+        <input type="text" id="pmapSearch" placeholder="Buscar por bairro ou empreendimento...">
+      </div>
+      <div class="pmap-list" id="pmapList"></div>
+    </div>
+  </div>
+</section>
+
+
+<!-- TABELÃO SECTION -->
+<section class="tab-section" id="tabelao">
+  <div class="tab-head">
+    <div>
+      <div class="tab-sub">Listagem UNA Corp</div>
+      <h2 class="tab-title"><em>Tabelão</em> · Abril 2026</h2>
+    </div>
+  </div>
+  <div class="tab-meta">
+    Visão completa do portfólio com <strong>todos os empreendimentos disponíveis</strong>. Clique em qualquer linha para ver detalhes ou no botão <strong>LINK</strong> para acessar o material.
+  </div>
+
+  <div class="tab-actions">
+    <button class="tab-btn active" data-filter="all">Todos</button>
+    <button class="tab-btn" data-filter="breve">Breve Lançamento</button>
+    <button class="tab-btn" data-filter="pronto">Pronto para Morar</button>
+    <button class="tab-btn" data-filter="obras">Em Obras</button>
+  </div>
+
+  <div class="tab-wrap">
+    <table class="tab-table" id="tabelaoTable">
+      <thead>
+        <tr>
+          <th>Empreendimento</th>
+          <th>Região</th>
+          <th>Estágio</th>
+          <th>Endereço</th>
+          <th>Unidade</th>
+          <th class="center">Tipologia</th>
+          <th class="center">Metragem</th>
+          <th class="center">Dormitório</th>
+          <th>Vaga de Garagem</th>
+          <th class="right">Valor</th>
+          <th class="center">Material</th>
+        </tr>
+      </thead>
+      <tbody id="tabelaoBody"></tbody>
+    </table>
+    <div class="tab-mobile-hint">⟵ Arraste horizontalmente para ver mais ⟶</div>
+
+    <div class="tab-footer">
+      <div class="tab-foot-left">
+        <div>
+          <div class="tab-foot-label">Responsável</div>
+          <div class="tab-foot-val">Lucas</div>
+        </div>
+        <div class="tab-foot-divider"></div>
+        <div>
+          <div class="tab-foot-label">WhatsApp</div>
+          <div class="tab-foot-val"><a href="https://wa.me/5511977481984" target="_blank">(11) 97748-1984</a></div>
+        </div>
+        <div class="tab-foot-divider"></div>
+        <div>
+          <div class="tab-foot-label">E-mail</div>
+          <div class="tab-foot-val"><a href="mailto:parcerias@unacorp.com.br">parcerias@unacorp.com.br</a></div>
+        </div>
+      </div>
+      <div class="tab-foot-comissao">
+        <div>
+          <div class="tab-foot-com-label">Comissão</div>
+          <div class="tab-foot-com-val">3%<span>PF</span>·<span>4%</span>PJ</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT FAB BUTTON -->
+<button class="contact-fab" onclick="openContactModal()" aria-label="Entrar em contato">
+  💬
+  <span class="contact-fab-tip">Fale Conosco</span>
+</button>
+
+<!-- CONTACT MODAL -->
+<div class="contact-overlay" id="contactOverlay">
+  <div class="contact-modal">
+    <div class="contact-modal-head">
+      <button class="contact-close" onclick="closeContactModal()" aria-label="Fechar">✕</button>
+      <div class="contact-eyebrow">Entre em Contato</div>
+      <div class="contact-title">Fale com a <em>UNA Corp</em></div>
+      <div class="contact-subtitle">Estamos à disposição para apresentar oportunidades de investimento e tirar suas dúvidas sobre o portfólio.</div>
+    </div>
+    <div class="contact-modal-body">
+      <div class="contact-responsavel">
+        <div class="contact-resp-avatar">L</div>
+        <div class="contact-resp-info">
+          <div class="contact-resp-label">Responsável</div>
+          <div class="contact-resp-name">Lucas</div>
+        </div>
+      </div>
+
+      <a href="https://wa.me/5511977481984?text=Ol%C3%A1%20Lucas%2C%20vi%20o%20portf%C3%B3lio%20de%20oportunidades%20e%20gostaria%20de%20mais%20informa%C3%A7%C3%B5es." target="_blank" class="contact-item">
+        <div class="contact-item-icon wa">💬</div>
+        <div class="contact-item-info">
+          <div class="contact-item-label">WhatsApp</div>
+          <div class="contact-item-value">(11) 97748-1984</div>
+        </div>
+        <span class="contact-item-arrow">→</span>
+      </a>
+
+      <a href="tel:+5511977481984" class="contact-item">
+        <div class="contact-item-icon tel">☎</div>
+        <div class="contact-item-info">
+          <div class="contact-item-label">Telefone</div>
+          <div class="contact-item-value">(11) 97748-1984</div>
+        </div>
+        <span class="contact-item-arrow">→</span>
+      </a>
+
+      <a href="mailto:parcerias@unacorp.com.br?subject=Portf%C3%B3lio%20de%20Oportunidades%20UNA%20Corp" class="contact-item">
+        <div class="contact-item-icon mail">✉</div>
+        <div class="contact-item-info">
+          <div class="contact-item-label">E-mail Parcerias</div>
+          <div class="contact-item-value">parcerias@unacorp.com.br</div>
+        </div>
+        <span class="contact-item-arrow">→</span>
+      </a>
+    </div>
+  </div>
+</div>
 
 <footer>
   <a href="https://www.unacorp.com.br" target="_blank" style="font-size:11px;color:var(--muted);text-decoration:none;letter-spacing:.5px;transition:color .2s" onmouseover="this.style.color='var(--text)'" onmouseout="this.style.color='var(--muted)'">www.unacorp.com.br</a>
@@ -323,6 +664,22 @@ footer{border-top:1px solid var(--border);padding:28px 52px;display:flex;align-i
    Para adicionar/remover imóvel: copie ou delete um bloco { }
    ═══════════════════════════════════════════════════════════════════ */
 const DATA = [
+  {
+    nome:"COMANDATUBA", bairro:"Itaim Bibi",
+    endereco:"Rua Capitão Guedes Portilho, 26", unidade:"Torre Única",
+    status:"breve", entrega:"Breve Lançamento", tipo:"—", mobiliado:false,
+    metragem:"—", deposito:false, dorms:"—", vaga:"—",
+    valor:"Sob Consulta", link:null, driveLink:null,
+    incorporadora:"A definir", incorporadoraLogo:null,
+    mapQuery:"Rua Capitão Guedes Portilho, 26, Itaim Bibi, São Paulo, SP",
+    pois:[
+      {icon:"🛒",nome:"Shopping Iguatemi",dist:"500m"},
+      {icon:"🚇",nome:"Estação Faria Lima",dist:"800m"},
+      {icon:"🍽️",nome:"Restaurantes premium",dist:"200m"},
+      {icon:"🏥",nome:"Hospital São Luiz",dist:"1km"},
+    ],
+    fotos:[], plantas:[]
+  },
   {
     nome:"URBO VILA PRUDENTE", bairro:"Vila Prudente",
     endereco:"Av. Vila Ema, 850", unidade:"Unidade 178 · 17° Andar",
@@ -786,6 +1143,241 @@ document.querySelectorAll('a,button,.card,.m-tab,.photo-thumb,.p-tab,.poi').forE
 /* INIT */
 document.getElementById('dt').textContent=new Date().toLocaleDateString('pt-BR');
 render('all');
+
+/* ──────────── PORTFOLIO MAP (LEAFLET) ──────────── */
+(function buildPortfolioMap(){
+  // Coordinates of each property
+  const COORDS = {
+    'Avenida Vila Ema, 850, Vila Prudente, São Paulo, SP': [-23.5800,-46.5680],
+    'Rua Itapeva, 350, Bela Vista, São Paulo, SP':         [-23.5620,-46.6520],
+    'Rua Barão do Triunfo, 551, Campo Belo, São Paulo, SP':[-23.6220,-46.6640],
+    'Rua José Zappi, 363, Vila Prudente, São Paulo, SP':   [-23.5830,-46.5720],
+    'Rua Cavour, 439, Vila Prudente, São Paulo, SP':       [-23.5810,-46.5700],
+    'Rua Michigan, 962, Brooklin, São Paulo, SP':          [-23.6148,-46.6967]
+  };
+
+  // Group properties by address (multiple units in same building)
+  const groups = {};
+  DATA.forEach((d, i) => {
+    if(!groups[d.mapQuery]) groups[d.mapQuery] = {addr:d.mapQuery, items:[]};
+    groups[d.mapQuery].items.push({...d, idx:i});
+  });
+  const groupList = Object.values(groups);
+
+  // Stats
+  document.getElementById('pmStatTotal').textContent = DATA.length;
+  document.getElementById('pmStatPronto').textContent = DATA.filter(d=>d.status==='pronto').length;
+  document.getElementById('pmStatObras').textContent = DATA.filter(d=>d.status==='obras').length;
+
+  // ── Init Leaflet map ──
+  // Center on São Paulo, around midpoint of all properties
+  const map = L.map('leafletMap', {
+    center: [-23.5950, -46.6320],
+    zoom: 12,
+    scrollWheelZoom: false,
+    zoomControl: true,
+    attributionControl: true
+  });
+
+  // Use CartoDB Positron — clean, minimal, light gray base
+  L.tileLayer('https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}{r}.png', {
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/attributions">CARTO</a>',
+    subdomains: 'abcd',
+    maxZoom: 19
+  }).addTo(map);
+  // Labels overlay
+  L.tileLayer('https://{s}.basemaps.cartocdn.com/light_only_labels/{z}/{x}/{y}{r}.png', {
+    subdomains: 'abcd',
+    maxZoom: 19,
+    pane: 'shadowPane'
+  }).addTo(map);
+
+  // ── Create custom markers ──
+  const markers = {};
+
+  groupList.forEach((g, i) => {
+    const c = COORDS[g.addr];
+    if(!c) return;
+    const status = g.items[0].status;
+    const count = g.items.length;
+
+    const html = `<div class="lmark ${status}" data-group="${i}">
+      <div class="lmark-pin"><span class="lmark-num">${count}</span></div>
+    </div>`;
+
+    const icon = L.divIcon({
+      className: 'lmark-wrap',
+      html: html,
+      iconSize: [34, 44],
+      iconAnchor: [17, 44],
+      popupAnchor: [0, -42]
+    });
+
+    const marker = L.marker(c, {icon}).addTo(map);
+    markers[i] = marker;
+
+    // Build popup HTML
+    const first = g.items[0];
+    const stLbl = status==='pronto' ? 'Pronto para Morar' : `Em Obras · ${first.entrega}`;
+    const popupHTML = count > 1
+      ? `<div class="pop-card">
+          <span class="pop-status ${status}">${stLbl}</span>
+          <div class="pop-name">${first.nome}</div>
+          <div class="pop-addr">${first.bairro} · ${first.endereco}</div>
+          <div class="pop-multi">${count} unidades disponíveis a partir de R$ ${first.valor}</div>
+          <button class="pop-btn" onclick="window.pmOpen(${first.idx})">Ver Unidades →</button>
+        </div>`
+      : `<div class="pop-card">
+          <span class="pop-status ${status}">${stLbl}</span>
+          <div class="pop-name">${first.nome}</div>
+          <div class="pop-addr">${first.bairro} · ${first.endereco}</div>
+          <div class="pop-specs">
+            <div><div class="pop-spec-l">Área</div><div class="pop-spec-v">${first.metragem}</div></div>
+            <div><div class="pop-spec-l">Dorms</div><div class="pop-spec-v">${first.dorms}</div></div>
+            <div><div class="pop-spec-l">Vaga</div><div class="pop-spec-v">${first.vaga}</div></div>
+          </div>
+          <div class="pop-price-row">
+            <span class="pop-price-l">Valor</span>
+            <span class="pop-price">R$ ${first.valor}</span>
+          </div>
+          <button class="pop-btn" onclick="window.pmOpen(${first.idx})">Ver Detalhes →</button>
+        </div>`;
+
+    marker.bindPopup(popupHTML, {maxWidth:260, minWidth:240, closeButton:true});
+  });
+
+  // Fit map bounds to all markers
+  const allLatLngs = groupList.map(g=>COORDS[g.addr]).filter(Boolean);
+  if(allLatLngs.length){
+    map.fitBounds(allLatLngs, {padding:[40,40]});
+  }
+
+  // ── Side list ──
+  const listEl = document.getElementById('pmapList');
+  function renderList(filter=''){
+    const flt = filter.toLowerCase().trim();
+    let html = '';
+    groupList.forEach((g, i) => {
+      const first = g.items[0];
+      const count = g.items.length;
+      const match = !flt || first.nome.toLowerCase().includes(flt) || first.bairro.toLowerCase().includes(flt) || first.endereco.toLowerCase().includes(flt);
+      if(!match) return;
+      const meta = count > 1 ? `${count} unid.` : `R$ ${first.valor.split(',')[0]}`;
+      html += `<div class="pmap-item ${first.status}" data-group="${i}" onclick="window.pmFocus(${i})">
+        <div class="pmap-pin">${count}</div>
+        <div class="pmap-item-info">
+          <div class="pmap-item-name">${first.nome}</div>
+          <div class="pmap-item-addr">${first.bairro} · ${first.endereco}</div>
+        </div>
+        <div class="pmap-item-meta">${meta}</div>
+      </div>`;
+    });
+    listEl.innerHTML = html || '<div style="font-size:11px;color:var(--muted);text-align:center;padding:30px 12px;">Nenhum resultado.</div>';
+  }
+  renderList();
+
+  // ── Search ──
+  document.getElementById('pmapSearch').addEventListener('input', e => {
+    renderList(e.target.value);
+  });
+
+  // ── Interaction: click on list pans to marker and opens popup ──
+  window.pmFocus = function(idx){
+    const g = groupList[idx];
+    if(!g) return;
+    const c = COORDS[g.addr];
+    if(!c) return;
+    document.querySelectorAll('.pmap-item').forEach(el=>el.classList.toggle('active', el.dataset.group==idx));
+    map.setView(c, 15, {animate:true});
+    setTimeout(()=>{markers[idx]&&markers[idx].openPopup();}, 350);
+  };
+
+  // ── pmOpen — used by popup buttons ──
+  window.pmOpen = function(idx){
+    openModal(idx);
+    map.closePopup();
+  };
+
+  // ── Re-enable scroll wheel zoom on click ──
+  map.on('click', () => map.scrollWheelZoom.enable());
+  map.on('mouseout', () => map.scrollWheelZoom.disable());
+})();
+
+
+/* CONTACT MODAL */
+
+/* ──────────── TABELÃO ──────────── */
+(function buildTabelao(){
+  const tbody = document.getElementById('tabelaoBody');
+  if(!tbody) return;
+
+  function renderTabela(filter='all'){
+    let html = '';
+    const groups = {
+      breve:  {label:'BREVE LANÇAMENTO',                         items:[]},
+      pronto: {label:'OPORTUNIDADES GDVM · PRONTO PARA MORAR',   items:[]},
+      obras:  {label:'OPORTUNIDADES GDVM · EM OBRAS',            items:[]}
+    };
+
+    DATA.forEach((d,i)=>{
+      if(filter!=='all' && d.status!==filter) return;
+      if(groups[d.status]) groups[d.status].items.push({...d,idx:i});
+    });
+
+    Object.entries(groups).forEach(([key, grp])=>{
+      if(!grp.items.length) return;
+      html += `<tr class="tab-group-row ${key}"><td colspan="11"><span class="grp-dot"></span>${grp.label} · ${grp.items.length} ${grp.items.length>1?'unidades':'unidade'}</td></tr>`;
+      grp.items.forEach(d=>{
+        const stageClass = d.mobiliado ? 'mobiliado' : (d.status==='pronto'?'pronto':d.status==='breve'?'breve':d.tipo==='NR'?'nr':'entrega');
+        const stageText = d.mobiliado ? 'Mobiliado' : (d.status==='pronto'?'Pronto':d.status==='breve'?'Breve':d.entrega);
+        const valor = d.valor === 'Sob Consulta' ? d.valor : 'R$ '+d.valor;
+        const metragem = d.deposito ? d.metragem+' + Dep.' : d.metragem;
+        const linkBtn = d.driveLink
+          ? `<a href="${d.driveLink}" target="_blank" class="tab-link" onclick="event.stopPropagation()">LINK ↗</a>`
+          : `<a class="tab-link disabled">—</a>`;
+        html += `<tr class="tab-row" onclick="openModal(${d.idx})">
+          <td>${d.nome}</td>
+          <td>${d.bairro}</td>
+          <td><span class="stage ${stageClass}">${stageText}</span></td>
+          <td>${d.endereco}</td>
+          <td>${d.unidade.replace('Unidade ','').replace(' · ',' - ')}</td>
+          <td class="ctr">${d.tipo}</td>
+          <td class="ctr">${metragem}</td>
+          <td class="ctr">${d.dorms}</td>
+          <td>${d.vaga}</td>
+          <td class="val right">${valor}</td>
+          <td class="ctr">${linkBtn}</td>
+        </tr>`;
+      });
+    });
+
+    tbody.innerHTML = html || '<tr><td colspan="11" style="padding:40px;text-align:center;color:var(--muted)">Nenhum imóvel encontrado.</td></tr>';
+  }
+
+  renderTabela();
+
+  document.querySelectorAll('.tab-btn').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+      btn.classList.add('active');
+      renderTabela(btn.dataset.filter);
+    });
+  });
+})();
+
+window.openContactModal = function(){
+  document.getElementById('contactOverlay').classList.add('open');
+};
+window.closeContactModal = function(){
+  document.getElementById('contactOverlay').classList.remove('open');
+};
+document.getElementById('contactOverlay').addEventListener('click', e => {
+  if(e.target.id === 'contactOverlay') closeContactModal();
+});
+document.addEventListener('keydown', e => {
+  if(e.key === 'Escape' && document.getElementById('contactOverlay').classList.contains('open')) closeContactModal();
+});
+
 </script>
 </body>
 </html>
