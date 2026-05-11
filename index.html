@@ -43,24 +43,48 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:cen
 .f-btn:hover:not(.active){color:var(--text)}
 .nav-right{font-size:10px;font-weight:500;color:var(--muted);letter-spacing:2.5px;text-transform:uppercase}
 
-/* HERO */
-.hero{min-height:100vh;display:flex;flex-direction:column;justify-content:flex-end;padding:52px;padding-bottom:56px;position:relative;overflow:hidden}
-.hero-bg{position:absolute;inset:0;z-index:0}
-.hero-bg img{width:100%;height:100%;object-fit:cover;opacity:.25;filter:grayscale(20%) contrast(1.05)}
-.hero-bg::after{content:'';position:absolute;inset:0;background:linear-gradient(to top,var(--bg) 30%,rgba(255,255,255,.5) 70%,transparent 100%)}
-.hero-glow{position:absolute;top:-20%;left:-10%;width:600px;height:600px;border-radius:50%;background:radial-gradient(circle,rgba(184,134,11,.10) 0%,transparent 70%);pointer-events:none;animation:pulse 6s ease-in-out infinite;z-index:1}
-@keyframes pulse{0%,100%{opacity:.5;transform:scale(1)}50%{opacity:1;transform:scale(1.08)}}
-.hero-num{position:absolute;right:52px;top:50%;transform:translateY(-50%);font-family:var(--font-d);font-size:clamp(160px,22vw,320px);font-weight:700;color:transparent;-webkit-text-stroke:1px rgba(0,0,0,.06);line-height:1;letter-spacing:-8px;pointer-events:none;user-select:none;z-index:1}
-.hero-eyebrow{font-size:10px;font-weight:500;letter-spacing:4px;text-transform:uppercase;color:var(--gold);margin-bottom:18px;opacity:0;animation:fadeUp .7s ease forwards .15s;position:relative;z-index:2}
-.hero-title{font-family:var(--font-d);font-size:clamp(60px,9.5vw,132px);font-weight:200;line-height:.92;letter-spacing:-3px;margin-bottom:52px;opacity:0;animation:fadeUp .7s ease forwards .3s;position:relative;z-index:2}
-.hero-title em{font-style:italic;color:var(--gold);font-weight:200}
-.hero-stats{display:flex;gap:52px;align-items:flex-end;opacity:0;animation:fadeUp .7s ease forwards .5s;position:relative;z-index:2}
-.stat{display:flex;flex-direction:column;gap:5px}
-.stat-n{font-family:var(--font-d);font-size:52px;font-weight:300;line-height:1;letter-spacing:-1px}
-.stat-l{font-size:9px;font-weight:500;letter-spacing:3px;text-transform:uppercase;color:var(--muted)}
-.stat-dot{display:inline-block;width:6px;height:6px;border-radius:50%;margin-right:5px;vertical-align:middle}
-.hero-scroll{position:absolute;bottom:28px;right:52px;display:flex;align-items:center;gap:14px;font-size:9px;letter-spacing:2.5px;color:var(--muted);text-transform:uppercase;opacity:0;animation:fadeUp .7s ease forwards .8s;z-index:2}
-.scroll-line{width:48px;height:1px;background:var(--gold)}
+
+/* HERO + MAP HYBRID */
+.hero-map{position:relative;background:var(--bg);padding:90px 52px 0;min-height:100vh;display:flex;flex-direction:column;overflow:hidden;border-bottom:1px solid var(--border)}
+.hero-map::before{content:'';position:absolute;top:-200px;right:-100px;width:700px;height:700px;border-radius:50%;background:radial-gradient(circle,rgba(184,134,11,.06) 0%,transparent 65%);pointer-events:none;animation:pulse 8s ease-in-out infinite}
+.hero-map-content{display:grid;grid-template-columns:1.05fr 1.5fr;gap:48px;align-items:center;flex:1;max-width:1600px;margin:0 auto;width:100%;position:relative;z-index:2;padding-bottom:36px}
+@media(max-width:980px){.hero-map-content{grid-template-columns:1fr;gap:32px}}
+.hero-map-left{display:flex;flex-direction:column;justify-content:center}
+.hero-map-eyebrow{font-size:10px;letter-spacing:4px;text-transform:uppercase;color:#B8860B;font-weight:700;margin-bottom:22px}
+.hero-map-title{font-family:var(--font-d);font-size:clamp(56px,7vw,108px);font-weight:200;line-height:.95;letter-spacing:-3px;margin-bottom:28px;color:var(--text)}
+.hero-map-title em{font-style:italic;color:#B8860B;font-weight:200}
+.hero-map-lead{font-size:14px;line-height:1.7;color:var(--text2);max-width:480px;margin-bottom:32px}
+.hero-map-cta{display:flex;gap:10px;flex-wrap:wrap}
+.hero-map-btn{padding:14px 26px;font-family:var(--font-b);font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;border-radius:4px;cursor:pointer;text-decoration:none;border:none;transition:all .25s;display:inline-flex;align-items:center;gap:8px}
+.hero-map-btn.primary{background:#0A0A0A;color:#FFF}
+.hero-map-btn.primary:hover{background:#B8860B;transform:translateY(-1px);box-shadow:0 8px 20px rgba(184,134,11,.3)}
+.hero-map-btn.secondary{background:transparent;color:var(--text);border:1px solid var(--border2)}
+.hero-map-btn.secondary:hover{border-color:#B8860B;color:#B8860B;background:var(--surface)}
+.hero-map-right{display:flex;flex-direction:column;gap:14px}
+.hero-map-canvas{border:1px solid var(--border);border-radius:8px;overflow:hidden;background:#FAFAFA;box-shadow:0 12px 40px rgba(0,0,0,.08);height:480px;position:relative}
+#leafletMap{width:100%;height:100%}
+.hero-map-legend{display:flex;gap:18px;justify-content:flex-end;flex-wrap:wrap;padding:4px 8px}
+
+/* STATS BAR (fixed at bottom of hero) */
+.hero-statsbar{display:flex;align-items:stretch;background:#0A0A0A;color:#FFF;border-radius:8px;padding:18px 24px;margin:0 0 32px;gap:0;flex-wrap:nowrap;overflow-x:auto;position:relative;z-index:2;box-shadow:0 8px 30px rgba(0,0,0,.12)}
+.hero-statsbar::-webkit-scrollbar{height:3px}
+.hero-statsbar::-webkit-scrollbar-thumb{background:rgba(255,255,255,.15)}
+.hsb-item{display:flex;flex-direction:column;justify-content:center;flex:1;min-width:130px;padding:0 18px;text-align:center}
+.hsb-num{font-family:var(--font-d);font-size:32px;font-weight:300;line-height:1;color:#FFF;letter-spacing:-1px;margin-bottom:6px}
+.hsb-num.green{color:#22C55E}
+.hsb-num.amber{color:#F59E0B}
+.hsb-num.gold{color:#B8860B}
+.hsb-num.small{font-size:17px;font-weight:500;padding-top:8px}
+.hsb-label{font-size:8.5px;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.45);font-weight:600}
+.hsb-divider{width:1px;background:rgba(255,255,255,.10);flex-shrink:0}
+@media(max-width:980px){
+  .hero-map{padding:90px 20px 0;min-height:auto}
+  .hero-statsbar{padding:14px 14px;overflow-x:auto}
+  .hsb-item{min-width:120px;padding:0 14px}
+  .hsb-num{font-size:24px}
+  .hero-map-canvas{height:380px}
+  .hero-map-legend{justify-content:flex-start}
+}
 
 /* TICKER */
 .ticker{border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:13px 0;overflow:hidden;white-space:nowrap;position:relative;z-index:1}
@@ -216,8 +240,84 @@ main{padding:0 52px 100px;position:relative;z-index:1}
 
 
 
+
+/* BREVE LANÇAMENTO SECTION */
+.breve-section{padding:60px 52px 70px;background:var(--bg);color:var(--text);position:relative;overflow:hidden;z-index:1;border-bottom:1px solid var(--border)}
+.breve-section::before{content:'';position:absolute;top:-100px;right:-50px;width:600px;height:600px;border-radius:50%;background:radial-gradient(circle,rgba(184,134,11,.08) 0%,transparent 65%);pointer-events:none;animation:pulse 8s ease-in-out infinite}
+.breve-head{display:flex;align-items:baseline;justify-content:space-between;padding:0 0 28px;border-bottom:1px solid var(--border);margin-bottom:38px;position:relative;z-index:2;flex-wrap:wrap;gap:14px}
+.breve-eyebrow{font-size:9px;letter-spacing:4px;text-transform:uppercase;color:#B8860B;font-weight:700;margin-bottom:10px}
+.breve-title{font-family:var(--font-d);font-size:38px;font-weight:200;letter-spacing:-1px;color:var(--text)}
+.breve-title em{font-style:italic;font-weight:200;color:#B8860B}
+.breve-cnt{font-size:10px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:var(--muted);padding:6px 14px;border:1px solid var(--border);border-radius:999px}
+.breve-grid{display:grid;grid-template-columns:1.4fr 1fr;gap:28px;align-items:stretch;position:relative;z-index:2}
+@media(max-width:880px){.breve-grid{grid-template-columns:1fr}}
+.breve-card{background:var(--bg);border:1px solid var(--border);border-radius:8px;overflow:hidden;cursor:pointer;transition:all .35s;position:relative;display:flex;flex-direction:column;box-shadow:0 4px 20px rgba(0,0,0,.04)}
+.breve-card:hover{border-color:#B8860B;transform:translateY(-4px);box-shadow:0 20px 50px rgba(0,0,0,.10),0 0 0 1px rgba(184,134,11,.15)}
+.breve-card::before{content:'';position:absolute;top:0;left:0;width:3px;height:100%;background:#B8860B;z-index:2}
+.breve-img{height:340px;background:var(--surface);position:relative;overflow:hidden}
+.breve-img img{width:100%;height:100%;object-fit:cover;transition:transform .6s ease}
+.breve-card:hover .breve-img img{transform:scale(1.05)}
+.breve-img-ph{width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;background:linear-gradient(145deg,#F5F5F5,#EFEFEF)}
+.breve-img-ph .ph-i{font-size:48px;opacity:.2}
+.breve-img-ph .ph-t{font-size:9px;letter-spacing:2.5px;color:var(--faint);text-transform:uppercase;font-weight:500}
+.breve-badge{position:absolute;top:14px;left:14px;background:#B8860B;color:#FFF;font-size:8px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:5px 12px;border-radius:999px;display:flex;align-items:center;gap:5px;z-index:3;box-shadow:0 2px 8px rgba(184,134,11,.3)}
+.breve-badge::before{content:'';width:5px;height:5px;border-radius:50%;background:#FFF;animation:badgePulse 1.5s ease-in-out infinite}
+@keyframes badgePulse{0%,100%{opacity:1}50%{opacity:.3}}
+.breve-overlay-bottom{position:absolute;bottom:0;left:0;right:0;padding:60px 22px 18px;background:linear-gradient(to top,rgba(0,0,0,.85),transparent);z-index:2}
+.breve-loc{font-size:9px;color:rgba(255,255,255,.7);letter-spacing:2px;text-transform:uppercase;font-weight:600;margin-bottom:4px}
+.breve-loc-name{font-family:var(--font-d);font-size:28px;font-weight:300;color:#FFF;letter-spacing:-.5px;line-height:1.1}
+.breve-info{padding:28px 28px 24px;display:flex;flex-direction:column;justify-content:space-between;flex:1}
+.breve-tag-row{display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap}
+.breve-tag{font-size:8px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;padding:4px 10px;border-radius:3px;background:rgba(184,134,11,.10);color:#B8860B;border:1px solid rgba(184,134,11,.25)}
+.breve-name{font-family:var(--font-d);font-size:34px;font-weight:300;color:var(--text);letter-spacing:-1px;line-height:1.1;margin-bottom:8px}
+.breve-name em{font-style:italic;color:#B8860B}
+.breve-addr{font-size:11px;color:var(--muted);letter-spacing:.3px;margin-bottom:22px;display:flex;align-items:center;gap:6px}
+.breve-desc{font-size:12px;line-height:1.7;color:var(--text2);margin-bottom:24px}
+.breve-specs{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-bottom:22px}
+.breve-spec{background:var(--surface);border:1px solid var(--border);border-radius:4px;padding:12px 14px}
+.breve-spec-l{font-size:7.5px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);font-weight:600;margin-bottom:5px}
+.breve-spec-v{font-size:13px;color:var(--text);font-weight:600;letter-spacing:.2px}
+.breve-cta{display:flex;gap:8px;margin-top:auto}
+.breve-btn{flex:1;padding:14px 18px;font-family:var(--font-b);font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;border-radius:4px;cursor:pointer;text-decoration:none;display:flex;align-items:center;justify-content:center;gap:6px;transition:all .25s;border:none}
+.breve-btn-p{background:#B8860B;color:#FFF}
+.breve-btn-p:hover{background:#9A6F00;transform:translateY(-1px);box-shadow:0 6px 16px rgba(184,134,11,.3)}
+.breve-btn-s{background:#FFF;color:var(--text);border:1px solid var(--border2)}
+.breve-btn-s:hover{border-color:var(--text);background:var(--surface);transform:translateY(-1px)}
+
+
+/* TABELÃO COLLAPSIBLE */
+.tab-section{padding:60px 52px 0;border-top:0!important}
+.tab-section:has(.tab-content.open){padding-bottom:80px}
+.tab-collapse-trigger{width:100%;background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:24px 32px;display:flex;align-items:center;justify-content:space-between;gap:24px;cursor:pointer;transition:all .3s;text-align:left;font-family:inherit;position:relative;overflow:hidden}
+.tab-collapse-trigger::before{content:'';position:absolute;top:0;left:0;width:4px;height:100%;background:#B8860B}
+.tab-collapse-trigger:hover{border-color:#B8860B;box-shadow:0 8px 24px rgba(184,134,11,.10);transform:translateY(-1px)}
+.tab-collapse-trigger[aria-expanded="true"]{border-bottom-left-radius:0;border-bottom-right-radius:0;border-bottom-color:transparent}
+.tab-collapse-left{flex:1;min-width:0}
+.tab-collapse-sub{font-size:10px;letter-spacing:2.5px;text-transform:uppercase;color:#B8860B;font-weight:700;margin-bottom:8px}
+.tab-collapse-title{font-family:var(--font-d);font-size:30px;font-weight:300;letter-spacing:-.8px;color:var(--text);margin-bottom:6px;line-height:1.1}
+.tab-collapse-title em{font-style:italic;font-weight:200;color:#B8860B}
+.tab-collapse-meta{font-size:11px;color:var(--muted);letter-spacing:.3px}
+.tab-collapse-meta span{font-weight:700;color:var(--text)}
+.tab-collapse-right{display:flex;align-items:center;gap:14px;flex-shrink:0}
+.tab-collapse-state{font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted);transition:color .2s}
+.tab-collapse-trigger:hover .tab-collapse-state{color:#B8860B}
+.tab-collapse-trigger[aria-expanded="true"] .tab-collapse-state{color:#B8860B}
+.tab-collapse-arrow{font-size:22px;color:var(--text);transition:transform .35s cubic-bezier(.22,1,.36,1);line-height:1;display:inline-block;font-weight:300}
+.tab-collapse-trigger[aria-expanded="true"] .tab-collapse-arrow{transform:rotate(180deg)}
+.tab-content{display:none;border:1px solid var(--border);border-top:0;border-radius:0 0 6px 6px;animation:tabSlide .4s ease}
+.tab-content.open{display:block;padding-top:24px}
+@keyframes tabSlide{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:translateY(0)}}
+.tab-content .tab-meta,.tab-content .tab-actions{padding-left:32px;padding-right:32px}
+.tab-content .tab-wrap{margin:0 32px 32px;box-shadow:none;border-radius:6px}
+@media(max-width:980px){
+  .tab-section{padding:50px 20px 0}
+  .tab-collapse-trigger{padding:18px 22px;gap:14px}
+  .tab-collapse-title{font-size:22px}
+  .tab-content .tab-meta,.tab-content .tab-actions{padding-left:20px;padding-right:20px}
+  .tab-content .tab-wrap{margin:0 20px 20px}
+}
 /* TABELÃO SECTION */
-.tab-section{padding:60px 52px 80px;background:var(--bg);border-top:1px solid var(--border);position:relative;z-index:1}
+
 .tab-head{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:8px;flex-wrap:wrap;gap:14px}
 .tab-title{font-family:var(--font-d);font-size:32px;font-weight:300;letter-spacing:-.8px;color:var(--text)}
 .tab-title em{font-style:italic;font-weight:200;color:#B8860B}
@@ -345,6 +445,36 @@ main{padding:0 52px 100px;position:relative;z-index:1}
 
 
 
+
+/* CONTACT BAR (final da página) */
+.cbar{background:#0A0A0A;color:#FFF;padding:30px 52px;position:relative;z-index:1;border-top:1px solid var(--border)}
+.cbar::before{content:'';position:absolute;top:0;left:0;width:100%;height:3px;background:#B8860B}
+.cbar-inner{max-width:1400px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap}
+.cbar-left{display:flex;align-items:center;gap:24px;flex-wrap:wrap}
+.cbar-eyebrow{font-size:9px;letter-spacing:3px;text-transform:uppercase;color:#B8860B;font-weight:700;margin-bottom:8px}
+.cbar-title{font-family:var(--font-d);font-size:24px;font-weight:300;color:#FFF;letter-spacing:-.5px;line-height:1.1}
+.cbar-title em{font-style:italic;color:#B8860B;font-weight:200}
+.cbar-info{display:flex;align-items:center;gap:22px;flex-wrap:wrap}
+.cbar-info-item{display:flex;flex-direction:column;gap:3px}
+.cbar-info-label{font-size:8px;letter-spacing:2.5px;text-transform:uppercase;color:rgba(255,255,255,.45);font-weight:600}
+.cbar-info-val{font-size:13px;color:#FFF;font-weight:500;letter-spacing:.2px;text-decoration:none;display:flex;align-items:center;gap:6px;transition:color .2s}
+.cbar-info-val:hover{color:#B8860B}
+.cbar-divider{width:1px;height:34px;background:rgba(255,255,255,.10)}
+.cbar-actions{display:flex;gap:8px;flex-wrap:wrap}
+.cbar-btn{padding:13px 22px;font-family:var(--font-b);font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;border-radius:4px;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:7px;transition:all .25s;border:none}
+.cbar-btn-wa{background:#25D366;color:#FFF}
+.cbar-btn-wa:hover{background:#1FB855;transform:translateY(-1px);box-shadow:0 6px 16px rgba(37,211,102,.3)}
+.cbar-btn-mail{background:transparent;color:#FFF;border:1px solid rgba(255,255,255,.2)}
+.cbar-btn-mail:hover{border-color:#B8860B;color:#B8860B;background:rgba(184,134,11,.1)}
+@media(max-width:780px){
+  .cbar{padding:24px 22px}
+  .cbar-inner{flex-direction:column;align-items:flex-start;gap:20px}
+  .cbar-divider{display:none}
+  .cbar-info{gap:14px}
+  .cbar-actions{width:100%}
+  .cbar-btn{flex:1;justify-content:center}
+}
+
 /* CONTACT FAB (Floating Action Button) */
 .contact-fab{position:fixed;bottom:28px;right:28px;width:60px;height:60px;border-radius:50%;background:linear-gradient(135deg,#0A0A0A 0%,#1A1A1A 100%);color:#FFF;border:none;cursor:pointer;z-index:150;box-shadow:0 8px 24px rgba(0,0,0,.25),0 0 0 0 rgba(184,134,11,.5);display:flex;align-items:center;justify-content:center;font-size:24px;transition:all .3s ease;animation:fabPulse 2.5s ease-in-out infinite}
 .contact-fab:hover{transform:scale(1.08);box-shadow:0 12px 32px rgba(0,0,0,.35),0 0 0 8px rgba(184,134,11,.15)}
@@ -415,155 +545,163 @@ footer{border-top:1px solid var(--border);padding:28px 52px;display:flex;align-i
 <div id="cur-ring"></div>
 
 <nav>
-  <a href="#" style="display:flex;align-items:center;text-decoration:none">&nbsp;</a>
-  <div class="filters">
-    <button class="f-btn active" data-f="all">Todas</button>
-    <button class="f-btn" data-f="pronto">Pronto</button>
-    <button class="f-btn" data-f="obras">Em Obras</button>
-  </div>
-  <div style="display:flex;align-items:center;gap:18px">
-    <a href="#tabelao" style="font-size:10px;font-weight:600;color:var(--text);letter-spacing:2.5px;text-transform:uppercase;text-decoration:none;transition:color .2s" onmouseover="this.style.color='#B8860B'" onmouseout="this.style.color='var(--text)'">Tabelão</a>
-    <a href="#portfolioMap" style="font-size:10px;font-weight:600;color:var(--text);letter-spacing:2.5px;text-transform:uppercase;text-decoration:none;transition:color .2s" onmouseover="this.style.color='#B8860B'" onmouseout="this.style.color='var(--text)'">Mapa</a>
-    <div class="nav-right">Portfólio</div>
-  </div>
+  <a href="https://www.unacorp.com.br" target="_blank" style="display:flex;align-items:center;text-decoration:none">
+    <img src="https://lh3.googleusercontent.com/d/11dcTXDrI3BLvly948rPn6_VHCHwbf7FO=w400" alt="UNA Corp" style="height:38px;width:auto;object-fit:contain;transition:transform .25s,opacity .25s" onmouseover="this.style.transform='scale(1.05)';this.style.opacity='.85'" onmouseout="this.style.transform='scale(1)';this.style.opacity='1'">
+  </a>
+  <div></div>
 </nav>
 
-<section class="hero">
-  <div class="hero-bg">
-    <img src="https://images.unsplash.com/photo-1486325212027-8081e485255e?w=1800&q=80" alt="hero">
+<!-- HERO + MAPA INTEGRADO -->
+<section class="hero-map" id="heroMap">
+  <div class="hero-map-content">
+    <div class="hero-map-left">
+      <div class="hero-map-eyebrow">▸ Oportunidades 2026 · UNA Corp</div>
+      <h1 class="hero-map-title">Em <em>Estoque</em></h1>
+      <p class="hero-map-lead">Portfólio exclusivo de oportunidades imobiliárias em São Paulo. Explore os empreendimentos disponíveis em tempo real — clique em qualquer marcador no mapa para ver detalhes, ou navegue pela lista completa abaixo.</p>
+      <div class="hero-map-cta">
+        <a href="#oportunidades" class="hero-map-btn primary">Ver Oportunidades →</a>
+        <button onclick="openContactModal()" class="hero-map-btn secondary">Fale Conosco</button>
+      </div>
+    </div>
+    <div class="hero-map-right">
+      <div class="hero-map-canvas">
+        <div id="leafletMap"></div>
+      </div>
+      <div class="hero-map-legend">
+        <div class="pmap-leg"><span class="pmap-leg-dot" style="background:#16A34A"></span>Pronto para Morar</div>
+        <div class="pmap-leg"><span class="pmap-leg-dot" style="background:#D97706"></span>Em Obras</div>
+        <div class="pmap-leg"><span class="pmap-leg-dot" style="background:#B8860B"></span>Breve Lançamento</div>
+      </div>
+    </div>
   </div>
-  <div class="hero-glow"></div>
-  <div class="hero-num">10</div>
-  <p class="hero-eyebrow">Oportunidades 2026</p>
-  <h1 class="hero-title">Em<br><em>Estoque</em></h1>
-  <div class="hero-stats">
-    <div class="stat"><div class="stat-n">10</div><div class="stat-l">Unidades</div></div>
-    <div class="stat"><div class="stat-n" style="color:var(--green)">5</div><div class="stat-l"><span class="stat-dot" style="background:var(--green)"></span>Pronto</div></div>
-    <div class="stat"><div class="stat-n" style="color:var(--amber)">4</div><div class="stat-l"><span class="stat-dot" style="background:var(--amber)"></span>Em Obras</div></div>
-    <div class="stat"><div class="stat-n" style="font-size:28px;color:var(--muted);padding-top:16px">R$260K — 3,3M</div><div class="stat-l">Faixa de Preço</div></div>
+
+  <!-- Stats bar fixed at bottom -->
+  <div class="hero-statsbar">
+    <div class="hsb-item">
+      <div class="hsb-num">10</div>
+      <div class="hsb-label">Unidades Totais</div>
+    </div>
+    <div class="hsb-divider"></div>
+    <div class="hsb-item">
+      <div class="hsb-num green">5</div>
+      <div class="hsb-label">Pronto para Morar</div>
+    </div>
+    <div class="hsb-divider"></div>
+    <div class="hsb-item">
+      <div class="hsb-num amber">4</div>
+      <div class="hsb-label">Em Obras</div>
+    </div>
+    <div class="hsb-divider"></div>
+    <div class="hsb-item">
+      <div class="hsb-num gold">1</div>
+      <div class="hsb-label">Breve Lançamento</div>
+    </div>
+    <div class="hsb-divider"></div>
+    <div class="hsb-item">
+      <div class="hsb-num small">R$ 260K — 3,3M</div>
+      <div class="hsb-label">Faixa de Preço</div>
+    </div>
+    <div class="hsb-divider"></div>
+    <div class="hsb-item">
+      <div class="hsb-num small">4</div>
+      <div class="hsb-label">Bairros Premium</div>
+    </div>
   </div>
-  <div class="hero-scroll"><div class="scroll-line"></div>Scroll para explorar</div>
 </section>
 
 <div class="ticker"><div class="ticker-inner" id="ticker"></div></div>
 
-<main>
+
+
+<!-- TABELÃO SECTION (collapsible) -->
+<section class="tab-section" id="tabelao">
+  <button class="tab-collapse-trigger" id="tabCollapse" onclick="toggleTabelao()" aria-expanded="false">
+    <div class="tab-collapse-left">
+      <div class="tab-collapse-sub">Listagem UNA Corp</div>
+      <h2 class="tab-collapse-title"><em>Tabelão</em> · Abril 2026</h2>
+      <div class="tab-collapse-meta"><span id="tabCnt">9</span> oportunidades · clique para visualizar a tabela completa</div>
+    </div>
+    <div class="tab-collapse-right">
+      <span class="tab-collapse-state" id="tabState">Expandir</span>
+      <span class="tab-collapse-arrow" id="tabArrow">⌄</span>
+    </div>
+  </button>
+
+  <div class="tab-content" id="tabContent">
+    <div class="tab-meta">
+      Visão completa do portfólio com <strong>todos os empreendimentos disponíveis</strong>. Clique em qualquer linha para ver detalhes ou no botão <strong>LINK</strong> para acessar o material.
+    </div>
+
+    <div class="tab-actions">
+      <button class="tab-btn active" data-filter="all">Todos</button>
+      <button class="tab-btn" data-filter="breve">Breve Lançamento</button>
+      <button class="tab-btn" data-filter="pronto">Pronto para Morar</button>
+      <button class="tab-btn" data-filter="obras">Em Obras</button>
+    </div>
+
+    <div class="tab-wrap">
+      <table class="tab-table" id="tabelaoTable">
+        <thead>
+          <tr>
+            <th>Empreendimento</th>
+            <th>Região</th>
+            <th>Estágio</th>
+            <th>Endereço</th>
+            <th>Unidade</th>
+            <th class="center">Tipologia</th>
+            <th class="center">Metragem</th>
+            <th class="center">Dormitório</th>
+            <th>Vaga de Garagem</th>
+            <th class="right">Valor</th>
+            <th class="center">Material</th>
+          </tr>
+        </thead>
+        <tbody id="tabelaoBody"></tbody>
+      </table>
+      <div class="tab-mobile-hint">⟵ Arraste horizontalmente para ver mais ⟶</div>
+
+      <div class="tab-footer" style="justify-content:center">
+        <div class="tab-foot-comissao">
+          <div>
+            <div class="tab-foot-com-label">Comissão</div>
+            <div class="tab-foot-com-val">3%<span>PF</span>·<span>4%</span>PJ</div>
+          </div>
+        </div>
+      </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BREVE LANÇAMENTO -->
+<section class="breve-section" id="breveLancamento">
+  <div class="breve-head">
+    <div>
+      <div class="breve-eyebrow">▸ Breve Lançamento</div>
+      <h2 class="breve-title">Em <em>Breve</em></h2>
+    </div>
+    <div class="breve-cnt" id="breveCnt">1 Empreendimento</div>
+  </div>
+  <div class="breve-grid" id="breveGrid"></div>
+</section>
+
+<main id="oportunidades">
   <div class="section-head">
     <h2 class="section-title">Oportunidades</h2>
-    <span class="section-cnt" id="cnt">9 imóveis</span>
+    <div style="display:flex;align-items:center;gap:18px;flex-wrap:wrap">
+      <div class="filters">
+        <button class="f-btn active" data-f="all">Todas</button>
+        <button class="f-btn" data-f="pronto">Pronto</button>
+        <button class="f-btn" data-f="obras">Em Obras</button>
+      </div>
+      <span class="section-cnt" id="cnt">9 imóveis</span>
+    </div>
   </div>
   <div class="grid" id="grid">
     <div class="no-res" id="noRes">Nenhum imóvel encontrado.</div>
   </div>
 </main>
-
-<section class="pmap-section" id="portfolioMap">
-  <div class="pmap-head">
-    <h2 class="pmap-title">Distribuição <em>Geográfica</em></h2>
-    <div class="pmap-toolbar">
-      <div class="pmap-legend">
-        <div class="pmap-leg"><span class="pmap-leg-dot" style="background:#16A34A"></span>Pronto para Morar</div>
-        <div class="pmap-leg"><span class="pmap-leg-dot" style="background:#D97706"></span>Em Obras</div>
-      </div>
-    </div>
-  </div>
-  <div class="pmap-sub">Onde estão nossas oportunidades em São Paulo</div>
-
-  <div class="pmap-wrap">
-    <div class="pmap-canvas">
-      <div id="leafletMap"></div>
-    </div>
-    <div class="pmap-side">
-      <div class="pmap-stats">
-        <div class="pmap-stat">
-          <div class="pmap-stat-num" id="pmStatTotal">9</div>
-          <div class="pmap-stat-l">Unidades</div>
-        </div>
-        <div class="pmap-stat">
-          <div class="pmap-stat-num green" id="pmStatPronto">5</div>
-          <div class="pmap-stat-l">Pronto</div>
-        </div>
-        <div class="pmap-stat">
-          <div class="pmap-stat-num amber" id="pmStatObras">4</div>
-          <div class="pmap-stat-l">Em Obras</div>
-        </div>
-      </div>
-      <div class="pmap-search">
-        <span class="pmap-search-icon">🔍</span>
-        <input type="text" id="pmapSearch" placeholder="Buscar por bairro ou empreendimento...">
-      </div>
-      <div class="pmap-list" id="pmapList"></div>
-    </div>
-  </div>
-</section>
-
-
-<!-- TABELÃO SECTION -->
-<section class="tab-section" id="tabelao">
-  <div class="tab-head">
-    <div>
-      <div class="tab-sub">Listagem UNA Corp</div>
-      <h2 class="tab-title"><em>Tabelão</em> · Abril 2026</h2>
-    </div>
-  </div>
-  <div class="tab-meta">
-    Visão completa do portfólio com <strong>todos os empreendimentos disponíveis</strong>. Clique em qualquer linha para ver detalhes ou no botão <strong>LINK</strong> para acessar o material.
-  </div>
-
-  <div class="tab-actions">
-    <button class="tab-btn active" data-filter="all">Todos</button>
-    <button class="tab-btn" data-filter="breve">Breve Lançamento</button>
-    <button class="tab-btn" data-filter="pronto">Pronto para Morar</button>
-    <button class="tab-btn" data-filter="obras">Em Obras</button>
-  </div>
-
-  <div class="tab-wrap">
-    <table class="tab-table" id="tabelaoTable">
-      <thead>
-        <tr>
-          <th>Empreendimento</th>
-          <th>Região</th>
-          <th>Estágio</th>
-          <th>Endereço</th>
-          <th>Unidade</th>
-          <th class="center">Tipologia</th>
-          <th class="center">Metragem</th>
-          <th class="center">Dormitório</th>
-          <th>Vaga de Garagem</th>
-          <th class="right">Valor</th>
-          <th class="center">Material</th>
-        </tr>
-      </thead>
-      <tbody id="tabelaoBody"></tbody>
-    </table>
-    <div class="tab-mobile-hint">⟵ Arraste horizontalmente para ver mais ⟶</div>
-
-    <div class="tab-footer">
-      <div class="tab-foot-left">
-        <div>
-          <div class="tab-foot-label">Responsável</div>
-          <div class="tab-foot-val">Lucas</div>
-        </div>
-        <div class="tab-foot-divider"></div>
-        <div>
-          <div class="tab-foot-label">WhatsApp</div>
-          <div class="tab-foot-val"><a href="https://wa.me/5511977481984" target="_blank">(11) 97748-1984</a></div>
-        </div>
-        <div class="tab-foot-divider"></div>
-        <div>
-          <div class="tab-foot-label">E-mail</div>
-          <div class="tab-foot-val"><a href="mailto:parcerias@unacorp.com.br">parcerias@unacorp.com.br</a></div>
-        </div>
-      </div>
-      <div class="tab-foot-comissao">
-        <div>
-          <div class="tab-foot-com-label">Comissão</div>
-          <div class="tab-foot-com-val">3%<span>PF</span>·<span>4%</span>PJ</div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
 
 <!-- CONTACT FAB BUTTON -->
 <button class="contact-fab" onclick="openContactModal()" aria-label="Entrar em contato">
@@ -618,6 +756,38 @@ footer{border-top:1px solid var(--border);padding:28px 52px;display:flex;align-i
     </div>
   </div>
 </div>
+
+<!-- CONTACT BAR (responsavel & contato) -->
+<section class="cbar" id="contactBar">
+  <div class="cbar-inner">
+    <div class="cbar-left">
+      <div>
+        <div class="cbar-eyebrow">▸ Mais Informações</div>
+        <div class="cbar-title">Fale com a <em>UNA Corp</em></div>
+      </div>
+    </div>
+    <div class="cbar-info">
+      <div class="cbar-info-item">
+        <span class="cbar-info-label">Responsável</span>
+        <span class="cbar-info-val">Lucas</span>
+      </div>
+      <div class="cbar-divider"></div>
+      <div class="cbar-info-item">
+        <span class="cbar-info-label">WhatsApp</span>
+        <a href="https://wa.me/5511977481984" target="_blank" class="cbar-info-val">📱 (11) 97748-1984</a>
+      </div>
+      <div class="cbar-divider"></div>
+      <div class="cbar-info-item">
+        <span class="cbar-info-label">E-mail</span>
+        <a href="mailto:parcerias@unacorp.com.br" class="cbar-info-val">✉ parcerias@unacorp.com.br</a>
+      </div>
+    </div>
+    <div class="cbar-actions">
+      <a href="https://wa.me/5511977481984?text=Ol%C3%A1%20Lucas%2C%20vi%20o%20portf%C3%B3lio%20de%20oportunidades%20e%20gostaria%20de%20mais%20informa%C3%A7%C3%B5es." target="_blank" class="cbar-btn cbar-btn-wa">💬 WhatsApp</a>
+      <a href="mailto:parcerias@unacorp.com.br?subject=Portf%C3%B3lio%20de%20Oportunidades%20UNA%20Corp" class="cbar-btn cbar-btn-mail">✉ E-mail</a>
+    </div>
+  </div>
+</section>
 
 <footer>
   <a href="https://www.unacorp.com.br" target="_blank" style="font-size:11px;color:var(--muted);text-decoration:none;letter-spacing:.5px;transition:color .2s" onmouseover="this.style.color='var(--text)'" onmouseout="this.style.color='var(--muted)'">www.unacorp.com.br</a>
@@ -906,7 +1076,11 @@ const DATA = [
 function render(f) {
   const grid = document.getElementById('grid');
   grid.querySelectorAll('.card').forEach(c=>c.remove());
-  const items = DATA.filter(d=>f==='all'||d.status===f);
+  // Exclude "breve" items — they appear on the BREVE LANÇAMENTO section
+  const items = DATA.filter(d=>{
+    if(d.status==='breve') return false;
+    return f==='all'||d.status===f;
+  });
   document.getElementById('cnt').textContent = items.length+(items.length!==1?' imóveis':' imóvel');
   items.forEach((d,i)=>{
     const idx = DATA.indexOf(d);
@@ -1144,8 +1318,16 @@ document.querySelectorAll('a,button,.card,.m-tab,.photo-thumb,.p-tab,.poi').forE
 document.getElementById('dt').textContent=new Date().toLocaleDateString('pt-BR');
 render('all');
 
-/* ──────────── PORTFOLIO MAP (LEAFLET) ──────────── */
-(function buildPortfolioMap(){
+/* ──────────── HERO MAP (LEAFLET) ──────────── */
+function initHeroMap(){
+  const mapEl = document.getElementById('leafletMap');
+  if(!mapEl) return;
+  if(typeof L === 'undefined'){
+    // Leaflet not loaded yet — try again
+    setTimeout(initHeroMap, 200);
+    return;
+  }
+
   // Coordinates of each property
   const COORDS = {
     'Avenida Vila Ema, 850, Vila Prudente, São Paulo, SP': [-23.5800,-46.5680],
@@ -1153,7 +1335,8 @@ render('all');
     'Rua Barão do Triunfo, 551, Campo Belo, São Paulo, SP':[-23.6220,-46.6640],
     'Rua José Zappi, 363, Vila Prudente, São Paulo, SP':   [-23.5830,-46.5720],
     'Rua Cavour, 439, Vila Prudente, São Paulo, SP':       [-23.5810,-46.5700],
-    'Rua Michigan, 962, Brooklin, São Paulo, SP':          [-23.6148,-46.6967]
+    'Rua Michigan, 962, Brooklin, São Paulo, SP':          [-23.6148,-46.6967],
+    'Rua Capitão Guedes Portilho, 26, Itaim Bibi, São Paulo, SP': [-23.5818,-46.6810]
   };
 
   // Group properties by address (multiple units in same building)
@@ -1164,45 +1347,43 @@ render('all');
   });
   const groupList = Object.values(groups);
 
-  // Stats
-  document.getElementById('pmStatTotal').textContent = DATA.length;
-  document.getElementById('pmStatPronto').textContent = DATA.filter(d=>d.status==='pronto').length;
-  document.getElementById('pmStatObras').textContent = DATA.filter(d=>d.status==='obras').length;
-
   // ── Init Leaflet map ──
-  // Center on São Paulo, around midpoint of all properties
-  const map = L.map('leafletMap', {
-    center: [-23.5950, -46.6320],
-    zoom: 12,
-    scrollWheelZoom: false,
-    zoomControl: true,
-    attributionControl: true
-  });
+  let map;
+  try {
+    map = L.map('leafletMap', {
+      center: [-23.5950, -46.6320],
+      zoom: 12,
+      scrollWheelZoom: false,
+      zoomControl: true,
+      attributionControl: false
+    });
+  } catch(e) {
+    console.error('Map init failed:', e);
+    return;
+  }
 
-  // Use CartoDB Positron — clean, minimal, light gray base
-  L.tileLayer('https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}{r}.png', {
-    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/attributions">CARTO</a>',
+  // CartoDB Positron — clean light gray
+  L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+    attribution: '&copy; OSM &copy; CARTO',
     subdomains: 'abcd',
     maxZoom: 19
   }).addTo(map);
-  // Labels overlay
-  L.tileLayer('https://{s}.basemaps.cartocdn.com/light_only_labels/{z}/{x}/{y}{r}.png', {
-    subdomains: 'abcd',
-    maxZoom: 19,
-    pane: 'shadowPane'
-  }).addTo(map);
 
-  // ── Create custom markers ──
+  // Create custom markers
   const markers = {};
-
   groupList.forEach((g, i) => {
     const c = COORDS[g.addr];
     if(!c) return;
     const status = g.items[0].status;
     const count = g.items.length;
 
-    const html = `<div class="lmark ${status}" data-group="${i}">
-      <div class="lmark-pin"><span class="lmark-num">${count}</span></div>
+    let color;
+    if(status === 'pronto') color = '#16A34A';
+    else if(status === 'obras') color = '#D97706';
+    else color = '#B8860B'; // breve
+
+    const html = `<div class="lmark ${status}">
+      <div class="lmark-pin" style="background:${color};border:2px solid #fff"><span class="lmark-num">${count}</span></div>
     </div>`;
 
     const icon = L.divIcon({
@@ -1218,7 +1399,11 @@ render('all');
 
     // Build popup HTML
     const first = g.items[0];
-    const stLbl = status==='pronto' ? 'Pronto para Morar' : `Em Obras · ${first.entrega}`;
+    let stLbl;
+    if(status === 'pronto') stLbl = 'Pronto para Morar';
+    else if(status === 'obras') stLbl = `Em Obras · ${first.entrega}`;
+    else stLbl = 'Breve Lançamento';
+
     const popupHTML = count > 1
       ? `<div class="pop-card">
           <span class="pop-status ${status}">${stLbl}</span>
@@ -1238,7 +1423,7 @@ render('all');
           </div>
           <div class="pop-price-row">
             <span class="pop-price-l">Valor</span>
-            <span class="pop-price">R$ ${first.valor}</span>
+            <span class="pop-price">${first.valor === 'Sob Consulta' ? first.valor : 'R$ ' + first.valor}</span>
           </div>
           <button class="pop-btn" onclick="window.pmOpen(${first.idx})">Ver Detalhes →</button>
         </div>`;
@@ -1246,65 +1431,101 @@ render('all');
     marker.bindPopup(popupHTML, {maxWidth:260, minWidth:240, closeButton:true});
   });
 
-  // Fit map bounds to all markers
-  const allLatLngs = groupList.map(g=>COORDS[g.addr]).filter(Boolean);
+  // Fit map to all markers
+  const allLatLngs = groupList.map(g => COORDS[g.addr]).filter(Boolean);
   if(allLatLngs.length){
     map.fitBounds(allLatLngs, {padding:[40,40]});
   }
 
-  // ── Side list ──
-  const listEl = document.getElementById('pmapList');
-  function renderList(filter=''){
-    const flt = filter.toLowerCase().trim();
-    let html = '';
-    groupList.forEach((g, i) => {
-      const first = g.items[0];
-      const count = g.items.length;
-      const match = !flt || first.nome.toLowerCase().includes(flt) || first.bairro.toLowerCase().includes(flt) || first.endereco.toLowerCase().includes(flt);
-      if(!match) return;
-      const meta = count > 1 ? `${count} unid.` : `R$ ${first.valor.split(',')[0]}`;
-      html += `<div class="pmap-item ${first.status}" data-group="${i}" onclick="window.pmFocus(${i})">
-        <div class="pmap-pin">${count}</div>
-        <div class="pmap-item-info">
-          <div class="pmap-item-name">${first.nome}</div>
-          <div class="pmap-item-addr">${first.bairro} · ${first.endereco}</div>
-        </div>
-        <div class="pmap-item-meta">${meta}</div>
-      </div>`;
-    });
-    listEl.innerHTML = html || '<div style="font-size:11px;color:var(--muted);text-align:center;padding:30px 12px;">Nenhum resultado.</div>';
-  }
-  renderList();
-
-  // ── Search ──
-  document.getElementById('pmapSearch').addEventListener('input', e => {
-    renderList(e.target.value);
-  });
-
-  // ── Interaction: click on list pans to marker and opens popup ──
-  window.pmFocus = function(idx){
-    const g = groupList[idx];
-    if(!g) return;
-    const c = COORDS[g.addr];
-    if(!c) return;
-    document.querySelectorAll('.pmap-item').forEach(el=>el.classList.toggle('active', el.dataset.group==idx));
-    map.setView(c, 15, {animate:true});
-    setTimeout(()=>{markers[idx]&&markers[idx].openPopup();}, 350);
-  };
-
-  // ── pmOpen — used by popup buttons ──
+  // pmOpen — used by popup buttons
   window.pmOpen = function(idx){
     openModal(idx);
     map.closePopup();
   };
 
-  // ── Re-enable scroll wheel zoom on click ──
+  // Re-enable scroll zoom on click
   map.on('click', () => map.scrollWheelZoom.enable());
   map.on('mouseout', () => map.scrollWheelZoom.disable());
-})();
+
+  // Invalidate size after a brief delay (helps with grid containers)
+  setTimeout(() => map.invalidateSize(), 300);
+}
+
+// Run after DOM is ready
+if(document.readyState === 'loading'){
+  document.addEventListener('DOMContentLoaded', initHeroMap);
+} else {
+  initHeroMap();
+}
 
 
 /* CONTACT MODAL */
+
+
+/* ──────────── BREVE LANÇAMENTO ──────────── */
+function renderBreve(){
+  const grid = document.getElementById('breveGrid');
+  if(!grid) return;
+  const items = DATA.filter(d=>d.status==='breve');
+  const cnt = document.getElementById('breveCnt');
+  if(cnt) cnt.textContent = items.length + (items.length===1?' Empreendimento':' Empreendimentos');
+
+  if(!items.length){
+    grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:60px;color:var(--muted);font-size:13px">Nenhum lançamento próximo no momento.</div>';
+    return;
+  }
+
+  let html = '';
+  items.forEach(d=>{
+    const idx = DATA.indexOf(d);
+    const thumb = d.fotos && d.fotos.length
+      ? `<img src="${d.fotos[0]}" alt="${d.nome}" loading="lazy">`
+      : `<div class="breve-img-ph"><div class="ph-i">🏙</div><div class="ph-t">Imagem em breve</div></div>`;
+
+    html += `
+      <div class="breve-card" onclick="openModal(${idx})" role="button" tabindex="0">
+        <div class="breve-img">
+          ${thumb}
+          <div class="breve-badge">Breve Lançamento</div>
+          <div class="breve-overlay-bottom">
+            <div class="breve-loc">📍 ${d.bairro}</div>
+            <div class="breve-loc-name">${d.nome}</div>
+          </div>
+        </div>
+      </div>
+      <div class="breve-card" onclick="openModal(${idx})" role="button" tabindex="0">
+        <div class="breve-info">
+          <div>
+            <div class="breve-tag-row">
+              <span class="breve-tag">Pré-lançamento</span>
+              <span class="breve-tag">${d.bairro}</span>
+            </div>
+            <h3 class="breve-name">Lançamento <em>Exclusivo</em></h3>
+            <div class="breve-addr">📍 ${d.endereco}</div>
+            <p class="breve-desc">Empreendimento exclusivo em região nobre de São Paulo. Pré-comercialização iniciada — entre em contato para receber materiais, condições especiais de lançamento e tabela de valores em primeira mão.</p>
+            <div class="breve-specs">
+              <div class="breve-spec"><div class="breve-spec-l">Tipo</div><div class="breve-spec-v">Torre Única</div></div>
+              <div class="breve-spec"><div class="breve-spec-l">Região</div><div class="breve-spec-v">${d.bairro}</div></div>
+              <div class="breve-spec"><div class="breve-spec-l">Status</div><div class="breve-spec-v">Pré-lançamento</div></div>
+              <div class="breve-spec"><div class="breve-spec-l">Valores</div><div class="breve-spec-v">Sob Consulta</div></div>
+            </div>
+          </div>
+          <div class="breve-cta">
+            <button class="breve-btn breve-btn-p" onclick="event.stopPropagation();openContactModal()">📞 Solicitar Material</button>
+            <button class="breve-btn breve-btn-s" onclick="event.stopPropagation();openModal(${idx})">Detalhes →</button>
+          </div>
+        </div>
+      </div>`;
+  });
+
+  grid.innerHTML = html;
+}
+// Run after DOM is ready
+if(document.readyState === 'loading'){
+  document.addEventListener('DOMContentLoaded', renderBreve);
+} else {
+  renderBreve();
+}
 
 /* ──────────── TABELÃO ──────────── */
 (function buildTabelao(){
@@ -1363,6 +1584,30 @@ render('all');
       renderTabela(btn.dataset.filter);
     });
   });
+})();
+
+
+/* COLLAPSIBLE TABELÃO */
+window.toggleTabelao = function(){
+  const trigger = document.getElementById('tabCollapse');
+  const content = document.getElementById('tabContent');
+  const state = document.getElementById('tabState');
+  if(!trigger || !content) return;
+  const expanded = trigger.getAttribute('aria-expanded') === 'true';
+  if(expanded){
+    trigger.setAttribute('aria-expanded','false');
+    content.classList.remove('open');
+    if(state) state.textContent = 'Expandir';
+  } else {
+    trigger.setAttribute('aria-expanded','true');
+    content.classList.add('open');
+    if(state) state.textContent = 'Recolher';
+  }
+};
+// Update the count
+(function updateTabCnt(){
+  const cntEl = document.getElementById('tabCnt');
+  if(cntEl) cntEl.textContent = DATA.length;
 })();
 
 window.openContactModal = function(){
