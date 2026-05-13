@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>UNA Corp · Oportunidades 2026</title>
+<title>UNACORP · Oportunidades 2026</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
@@ -55,6 +55,10 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:cen
 .hero-map-title em{font-style:italic;color:#B8860B;font-weight:200}
 .hero-map-lead{font-size:14px;line-height:1.7;color:var(--text2);max-width:480px;margin-bottom:32px}
 .hero-map-cta{display:flex;gap:10px;flex-wrap:wrap}
+.hero-map-meta{display:flex;gap:18px;flex-wrap:wrap;margin-bottom:28px;padding:14px 18px;background:var(--surface);border:1px solid var(--border);border-radius:6px}
+.hmm-item{display:flex;align-items:center;gap:7px;font-size:10px;font-weight:600;color:var(--text);letter-spacing:.5px;text-transform:uppercase}
+.hmm-dot{width:8px;height:8px;border-radius:50%;display:inline-block}
+.hero-map-hint{font-size:10px;color:var(--muted);letter-spacing:.5px;text-align:center;font-style:italic;padding:4px 8px}
 .hero-map-btn{padding:14px 26px;font-family:var(--font-b);font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;border-radius:4px;cursor:pointer;text-decoration:none;border:none;transition:all .25s;display:inline-flex;align-items:center;gap:8px}
 .hero-map-btn.primary{background:#0A0A0A;color:#FFF}
 .hero-map-btn.primary:hover{background:#B8860B;transform:translateY(-1px);box-shadow:0 8px 20px rgba(184,134,11,.3)}
@@ -600,7 +604,7 @@ footer{border-top:1px solid var(--border);padding:28px 52px;display:flex;align-i
 
 <nav>
   <a href="https://www.unacorp.com.br" target="_blank" style="display:flex;align-items:center;text-decoration:none">
-    <img src="https://lh3.googleusercontent.com/d/11dcTXDrI3BLvly948rPn6_VHCHwbf7FO=w400" alt="UNA Corp" style="height:38px;width:auto;object-fit:contain;transition:transform .25s,opacity .25s" onmouseover="this.style.transform='scale(1.05)';this.style.opacity='.85'" onmouseout="this.style.transform='scale(1)';this.style.opacity='1'">
+    <img src="https://lh3.googleusercontent.com/d/11dcTXDrI3BLvly948rPn6_VHCHwbf7FO=w400" alt="UNACORP" style="height:38px;width:auto;object-fit:contain;transition:transform .25s,opacity .25s" onmouseover="this.style.transform='scale(1.05)';this.style.opacity='.85'" onmouseout="this.style.transform='scale(1)';this.style.opacity='1'">
   </a>
   <div></div>
 </nav>
@@ -609,11 +613,16 @@ footer{border-top:1px solid var(--border);padding:28px 52px;display:flex;align-i
 <section class="hero-map" id="heroMap">
   <div class="hero-map-content">
     <div class="hero-map-left">
-      <div class="hero-map-eyebrow">▸ Oportunidades 2026 · UNA Corp</div>
-      <h1 class="hero-map-title">Em <em>Estoque</em></h1>
-      <p class="hero-map-lead">Portfólio exclusivo de oportunidades imobiliárias em São Paulo. Explore os empreendimentos disponíveis em tempo real — clique em qualquer marcador no mapa para ver detalhes, ou navegue pela lista completa abaixo.</p>
+      <div class="hero-map-eyebrow">▸ UNACORP · Oportunidades 2026</div>
+      <h1 class="hero-map-title">Explore as <em>Oportunidades</em></h1>
+      <p class="hero-map-lead">Oportunidades imobiliárias selecionadas em São Paulo. Prontos para morar, em construção e lançamentos exclusivos — cada endereço passa pela análise técnica, comercial e patrimonial da UNACORP antes de chegar até você.</p>
+      <div class="hero-map-meta">
+        <div class="hmm-item"><span class="hmm-dot" style="background:#16A34A"></span>Pronto para Morar</div>
+        <div class="hmm-item"><span class="hmm-dot" style="background:#D97706"></span>Em Obras</div>
+        <div class="hmm-item"><span class="hmm-dot" style="background:#B8860B"></span>Breve Lançamento</div>
+      </div>
       <div class="hero-map-cta">
-        <a href="#oportunidades" class="hero-map-btn primary">Ver Oportunidades →</a>
+        <a href="#oportunidades" class="hero-map-btn primary">Ver Portfólio →</a>
         <button onclick="openContactModal()" class="hero-map-btn secondary">Fale Conosco</button>
       </div>
     </div>
@@ -621,11 +630,7 @@ footer{border-top:1px solid var(--border);padding:28px 52px;display:flex;align-i
       <div class="hero-map-canvas">
         <div id="leafletMap"></div>
       </div>
-      <div class="hero-map-legend">
-        <div class="pmap-leg"><span class="pmap-leg-dot" style="background:#16A34A"></span>Pronto para Morar</div>
-        <div class="pmap-leg"><span class="pmap-leg-dot" style="background:#D97706"></span>Em Obras</div>
-        <div class="pmap-leg"><span class="pmap-leg-dot" style="background:#B8860B"></span>Breve Lançamento</div>
-      </div>
+      <div class="hero-map-hint">Clique em qualquer marcador para ver detalhes do empreendimento</div>
     </div>
   </div>
 
@@ -671,7 +676,7 @@ footer{border-top:1px solid var(--border);padding:28px 52px;display:flex;align-i
 <section class="tab-section" id="tabelao">
   <button class="tab-collapse-trigger" id="tabCollapse" onclick="toggleTabelao()" aria-expanded="false">
     <div class="tab-collapse-left">
-      <div class="tab-collapse-sub">Listagem UNA Corp</div>
+      <div class="tab-collapse-sub">Listagem UNACORP</div>
       <h2 class="tab-collapse-title"><em>Tabelão</em> · Abril 2026</h2>
       <div class="tab-collapse-meta"><span id="tabCnt">9</span> oportunidades · clique para visualizar a tabela completa</div>
     </div>
@@ -729,8 +734,8 @@ footer{border-top:1px solid var(--border);padding:28px 52px;display:flex;align-i
 </section>
 
 
-<!-- SCP — INVESTIMENTO POR QUOTAS -->
-<section class="scp-section" id="scp">
+<!-- SCP — INVESTIMENTO POR QUOTAS (oculto temporariamente) -->
+<section class="scp-section" id="scp" style="display:none">
   <div class="scp-head">
     <div class="scp-badge">Investimento Exclusivo</div>
     <h2 class="scp-title">Unidades <em>SCP</em></h2>
@@ -864,7 +869,7 @@ footer{border-top:1px solid var(--border);padding:28px 52px;display:flex;align-i
     <div class="contact-modal-head">
       <button class="contact-close" onclick="closeContactModal()" aria-label="Fechar">✕</button>
       <div class="contact-eyebrow">Entre em Contato</div>
-      <div class="contact-title">Fale com a <em>UNA Corp</em></div>
+      <div class="contact-title">Fale com a <em>UNACORP</em></div>
       <div class="contact-subtitle">Estamos à disposição para apresentar oportunidades de investimento e tirar suas dúvidas sobre o portfólio.</div>
     </div>
     <div class="contact-modal-body">
@@ -912,7 +917,7 @@ footer{border-top:1px solid var(--border);padding:28px 52px;display:flex;align-i
     <div class="cbar-left">
       <div>
         <div class="cbar-eyebrow">▸ Mais Informações</div>
-        <div class="cbar-title">Fale com a <em>UNA Corp</em></div>
+        <div class="cbar-title">Fale com a <em>UNACORP</em></div>
       </div>
     </div>
     <div class="cbar-info">
@@ -989,7 +994,7 @@ const DATA = [
     status:"breve", entrega:"Breve Lançamento", tipo:"—", mobiliado:false,
     metragem:"—", deposito:false, dorms:"—", vaga:"—",
     valor:"Sob Consulta", link:null, driveLink:null,
-    incorporadora:"A definir", incorporadoraLogo:null,
+    incorporadora:"UNACORP & Exkalla", incorporadoraLogo:null,
     mapQuery:"Rua Capitão Guedes Portilho, 26, Itaim Bibi, São Paulo, SP",
     pois:[
       {icon:"🛒",nome:"Shopping Iguatemi",dist:"500m"},
@@ -1005,7 +1010,7 @@ const DATA = [
     status:"pronto", entrega:"Pronto", tipo:"Tipo", mobiliado:true,
     metragem:"63m²", deposito:true, dorms:"2 Dorms", vaga:"01 Vaga Det.",
     valor:"800.000,00", link:null, driveLink:"https://drive.google.com/drive/folders/1bLYUKmderamkwkZNIcjvPV2tc1NP7BtT?usp=sharing",
-    incorporadora:"URBO Incorporadora", incorporadoraLogo:null,
+    incorporadora:"Cordoba", incorporadoraLogo:"https://lh3.googleusercontent.com/d/1J9tfJ7RulqarYV3M_U6jnwJ5l5oymXL-=w400",
     mapQuery:"Avenida Vila Ema, 850, Vila Prudente, São Paulo, SP",
     pois:[
       {icon:"🚇",nome:"Metrô Vila Prudente",dist:"350m"},
@@ -1035,11 +1040,11 @@ const DATA = [
   },
   {
     nome:"URBO VILA PRUDENTE", bairro:"Vila Prudente",
-    endereco:"Av. Vila Ema, 850", unidade:"Unidade 179 · 17° Andar",
+    endereco:"Av. Vila Ema, 850", unidade:"Unidade 171 · 17° Andar",
     status:"pronto", entrega:"Pronto", tipo:"Tipo", mobiliado:true,
     metragem:"63m²", deposito:true, dorms:"2 Dorms", vaga:"01 Vaga Det.",
     valor:"800.000,00", link:null, driveLink:"https://drive.google.com/drive/folders/1bLYUKmderamkwkZNIcjvPV2tc1NP7BtT?usp=sharing",
-    incorporadora:"URBO Incorporadora", incorporadoraLogo:null,
+    incorporadora:"Cordoba", incorporadoraLogo:"https://lh3.googleusercontent.com/d/1J9tfJ7RulqarYV3M_U6jnwJ5l5oymXL-=w400",
     mapQuery:"Avenida Vila Ema, 850, Vila Prudente, São Paulo, SP",
     pois:[
       {icon:"🚇",nome:"Metrô Vila Prudente",dist:"350m"},
@@ -1071,7 +1076,7 @@ const DATA = [
     status:"pronto", entrega:"Pronto", tipo:"NR", mobiliado:false,
     metragem:"54m²", deposito:false, dorms:"1 Dorm", vaga:"Sem Vaga",
     valor:"1.367.000,00", link:null, driveLink:"https://drive.google.com/drive/folders/1iUCzOAlZ5PHkUXnKu3lBJDu_HSNYezKI?usp=sharing",
-    incorporadora:"Mitre Realty", incorporadoraLogo:null,
+    incorporadora:"Mitre", incorporadoraLogo:"https://lh3.googleusercontent.com/d/1NWoVGecHNR2fWjHjVGyz8n3BfZwnkKIJ=w400",
     mapQuery:"Rua Itapeva, 350, Bela Vista, São Paulo, SP",
     pois:[
       {icon:"🚇",nome:"Metrô Trianon-Masp",dist:"250m"},
@@ -1108,7 +1113,7 @@ const DATA = [
     status:"pronto", entrega:"Pronto", tipo:"NR", mobiliado:false,
     metragem:"54m²", deposito:false, dorms:"1 Dorm", vaga:"Sem Vaga",
     valor:"1.367.000,00", link:null, driveLink:"https://drive.google.com/drive/folders/1iUCzOAlZ5PHkUXnKu3lBJDu_HSNYezKI?usp=sharing",
-    incorporadora:"Mitre Realty", incorporadoraLogo:null,
+    incorporadora:"Mitre", incorporadoraLogo:"https://lh3.googleusercontent.com/d/1NWoVGecHNR2fWjHjVGyz8n3BfZwnkKIJ=w400",
     mapQuery:"Rua Itapeva, 350, Bela Vista, São Paulo, SP",
     pois:[
       {icon:"🚇",nome:"Metrô Trianon-Masp",dist:"250m"},
@@ -1143,7 +1148,7 @@ const DATA = [
     status:"pronto", entrega:"Pronto", tipo:"Tipo", mobiliado:false,
     metragem:"81m²", deposito:false, dorms:"2 Dorms", vaga:"01 Vaga Det.",
     valor:"1.450.000,00", link:null, driveLink:"https://drive.google.com/drive/folders/18I52WTrIyCKUNlmkBlzTUsUgnqCX_pMG?usp=sharing",
-    incorporadora:"Triunfo Incorporações", incorporadoraLogo:null,
+    incorporadora:"Courchevel", incorporadoraLogo:"https://lh3.googleusercontent.com/d/19bdZL9gSKtUiLp4dFHwa8OwdnUG7F4OD=w400",
     mapQuery:"Rua Barão do Triunfo, 551, Campo Belo, São Paulo, SP",
     pois:[
       {icon:"🚇",nome:"Metrô Campo Belo",dist:"500m"},
@@ -1181,7 +1186,7 @@ const DATA = [
     status:"obras", entrega:"mai/26", tipo:"Studio", mobiliado:false,
     metragem:"26m²", deposito:false, dorms:"Studio", vaga:"Sem Vaga",
     valor:"260.000,00", link:null, driveLink:"https://drive.google.com/drive/folders/1-GS5VycKRDwTlXUvm-57jd6UqZQUc6Cq?usp=sharing",
-    incorporadora:"Mitre Realty", incorporadoraLogo:null,
+    incorporadora:"Mitre", incorporadoraLogo:"https://lh3.googleusercontent.com/d/1NWoVGecHNR2fWjHjVGyz8n3BfZwnkKIJ=w400",
     mapQuery:"Rua José Zappi, 363, Vila Prudente, São Paulo, SP",
     pois:[
       {icon:"🚇",nome:"Metrô Vila Prudente",dist:"400m"},
@@ -1204,7 +1209,7 @@ const DATA = [
     status:"obras", entrega:"mai/26", tipo:"Studio", mobiliado:false,
     metragem:"26m²", deposito:false, dorms:"Studio", vaga:"Sem Vaga",
     valor:"260.000,00", link:null, driveLink:"https://drive.google.com/drive/folders/1-GS5VycKRDwTlXUvm-57jd6UqZQUc6Cq?usp=sharing",
-    incorporadora:"Mitre Realty", incorporadoraLogo:null,
+    incorporadora:"Mitre", incorporadoraLogo:"https://lh3.googleusercontent.com/d/1NWoVGecHNR2fWjHjVGyz8n3BfZwnkKIJ=w400",
     mapQuery:"Rua José Zappi, 363, Vila Prudente, São Paulo, SP",
     pois:[
       {icon:"🚇",nome:"Metrô Vila Prudente",dist:"400m"},
@@ -1221,12 +1226,12 @@ const DATA = [
     ]
   },
   {
-    nome:"CAVOUR", bairro:"Vila Prudente",
+    nome:"CAVOUR 439", bairro:"Vila Prudente",
     endereco:"Rua Cavour, 439", unidade:"Unidade 82 · 8° Andar",
     status:"obras", entrega:"ago/27", tipo:"Tipo", mobiliado:false,
     metragem:"83m²", deposito:false, dorms:"3 Dorms", vaga:"01 Vaga Det.",
     valor:"830.000,00", link:null, driveLink:"https://drive.google.com/drive/folders/1jSO0NBrNf5TStZ_TmtB2MCZ_LXlFfC2Z?usp=sharing",
-    incorporadora:"A definir", incorporadoraLogo:null,
+    incorporadora:"Cordoba", incorporadoraLogo:"https://lh3.googleusercontent.com/d/1J9tfJ7RulqarYV3M_U6jnwJ5l5oymXL-=w400",
     mapQuery:"Rua Cavour, 439, Vila Prudente, São Paulo, SP",
     pois:[
       {icon:"🚇",nome:"Metrô Vila Prudente",dist:"300m"},
@@ -1266,7 +1271,7 @@ const DATA = [
     status:"obras", entrega:"set/27", tipo:"Tipo", mobiliado:false,
     metragem:"164m²", deposito:false, dorms:"4 Suítes", vaga:"03 Vagas",
     valor:"3.300.000,00", link:null, driveLink:"https://drive.google.com/drive/folders/1xoOHUnMxAnrEKZyEp1zvBxAssqqKA3td?usp=sharing",
-    incorporadora:"Mitre Realty", incorporadoraLogo:null,
+    incorporadora:"Mitre", incorporadoraLogo:"https://lh3.googleusercontent.com/d/1NWoVGecHNR2fWjHjVGyz8n3BfZwnkKIJ=w400",
     mapQuery:"Rua Michigan, 962, Brooklin, São Paulo, SP",
     pois:[
       {icon:"🚇",nome:"Metrô Brooklin",dist:"600m"},
