@@ -241,6 +241,60 @@ main{padding:0 52px 100px;position:relative;z-index:1}
 
 
 
+
+/* SCP — INVESTIMENTO POR QUOTAS */
+.scp-section{padding:80px 52px;background:var(--bg);color:var(--text);position:relative;overflow:hidden;z-index:1;border-bottom:1px solid var(--border)}
+.scp-section::before{content:'';position:absolute;top:-100px;left:-100px;width:600px;height:600px;border-radius:50%;background:radial-gradient(circle,rgba(184,134,11,.08) 0%,transparent 65%);pointer-events:none}
+.scp-section::after{content:'';position:absolute;bottom:-150px;right:-100px;width:500px;height:500px;border-radius:50%;background:radial-gradient(circle,rgba(184,134,11,.05) 0%,transparent 65%);pointer-events:none}
+.scp-head{position:relative;z-index:2;margin-bottom:48px;text-align:center;max-width:900px;margin-left:auto;margin-right:auto}
+.scp-badge{display:inline-flex;align-items:center;gap:8px;padding:7px 16px;background:rgba(184,134,11,.10);border:1px solid rgba(184,134,11,.3);border-radius:999px;font-size:9px;letter-spacing:3px;text-transform:uppercase;color:#B8860B;font-weight:700;margin-bottom:20px}
+.scp-badge::before{content:'';width:6px;height:6px;border-radius:50%;background:#B8860B;animation:badgePulse 1.5s ease-in-out infinite}
+.scp-title{font-family:var(--font-d);font-size:clamp(40px,5.5vw,72px);font-weight:200;line-height:1;letter-spacing:-2px;color:var(--text);margin-bottom:20px}
+.scp-title em{font-style:italic;color:#B8860B;font-weight:200}
+.scp-sub{font-size:13px;line-height:1.7;color:var(--text2);max-width:680px;margin:0 auto 14px}
+.scp-tagline{font-size:11px;color:#B8860B;font-weight:600;letter-spacing:3px;text-transform:uppercase}
+
+.scp-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;max-width:1300px;margin:0 auto 40px;position:relative;z-index:2}
+@media(max-width:880px){.scp-grid{grid-template-columns:1fr}}
+.scp-feature{background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:28px 26px;transition:all .3s;box-shadow:0 4px 16px rgba(0,0,0,.04)}
+.scp-feature:hover{background:#FFFBEC;border-color:rgba(184,134,11,.35);transform:translateY(-3px);box-shadow:0 16px 36px rgba(0,0,0,.06)}
+.scp-feat-icon{width:48px;height:48px;border-radius:50%;background:rgba(184,134,11,.12);display:flex;align-items:center;justify-content:center;font-size:20px;margin-bottom:18px;color:#B8860B}
+.scp-feat-title{font-family:var(--font-d);font-size:22px;font-weight:500;color:var(--text);margin-bottom:8px;letter-spacing:-.3px}
+.scp-feat-desc{font-size:12px;line-height:1.7;color:var(--muted)}
+
+.scp-card{max-width:1300px;margin:0 auto;background:#0A0A0A;color:#FFF;border:1px solid #0A0A0A;border-radius:12px;overflow:hidden;position:relative;z-index:2;box-shadow:0 20px 60px rgba(0,0,0,.18)}
+.scp-card-inner{display:grid;grid-template-columns:1.2fr 1fr;gap:0}
+@media(max-width:880px){.scp-card-inner{grid-template-columns:1fr}}
+.scp-card-left{padding:48px 44px;display:flex;flex-direction:column;justify-content:center;border-right:1px solid rgba(255,255,255,.08)}
+@media(max-width:880px){.scp-card-left{border-right:0;border-bottom:1px solid rgba(255,255,255,.08);padding:36px 28px}}
+.scp-card-tag{display:inline-flex;align-items:center;gap:6px;padding:5px 12px;background:#B8860B;color:#0A0A0A;border-radius:3px;font-size:8.5px;font-weight:700;letter-spacing:2px;text-transform:uppercase;margin-bottom:18px;align-self:flex-start}
+.scp-card-name{font-family:var(--font-d);font-size:36px;font-weight:300;color:#FFF;letter-spacing:-1px;line-height:1.1;margin-bottom:8px}
+.scp-card-loc{font-size:11px;color:rgba(255,255,255,.55);letter-spacing:.5px;margin-bottom:22px;display:flex;align-items:center;gap:6px}
+.scp-card-desc{font-size:13px;line-height:1.75;color:rgba(255,255,255,.7);margin-bottom:28px}
+.scp-stats{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:26px}
+.scp-stat{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:5px;padding:14px 16px}
+.scp-stat-label{font-size:7.5px;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.45);font-weight:600;margin-bottom:5px}
+.scp-stat-val{font-family:var(--font-d);font-size:22px;font-weight:300;color:#B8860B;letter-spacing:-.5px;line-height:1.1}
+.scp-stat-val.white{color:#FFF}
+.scp-card-cta{display:flex;gap:8px;flex-wrap:wrap}
+.scp-btn{flex:1;padding:14px 22px;font-family:var(--font-b);font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;border-radius:4px;cursor:pointer;text-decoration:none;border:none;transition:all .25s;display:inline-flex;align-items:center;justify-content:center;gap:6px;min-width:170px}
+.scp-btn-primary{background:#B8860B;color:#0A0A0A}
+.scp-btn-primary:hover{background:#FFD700;transform:translateY(-1px);box-shadow:0 6px 16px rgba(184,134,11,.4)}
+.scp-btn-secondary{background:transparent;color:#FFF;border:1px solid rgba(255,255,255,.2)}
+.scp-btn-secondary:hover{border-color:#B8860B;color:#B8860B;background:rgba(184,134,11,.1)}
+
+.scp-card-right{padding:48px 44px;display:flex;flex-direction:column;justify-content:center;gap:22px}
+@media(max-width:880px){.scp-card-right{padding:36px 28px}}
+.scp-detail{display:flex;justify-content:space-between;align-items:flex-start;padding-bottom:18px;border-bottom:1px solid rgba(255,255,255,.06);gap:14px}
+.scp-detail:last-child{border-bottom:0;padding-bottom:0}
+.scp-detail-l{font-size:8.5px;letter-spacing:2.5px;text-transform:uppercase;color:rgba(255,255,255,.45);font-weight:600;flex-shrink:0;margin-top:3px}
+.scp-detail-v{font-size:13px;color:#FFF;font-weight:500;text-align:right;line-height:1.5;letter-spacing:.2px}
+.scp-detail-v.gold{color:#B8860B}
+.scp-detail-v.big{font-family:var(--font-d);font-size:20px;font-weight:400;letter-spacing:-.3px}
+
+.scp-disclaimer{max-width:1300px;margin:28px auto 0;padding:14px 18px;font-size:10px;color:var(--muted);line-height:1.6;text-align:center;letter-spacing:.3px;position:relative;z-index:2;background:var(--surface);border-radius:4px;border:1px solid var(--border)}
+.scp-disclaimer strong{color:var(--text)}
+
 /* BREVE LANÇAMENTO SECTION */
 .breve-section{padding:60px 52px 70px;background:var(--bg);color:var(--text);position:relative;overflow:hidden;z-index:1;border-bottom:1px solid var(--border)}
 .breve-section::before{content:'';position:absolute;top:-100px;right:-50px;width:600px;height:600px;border-radius:50%;background:radial-gradient(circle,rgba(184,134,11,.08) 0%,transparent 65%);pointer-events:none;animation:pulse 8s ease-in-out infinite}
@@ -254,7 +308,7 @@ main{padding:0 52px 100px;position:relative;z-index:1}
 .breve-card{background:var(--bg);border:1px solid var(--border);border-radius:8px;overflow:hidden;cursor:pointer;transition:all .35s;position:relative;display:flex;flex-direction:column;box-shadow:0 4px 20px rgba(0,0,0,.04)}
 .breve-card:hover{border-color:#B8860B;transform:translateY(-4px);box-shadow:0 20px 50px rgba(0,0,0,.10),0 0 0 1px rgba(184,134,11,.15)}
 .breve-card::before{content:'';position:absolute;top:0;left:0;width:3px;height:100%;background:#B8860B;z-index:2}
-.breve-img{height:340px;background:var(--surface);position:relative;overflow:hidden}
+.breve-img{height:100%;min-height:340px;background:var(--surface);position:relative;overflow:hidden;flex:1}
 .breve-img img{width:100%;height:100%;object-fit:cover;transition:transform .6s ease}
 .breve-card:hover .breve-img img{transform:scale(1.05)}
 .breve-img-ph{width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;background:linear-gradient(145deg,#F5F5F5,#EFEFEF)}
@@ -674,6 +728,101 @@ footer{border-top:1px solid var(--border);padding:28px 52px;display:flex;align-i
   </div>
 </section>
 
+
+<!-- SCP — INVESTIMENTO POR QUOTAS -->
+<section class="scp-section" id="scp">
+  <div class="scp-head">
+    <div class="scp-badge">Investimento Exclusivo</div>
+    <h2 class="scp-title">Unidades <em>SCP</em></h2>
+    <p class="scp-sub">Sociedade em Conta de Participação — invista em quotas de empreendimentos selecionados e participe dos resultados desde a incorporação até a entrega das chaves.</p>
+    <div class="scp-tagline">▸ Rentabilidade · Patrimônio · Diversificação</div>
+  </div>
+
+  <div class="scp-grid">
+    <div class="scp-feature">
+      <div class="scp-feat-icon">💎</div>
+      <h3 class="scp-feat-title">Acesso a Empreendimentos</h3>
+      <p class="scp-feat-desc">Participe de projetos premium em São Paulo com valores de entrada acessíveis. Diversifique seu portfólio sem necessidade de adquirir uma unidade inteira.</p>
+    </div>
+    <div class="scp-feature">
+      <div class="scp-feat-icon">📈</div>
+      <h3 class="scp-feat-title">Rentabilidade Atrativa</h3>
+      <p class="scp-feat-desc">Compartilhamento do resultado da incorporação, com expectativa de retorno superior à renda fixa tradicional. Estimativa de TIR documentada por projeto.</p>
+    </div>
+    <div class="scp-feature">
+      <div class="scp-feat-icon">🔒</div>
+      <h3 class="scp-feat-title">Estrutura Regulada</h3>
+      <p class="scp-feat-desc">Contrato registrado em cartório, prestação de contas periódica e governança transparente. Você acompanha cada etapa da obra e dos resultados.</p>
+    </div>
+  </div>
+
+  <div class="scp-card">
+    <div class="scp-card-inner">
+      <div class="scp-card-left">
+        <span class="scp-card-tag">▸ Oportunidade SCP Ativa</span>
+        <h3 class="scp-card-name">Empreendimento <em style="font-style:italic;color:#B8860B">SCP</em></h3>
+        <div class="scp-card-loc">📍 São Paulo · Localização premium</div>
+        <p class="scp-card-desc">Oportunidade exclusiva de participação em incorporação de alto padrão. Quotas limitadas. Documentação completa, due diligence e simulação financeira disponíveis sob solicitação.</p>
+
+        <div class="scp-stats">
+          <div class="scp-stat">
+            <div class="scp-stat-label">Investimento Mínimo</div>
+            <div class="scp-stat-val">Sob Consulta</div>
+          </div>
+          <div class="scp-stat">
+            <div class="scp-stat-label">TIR Estimada</div>
+            <div class="scp-stat-val">A definir</div>
+          </div>
+          <div class="scp-stat">
+            <div class="scp-stat-label">Prazo Projetado</div>
+            <div class="scp-stat-val white">36 meses</div>
+          </div>
+          <div class="scp-stat">
+            <div class="scp-stat-label">Quotas Disponíveis</div>
+            <div class="scp-stat-val white">Limitadas</div>
+          </div>
+        </div>
+
+        <div class="scp-card-cta">
+          <button class="scp-btn scp-btn-primary" onclick="openContactModal()">📄 Solicitar Material</button>
+          <a href="https://wa.me/5511977481984?text=Ol%C3%A1%20Lucas%2C%20tenho%20interesse%20em%20conhecer%20as%20oportunidades%20SCP%20da%20UNA%20Corp." target="_blank" class="scp-btn scp-btn-secondary">💬 Falar com Especialista</a>
+        </div>
+      </div>
+
+      <div class="scp-card-right">
+        <div class="scp-detail">
+          <span class="scp-detail-l">Modalidade</span>
+          <span class="scp-detail-v">Sociedade em Conta<br>de Participação (SCP)</span>
+        </div>
+        <div class="scp-detail">
+          <span class="scp-detail-l">Tipo de Investimento</span>
+          <span class="scp-detail-v gold">Incorporação Imobiliária</span>
+        </div>
+        <div class="scp-detail">
+          <span class="scp-detail-l">Estágio</span>
+          <span class="scp-detail-v">Captação Ativa</span>
+        </div>
+        <div class="scp-detail">
+          <span class="scp-detail-l">Garantia</span>
+          <span class="scp-detail-v">Patrimônio do<br>empreendimento</span>
+        </div>
+        <div class="scp-detail">
+          <span class="scp-detail-l">Liquidez</span>
+          <span class="scp-detail-v">Após entrega das<br>chaves</span>
+        </div>
+        <div class="scp-detail">
+          <span class="scp-detail-l">Retorno Esperado</span>
+          <span class="scp-detail-v big">Sob Consulta</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="scp-disclaimer">
+    <strong>Importante:</strong> Investimentos em SCP envolvem riscos próprios da incorporação imobiliária. Rentabilidades estimadas não representam garantia de retorno. Materiais técnicos, contratos e simulações são fornecidos mediante assinatura de termo de confidencialidade. Consulte o responsável para análise personalizada.
+  </div>
+</section>
+
 <!-- BREVE LANÇAMENTO -->
 <section class="breve-section" id="breveLancamento">
   <div class="breve-head">
@@ -848,14 +997,14 @@ const DATA = [
       {icon:"🍽️",nome:"Restaurantes premium",dist:"200m"},
       {icon:"🏥",nome:"Hospital São Luiz",dist:"1km"},
     ],
-    fotos:[], plantas:[]
+    fotos:["https://lh3.googleusercontent.com/d/1aRDmUM-mf5X0aZoDBOjojNQRQJvwbSa3=w2000"], plantas:[]
   },
   {
     nome:"URBO VILA PRUDENTE", bairro:"Vila Prudente",
     endereco:"Av. Vila Ema, 850", unidade:"Unidade 178 · 17° Andar",
     status:"pronto", entrega:"Pronto", tipo:"Tipo", mobiliado:true,
     metragem:"63m²", deposito:true, dorms:"2 Dorms", vaga:"01 Vaga Det.",
-    valor:"800.000,00", link:null, driveLink:null,
+    valor:"800.000,00", link:null, driveLink:"https://drive.google.com/drive/folders/1bLYUKmderamkwkZNIcjvPV2tc1NP7BtT?usp=sharing",
     incorporadora:"URBO Incorporadora", incorporadoraLogo:null,
     mapQuery:"Avenida Vila Ema, 850, Vila Prudente, São Paulo, SP",
     pois:[
@@ -867,7 +1016,18 @@ const DATA = [
       {icon:"🛣️",nome:"Acesso Radial Leste",dist:"800m"},
     ],
     fotos:[
-      "https://urbovilaprudente.com.br/assets/images/banner_img_3.jpg",
+      "https://lh3.googleusercontent.com/d/1-VKc4OfsW5i6ug7MvlUDLGNrhboSlo74=w2000",
+      "https://lh3.googleusercontent.com/d/1CPJuFG2Q7zguAyeyITYGGPaupj9crP6W=w2000",
+      "https://lh3.googleusercontent.com/d/1IGdUhqUAXGS75pZASTWCIxzfKa1hdo2g=w2000",
+      "https://lh3.googleusercontent.com/d/1NG6i2EKeN7Jbj6VTTyRFHwLHOqFcdhDM=w2000",
+      "https://lh3.googleusercontent.com/d/1YM7wt6Is3iRrvNo2O5vjAGxwEoo3rI62=w2000",
+      "https://lh3.googleusercontent.com/d/1Yq7QfVsY5jfMWMAmPDxZlWTpnulnz6l8=w2000",
+      "https://lh3.googleusercontent.com/d/1_681-UBA6iiX0Ce__-DGdQK8l8D6EUjN=w2000",
+      "https://lh3.googleusercontent.com/d/1fWkEk4PA2Y9ej0liM5TAlTKQ9o_W4x1h=w2000",
+      "https://lh3.googleusercontent.com/d/1fqnK2JemzA7SXvliBUNz4dV4gWuUne4Y=w2000",
+      "https://lh3.googleusercontent.com/d/1vRxGhdI62eAgukpxX-De_MeGxJOn8nOt=w2000",
+      "https://lh3.googleusercontent.com/d/1vVnotyM8RpkIfjmol4CkXHf_dEuQAFBl=w2000",
+      "https://lh3.googleusercontent.com/d/1w3xwqWEQUa6CIue9EkdnFGf8rqOBVe2f=w2000",
     ],
     plantas:[
       {label:"Planta Tipo", img:"https://urbovilaprudente.com.br/assets/images/planta_01.jpg"},
@@ -878,7 +1038,7 @@ const DATA = [
     endereco:"Av. Vila Ema, 850", unidade:"Unidade 179 · 17° Andar",
     status:"pronto", entrega:"Pronto", tipo:"Tipo", mobiliado:true,
     metragem:"63m²", deposito:true, dorms:"2 Dorms", vaga:"01 Vaga Det.",
-    valor:"800.000,00", link:null, driveLink:null,
+    valor:"800.000,00", link:null, driveLink:"https://drive.google.com/drive/folders/1bLYUKmderamkwkZNIcjvPV2tc1NP7BtT?usp=sharing",
     incorporadora:"URBO Incorporadora", incorporadoraLogo:null,
     mapQuery:"Avenida Vila Ema, 850, Vila Prudente, São Paulo, SP",
     pois:[
@@ -888,7 +1048,18 @@ const DATA = [
       {icon:"🏫",nome:"Escola Est. Vila Ema",dist:"600m"},
     ],
     fotos:[
-      "https://urbovilaprudente.com.br/assets/images/banner_img_3.jpg",
+      "https://lh3.googleusercontent.com/d/1-VKc4OfsW5i6ug7MvlUDLGNrhboSlo74=w2000",
+      "https://lh3.googleusercontent.com/d/1CPJuFG2Q7zguAyeyITYGGPaupj9crP6W=w2000",
+      "https://lh3.googleusercontent.com/d/1IGdUhqUAXGS75pZASTWCIxzfKa1hdo2g=w2000",
+      "https://lh3.googleusercontent.com/d/1NG6i2EKeN7Jbj6VTTyRFHwLHOqFcdhDM=w2000",
+      "https://lh3.googleusercontent.com/d/1YM7wt6Is3iRrvNo2O5vjAGxwEoo3rI62=w2000",
+      "https://lh3.googleusercontent.com/d/1Yq7QfVsY5jfMWMAmPDxZlWTpnulnz6l8=w2000",
+      "https://lh3.googleusercontent.com/d/1_681-UBA6iiX0Ce__-DGdQK8l8D6EUjN=w2000",
+      "https://lh3.googleusercontent.com/d/1fWkEk4PA2Y9ej0liM5TAlTKQ9o_W4x1h=w2000",
+      "https://lh3.googleusercontent.com/d/1fqnK2JemzA7SXvliBUNz4dV4gWuUne4Y=w2000",
+      "https://lh3.googleusercontent.com/d/1vRxGhdI62eAgukpxX-De_MeGxJOn8nOt=w2000",
+      "https://lh3.googleusercontent.com/d/1vVnotyM8RpkIfjmol4CkXHf_dEuQAFBl=w2000",
+      "https://lh3.googleusercontent.com/d/1w3xwqWEQUa6CIue9EkdnFGf8rqOBVe2f=w2000",
     ],
     plantas:[
       {label:"Planta Tipo", img:"https://urbovilaprudente.com.br/assets/images/planta_01.jpg"},
@@ -899,7 +1070,7 @@ const DATA = [
     endereco:"Rua Itapeva, 350", unidade:"Unidade 418 · 4° Andar",
     status:"pronto", entrega:"Pronto", tipo:"NR", mobiliado:false,
     metragem:"54m²", deposito:false, dorms:"1 Dorm", vaga:"Sem Vaga",
-    valor:"1.367.000,00", link:null, driveLink:null,
+    valor:"1.367.000,00", link:null, driveLink:"https://drive.google.com/drive/folders/1iUCzOAlZ5PHkUXnKu3lBJDu_HSNYezKI?usp=sharing",
     incorporadora:"Mitre Realty", incorporadoraLogo:null,
     mapQuery:"Rua Itapeva, 350, Bela Vista, São Paulo, SP",
     pois:[
@@ -912,12 +1083,23 @@ const DATA = [
     ],
     fotos:[
       "https://lh3.googleusercontent.com/d/1o-lTnTbVQtXbAj84-h4j32ucH7e1vU1A=w2000",
-      "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=1200&q=85",
-      "https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?w=1200&q=85",
-      "https://images.unsplash.com/photo-1616594039964-ae9021a400a0?w=1200&q=85",
+      "https://lh3.googleusercontent.com/d/11-G_251jSv6eDqUbonxCQ3F29iaAO2Cw=w2000",
+      "https://lh3.googleusercontent.com/d/11DXvN4VGv5l3N0J9gR-g9c9OEk4GPi9Z=w2000",
+      "https://lh3.googleusercontent.com/d/169BDwnOjxvoX8C0zGywjD9CXVCpwvB9b=w2000",
+      "https://lh3.googleusercontent.com/d/18fSXV7TbiQawmos3QYJ7ZnRFzH6fGNo8=w2000",
+      "https://lh3.googleusercontent.com/d/1OQdKeAeCI6GpBGQ6In3A6N1_Rj6Dea6Y=w2000",
+      "https://lh3.googleusercontent.com/d/1Oz9MHT2DlnZfaXOB4DjnUFYwTyXdR3hk=w2000",
+      "https://lh3.googleusercontent.com/d/1Up9JTjAsvJx6x_Kfac6PY8y8hiY6_1KL=w2000",
+      "https://lh3.googleusercontent.com/d/1XSWODc9vnwvyO61lxFc9zzDraro8mnKo=w2000",
+      "https://lh3.googleusercontent.com/d/1XTnLM75Dk5wXxr-NdDl3Y3nv1x55HoK0=w2000",
+      "https://lh3.googleusercontent.com/d/1ZQyRZElXATKOxLqxKv1xP7zUA6wXbp79=w2000",
+      "https://lh3.googleusercontent.com/d/1ehfqitVTkWpBq2gUJZXEJZHbZWkp5o42=w2000",
+      "https://lh3.googleusercontent.com/d/1nxRDzUaoO05JVzbUEQ1Hp7qlfPy9kozk=w2000",
+      "https://lh3.googleusercontent.com/d/1qTwt3RX8wMTVA67---73gXMGEVhpw46g=w2000",
+      "https://lh3.googleusercontent.com/d/1y-fBvP58hZI7nziobJlPmFHOVvV9Y6M1=w2000",
     ],
     plantas:[
-      {label:"Planta 1 Dorm", img:"https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=900&q=80"},
+      {label:"Planta 1 Dorm", img:"https://lh3.googleusercontent.com/d/1z0FZaDjVnC71UAVqPOwjDfHdt3NSSLLf=w2000"},
     ]
   },
   {
@@ -925,7 +1107,7 @@ const DATA = [
     endereco:"Rua Itapeva, 350", unidade:"Unidade 518 · 5° Andar",
     status:"pronto", entrega:"Pronto", tipo:"NR", mobiliado:false,
     metragem:"54m²", deposito:false, dorms:"1 Dorm", vaga:"Sem Vaga",
-    valor:"1.367.000,00", link:null, driveLink:null,
+    valor:"1.367.000,00", link:null, driveLink:"https://drive.google.com/drive/folders/1iUCzOAlZ5PHkUXnKu3lBJDu_HSNYezKI?usp=sharing",
     incorporadora:"Mitre Realty", incorporadoraLogo:null,
     mapQuery:"Rua Itapeva, 350, Bela Vista, São Paulo, SP",
     pois:[
@@ -936,11 +1118,23 @@ const DATA = [
     ],
     fotos:[
       "https://lh3.googleusercontent.com/d/1o-lTnTbVQtXbAj84-h4j32ucH7e1vU1A=w2000",
-      "https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?w=1200&q=85",
-      "https://images.unsplash.com/photo-1615529328331-f8917597711f?w=1200&q=85",
+      "https://lh3.googleusercontent.com/d/11-G_251jSv6eDqUbonxCQ3F29iaAO2Cw=w2000",
+      "https://lh3.googleusercontent.com/d/11DXvN4VGv5l3N0J9gR-g9c9OEk4GPi9Z=w2000",
+      "https://lh3.googleusercontent.com/d/169BDwnOjxvoX8C0zGywjD9CXVCpwvB9b=w2000",
+      "https://lh3.googleusercontent.com/d/18fSXV7TbiQawmos3QYJ7ZnRFzH6fGNo8=w2000",
+      "https://lh3.googleusercontent.com/d/1OQdKeAeCI6GpBGQ6In3A6N1_Rj6Dea6Y=w2000",
+      "https://lh3.googleusercontent.com/d/1Oz9MHT2DlnZfaXOB4DjnUFYwTyXdR3hk=w2000",
+      "https://lh3.googleusercontent.com/d/1Up9JTjAsvJx6x_Kfac6PY8y8hiY6_1KL=w2000",
+      "https://lh3.googleusercontent.com/d/1XSWODc9vnwvyO61lxFc9zzDraro8mnKo=w2000",
+      "https://lh3.googleusercontent.com/d/1XTnLM75Dk5wXxr-NdDl3Y3nv1x55HoK0=w2000",
+      "https://lh3.googleusercontent.com/d/1ZQyRZElXATKOxLqxKv1xP7zUA6wXbp79=w2000",
+      "https://lh3.googleusercontent.com/d/1ehfqitVTkWpBq2gUJZXEJZHbZWkp5o42=w2000",
+      "https://lh3.googleusercontent.com/d/1nxRDzUaoO05JVzbUEQ1Hp7qlfPy9kozk=w2000",
+      "https://lh3.googleusercontent.com/d/1qTwt3RX8wMTVA67---73gXMGEVhpw46g=w2000",
+      "https://lh3.googleusercontent.com/d/1y-fBvP58hZI7nziobJlPmFHOVvV9Y6M1=w2000",
     ],
     plantas:[
-      {label:"Planta 1 Dorm", img:"https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=900&q=80"},
+      {label:"Planta 1 Dorm", img:"https://lh3.googleusercontent.com/d/1z0FZaDjVnC71UAVqPOwjDfHdt3NSSLLf=w2000"},
     ]
   },
   {
@@ -948,7 +1142,7 @@ const DATA = [
     endereco:"Rua Barão do Triunfo, 551", unidade:"Unidade 53 · 5° Andar",
     status:"pronto", entrega:"Pronto", tipo:"Tipo", mobiliado:false,
     metragem:"81m²", deposito:false, dorms:"2 Dorms", vaga:"01 Vaga Det.",
-    valor:"1.450.000,00", link:null, driveLink:null,
+    valor:"1.450.000,00", link:null, driveLink:"https://drive.google.com/drive/folders/18I52WTrIyCKUNlmkBlzTUsUgnqCX_pMG?usp=sharing",
     incorporadora:"Triunfo Incorporações", incorporadoraLogo:null,
     mapQuery:"Rua Barão do Triunfo, 551, Campo Belo, São Paulo, SP",
     pois:[
@@ -961,13 +1155,24 @@ const DATA = [
     ],
     fotos:[
       "https://lh3.googleusercontent.com/d/1liGK-ppdQ0qosynX3fSViT7QLmiVeTri=w2000",
-      "https://images.unsplash.com/photo-1643297654416-05795d62e39c?w=1200&q=85",
-      "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=1200&q=85",
-      "https://images.unsplash.com/photo-1567767292278-a4f21aa2d36e?w=1200&q=85",
+      "https://lh3.googleusercontent.com/d/14ZGbUQizX7Udq9yjdVMtJlqGNjI-_UX8=w2000",
+      "https://lh3.googleusercontent.com/d/16xD5CgnT2CP4AVTbi0tAi2wtLu1BQDre=w2000",
+      "https://lh3.googleusercontent.com/d/1J7cOewU2HbriX4eA5r9tbOT8Sa_vN-wE=w2000",
+      "https://lh3.googleusercontent.com/d/1JhK0llMV_AQ1YPreldPPg_okk5WefDyh=w2000",
+      "https://lh3.googleusercontent.com/d/1K57S1rDayhBcANkF9Qyn_FQrEdu9u7L3=w2000",
+      "https://lh3.googleusercontent.com/d/1MBM2Xk_SIhhXZUyRhw52hGG742Q5yT9T=w2000",
+      "https://lh3.googleusercontent.com/d/1RiGNy6j1o9q8WDuSGZjJdSEAyX9Pl7X8=w2000",
+      "https://lh3.googleusercontent.com/d/1XY4A79MTHaJOtl9T0ImgqzqcO7v9Jt5H=w2000",
+      "https://lh3.googleusercontent.com/d/1XyaButZhFZZ52ItIXKEDDMASwpeQ9fT_=w2000",
+      "https://lh3.googleusercontent.com/d/1YDcc2y80XbKkcGKk1s2Jnhai5AilgLKz=w2000",
+      "https://lh3.googleusercontent.com/d/1f0LeC4WhMwBQcGthtUAVQeCcG2L6hDDP=w2000",
+      "https://lh3.googleusercontent.com/d/1gP9wf8bKJ1AMAjpp0FlEqUyMiEqG6rr7=w2000",
+      "https://lh3.googleusercontent.com/d/1jp8bzdW9kBuiBUIbjpHtct8JH33MwDak=w2000",
+      "https://lh3.googleusercontent.com/d/1ni_2qjwqIk_qoR5j1iobysSBEHZ1CjqA=w2000",
+      "https://lh3.googleusercontent.com/d/1tkwH6F7At24uMCKU9CqAKdJBb-Nws2AT=w2000",
     ],
     plantas:[
-      {label:"Planta Tipo", img:"https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=900&q=80"},
-      {label:"Planta Espelho", img:"https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=900&q=80"},
+      {label:"Planta Tipo", img:"https://lh3.googleusercontent.com/d/1c5-K1bQCwvTq1Cobl0mUN5Bb_Qg13wuD=w2000"},
     ]
   },
   {
@@ -975,7 +1180,7 @@ const DATA = [
     endereco:"Rua José Zappi, 363", unidade:"Unidade 710 · 7° Andar",
     status:"obras", entrega:"mai/26", tipo:"Studio", mobiliado:false,
     metragem:"26m²", deposito:false, dorms:"Studio", vaga:"Sem Vaga",
-    valor:"260.000,00", link:null, driveLink:null,
+    valor:"260.000,00", link:null, driveLink:"https://drive.google.com/drive/folders/1-GS5VycKRDwTlXUvm-57jd6UqZQUc6Cq?usp=sharing",
     incorporadora:"Mitre Realty", incorporadoraLogo:null,
     mapQuery:"Rua José Zappi, 363, Vila Prudente, São Paulo, SP",
     pois:[
@@ -998,7 +1203,7 @@ const DATA = [
     endereco:"Rua José Zappi, 363", unidade:"Unidade 809 · 8° Andar",
     status:"obras", entrega:"mai/26", tipo:"Studio", mobiliado:false,
     metragem:"26m²", deposito:false, dorms:"Studio", vaga:"Sem Vaga",
-    valor:"260.000,00", link:null, driveLink:null,
+    valor:"260.000,00", link:null, driveLink:"https://drive.google.com/drive/folders/1-GS5VycKRDwTlXUvm-57jd6UqZQUc6Cq?usp=sharing",
     incorporadora:"Mitre Realty", incorporadoraLogo:null,
     mapQuery:"Rua José Zappi, 363, Vila Prudente, São Paulo, SP",
     pois:[
@@ -1020,7 +1225,7 @@ const DATA = [
     endereco:"Rua Cavour, 439", unidade:"Unidade 82 · 8° Andar",
     status:"obras", entrega:"ago/27", tipo:"Tipo", mobiliado:false,
     metragem:"83m²", deposito:false, dorms:"3 Dorms", vaga:"01 Vaga Det.",
-    valor:"830.000,00", link:null, driveLink:null,
+    valor:"830.000,00", link:null, driveLink:"https://drive.google.com/drive/folders/1jSO0NBrNf5TStZ_TmtB2MCZ_LXlFfC2Z?usp=sharing",
     incorporadora:"A definir", incorporadoraLogo:null,
     mapQuery:"Rua Cavour, 439, Vila Prudente, São Paulo, SP",
     pois:[
@@ -1033,13 +1238,26 @@ const DATA = [
     ],
     fotos:[
       "https://lh3.googleusercontent.com/d/16PoYCHJ9cXxYfAQh2LvyBlhOSZnYnbl0=w2000",
-      "https://images.unsplash.com/photo-1600121848594-d8644e57abab?w=1200&q=85",
-      "https://images.unsplash.com/photo-1600573472550-8090b5e0745e?w=1200&q=85",
-      "https://images.unsplash.com/photo-1576941089067-2de3c901e126?w=1200&q=85",
+      "https://lh3.googleusercontent.com/d/1-ErvZOlu8Gjfq7QEK1UdXb5H3YRXEKwS=w2000",
+      "https://lh3.googleusercontent.com/d/1-ucux4z8BFo2K7eDXC0wKTURmJDAyI0f=w2000",
+      "https://lh3.googleusercontent.com/d/146c7tIuwGIPsk8axkBGCjLVrSj6vbKdh=w2000",
+      "https://lh3.googleusercontent.com/d/14f2DItTxLKuMbQ1eJDfW4LQlt9MRDcSF=w2000",
+      "https://lh3.googleusercontent.com/d/150N6NlJuV9LfASv7kk0psAzZRS42eF2A=w2000",
+      "https://lh3.googleusercontent.com/d/15gMp1JsWh2vdv4v6liZmprAovo32JVdD=w2000",
+      "https://lh3.googleusercontent.com/d/19Fh77fPMhHzxFZVBgbTYd15fg7qVKtAI=w2000",
+      "https://lh3.googleusercontent.com/d/19O73PDx0aF_vKC_4tu3Js_CKXfb58QiN=w2000",
+      "https://lh3.googleusercontent.com/d/1L_j3Uoy8f3bxsouCTu4mccloyNU5729d=w2000",
+      "https://lh3.googleusercontent.com/d/1Tli7Mp0Ou9Ud3N-hf1NwZQsa-izjrmBj=w2000",
+      "https://lh3.googleusercontent.com/d/1WvZEeOEOsXy_K0fmIYmTngcN13mdTXB_=w2000",
+      "https://lh3.googleusercontent.com/d/1elwvgYrtWI20_JHf5ADm4FAcEh0caysx=w2000",
+      "https://lh3.googleusercontent.com/d/1ewsgLRYCWoD8IhxaqCcAdY-aZH0OMb4Z=w2000",
+      "https://lh3.googleusercontent.com/d/1n9Thf9W9jXTfZLzOQhLKvIxoQ4MnBw4D=w2000",
+      "https://lh3.googleusercontent.com/d/1niFLUlSIHlC-c4oJUNf0wG72r9Rf89tl=w2000",
+      "https://lh3.googleusercontent.com/d/1xm6XWuIHSegPpnYTwtUfpxNAkmZAlBYF=w2000",
+      "https://lh3.googleusercontent.com/d/1zyGX6u5DpUrdLf5lsWl9RVXKk-c7U1DM=w2000",
     ],
     plantas:[
-      {label:"Planta Tipo", img:"https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=900&q=80"},
-      {label:"Planta 3 Dorms", img:"https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=900&q=80"},
+      {label:"Planta Tipo", img:"https://lh3.googleusercontent.com/d/1TGJwtCMysqJmazO01STg32-P6RWQ_ed5=w2000"},
     ]
   },
   {
@@ -1047,7 +1265,7 @@ const DATA = [
     endereco:"Rua Michigan, 962", unidade:"Unidade 143 · 14° Andar · Torre B",
     status:"obras", entrega:"set/27", tipo:"Tipo", mobiliado:false,
     metragem:"164m²", deposito:false, dorms:"4 Suítes", vaga:"03 Vagas",
-    valor:"3.300.000,00", link:null, driveLink:null,
+    valor:"3.300.000,00", link:null, driveLink:"https://drive.google.com/drive/folders/1xoOHUnMxAnrEKZyEp1zvBxAssqqKA3td?usp=sharing",
     incorporadora:"Mitre Realty", incorporadoraLogo:null,
     mapQuery:"Rua Michigan, 962, Brooklin, São Paulo, SP",
     pois:[
@@ -1060,15 +1278,30 @@ const DATA = [
     ],
     fotos:[
       "https://lh3.googleusercontent.com/d/1hj2vUDInYopxwN18kDB_O4UIPL0FqEyS=w2000",
-      "https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?w=1200&q=85",
-      "https://images.unsplash.com/photo-1615874959474-d609969a20ed?w=1200&q=85",
-      "https://images.unsplash.com/photo-1617806118233-18e1de247200?w=1200&q=85",
-      "https://images.unsplash.com/photo-1556909172-54557c7e4fb7?w=1200&q=85",
+      "https://lh3.googleusercontent.com/d/1qwGFjIx_pgW8r4wMgB7G34uxadNGxo-j=w2000",
+      "https://lh3.googleusercontent.com/d/1yAJy6CyyyZxGOiaUOH93sJm5JgkVbK_o=w2000",
+      "https://lh3.googleusercontent.com/d/18VvKLL28dArGlKkLeS4LyYV0OZnhvmcM=w2000",
+      "https://lh3.googleusercontent.com/d/1MK7nYpPM5XrDNRDpIOS2_6Rva8KJd0iV=w2000",
+      "https://lh3.googleusercontent.com/d/1SQjnj0s9TgAlky8p5zrQtMCCIheGYoKh=w2000",
+      "https://lh3.googleusercontent.com/d/1sdi_jOfOpUx96CARwlGLuisX-LyYsnSa=w2000",
+      "https://lh3.googleusercontent.com/d/19NtDDl7p45Jhx9YcaJKQqG9Ka2RfbeaA=w2000",
+      "https://lh3.googleusercontent.com/d/1zaNJlfx4ZRkMSOK8TYnk5mlU4HF8p2l3=w2000",
+      "https://lh3.googleusercontent.com/d/1CFPgfiegjDzS4X6MSVnNQYLLTa8Y1FZe=w2000",
+      "https://lh3.googleusercontent.com/d/1YXlpS8c8vn_DowtZ9CWOYs2a9nepMfSE=w2000",
+      "https://lh3.googleusercontent.com/d/1-7IoDjCMB-ZJGxZp9qtfa0TYtyh3nNnM=w2000",
+      "https://lh3.googleusercontent.com/d/1tCJmRQWJsJI2HjQoGW8Rquto7qAEeY68=w2000",
+      "https://lh3.googleusercontent.com/d/1Js9-RT3P4c1ID2g-qFnXy9RzncOsWM8v=w2000",
+      "https://lh3.googleusercontent.com/d/15oCcekrEIWMRKjSq6wr7AUDgA2Aef6ht=w2000",
+      "https://lh3.googleusercontent.com/d/1A2jW6DEP8DLGAsECLNZDHzyCfqFUMqJn=w2000",
+      "https://lh3.googleusercontent.com/d/1V55clsXu25MsjY-fuc15K_a7EskDR4xK=w2000",
+      "https://lh3.googleusercontent.com/d/1LRrXBtS-9lkWheX3ugg54nFIqn9R891_=w2000",
+      "https://lh3.googleusercontent.com/d/1Bsvp2M1sTyw357zSiwNsjwEeeI0cggzk=w2000",
+      "https://lh3.googleusercontent.com/d/1iPFNSkbVgYdeviTA_v7KCA_cPiiY4_lu=w2000",
+      "https://lh3.googleusercontent.com/d/1LqsaH1HsPoKJEpVrDVG4ntUunKkBZLcr=w2000",
+      "https://lh3.googleusercontent.com/d/1EozWYCCiziCHG4_08yfxgkWJsS4TG31q=w2000",
+      "https://lh3.googleusercontent.com/d/1x0rc6g1cQpxch0V2CUpwfwGbTFZ_RGF3=w2000",
     ],
-    plantas:[
-      {label:"Planta Tipo",    img:"https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=900&q=80"},
-      {label:"Planta Cobertura",img:"https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=900&q=80"},
-    ]
+    plantas:[]
   }
 ];
 
@@ -1244,12 +1477,6 @@ function buildMapa(){
   const q=encodeURIComponent(d.mapQuery);
   const mLink=`https://maps.google.com/?q=${q}`;
   const embed=`https://maps.google.com/maps?q=${q}&output=embed&z=16`;
-  const poisHTML=(d.pois||[]).map(p=>`
-    <div class="poi">
-      <div class="poi-icon">${p.icon}</div>
-      <div class="poi-info"><div class="poi-name">${p.nome}</div><div class="poi-dist">${p.dist}</div></div>
-      <div class="poi-badge">${p.dist}</div>
-    </div>`).join('');
   document.getElementById('t-mapa').innerHTML=`
     <div class="photo-label" style="margin-top:0">Localização</div>
     <div class="map-address">
@@ -1262,8 +1489,7 @@ function buildMapa(){
     </div>
     <div class="map-wrap">
       <iframe class="map-frame" src="${embed}" allowfullscreen loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
-    </div>
-    ${d.pois&&d.pois.length?`<div class="poi-section-label">Pontos de Interesse</div><div class="poi-list">${poisHTML}</div>`:''}`;
+    </div>`;
 }
 
 /* LIGHTBOX */
@@ -1500,7 +1726,7 @@ function renderBreve(){
               <span class="breve-tag">Pré-lançamento</span>
               <span class="breve-tag">${d.bairro}</span>
             </div>
-            <h3 class="breve-name">Lançamento <em>Exclusivo</em></h3>
+            <h3 class="breve-name">${d.nome.charAt(0) + d.nome.slice(1).toLowerCase()}</h3>
             <div class="breve-addr">📍 ${d.endereco}</div>
             <p class="breve-desc">Empreendimento exclusivo em região nobre de São Paulo. Pré-comercialização iniciada — entre em contato para receber materiais, condições especiais de lançamento e tabela de valores em primeira mão.</p>
             <div class="breve-specs">
