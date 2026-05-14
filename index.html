@@ -133,6 +133,23 @@ main{padding:0 52px 100px;position:relative;z-index:1}
 .arrow-btn{width:30px;height:30px;border-radius:50%;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:13px;transition:all .25s}
 .card:hover .arrow-btn{border-color:var(--gold);color:var(--gold);background:var(--gold-glow)}
 
+
+/* MULTI-UNIT card badge */
+.multi-badge{position:absolute;top:46px;left:12px;background:#B8860B;color:#FFF;font-size:8px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:4px 10px;border-radius:3px;display:flex;align-items:center;gap:5px;box-shadow:0 2px 8px rgba(184,134,11,.25);z-index:2}
+.multi-badge::before{content:'';width:5px;height:5px;border-radius:50%;background:#FFF;animation:badgePulse 1.8s ease-in-out infinite}
+
+/* UNIT SELECTOR inside modal overview */
+.unit-selector{margin-bottom:18px;padding:16px;background:linear-gradient(135deg,rgba(184,134,11,.06) 0%,rgba(184,134,11,.02) 100%);border:1px solid rgba(184,134,11,.2);border-radius:6px}
+.unit-sel-label{font-size:8.5px;letter-spacing:2.5px;text-transform:uppercase;color:#B8860B;font-weight:700;margin-bottom:10px;display:flex;align-items:center;gap:6px}
+.unit-sel-label::before{content:'▸'}
+.unit-sel-tabs{display:flex;gap:8px;flex-wrap:wrap}
+.unit-tab{flex:1;min-width:140px;padding:11px 14px;background:var(--bg);border:1.5px solid var(--border);border-radius:5px;cursor:pointer;font-family:var(--font-b);text-align:left;transition:all .2s;display:flex;flex-direction:column;align-items:flex-start;gap:3px}
+.unit-tab:hover{border-color:var(--text);background:var(--surface);transform:translateY(-1px)}
+.unit-tab.active{background:#0A0A0A;border-color:#0A0A0A;color:#FFF}
+.unit-tab.active .unit-tab-val{color:#B8860B}
+.unit-tab{font-size:11px;font-weight:700;letter-spacing:.3px;color:var(--text)}
+.unit-tab-val{font-size:13px;font-weight:600;color:var(--text);font-family:var(--font-d);letter-spacing:-.2px}
+
 /* ══ MODAL ══ */
 .overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:200;display:flex;align-items:center;justify-content:center;padding:24px;opacity:0;pointer-events:none;transition:opacity .3s;backdrop-filter:blur(8px)}
 .overlay.open{opacity:1;pointer-events:all}
@@ -718,15 +735,6 @@ footer{border-top:1px solid var(--border);padding:28px 52px;display:flex;align-i
         <tbody id="tabelaoBody"></tbody>
       </table>
       <div class="tab-mobile-hint">⟵ Arraste horizontalmente para ver mais ⟶</div>
-
-      <div class="tab-footer" style="justify-content:center">
-        <div class="tab-foot-comissao">
-          <div>
-            <div class="tab-foot-com-label">Comissão</div>
-            <div class="tab-foot-com-val">3%<span>PF</span>·<span>4%</span>PJ</div>
-          </div>
-        </div>
-      </div>
         </div>
       </div>
     </div>
@@ -842,7 +850,10 @@ footer{border-top:1px solid var(--border);padding:28px 52px;display:flex;align-i
 
 <main id="oportunidades">
   <div class="section-head">
-    <h2 class="section-title">Oportunidades</h2>
+    <div>
+      <div style="font-size:10px;letter-spacing:3px;text-transform:uppercase;color:#B8860B;font-weight:700;margin-bottom:6px">▸ Portfólio</div>
+      <h2 class="section-title">Oportunidades <em style="font-style:italic;font-weight:200;color:#B8860B">GDVM</em></h2>
+    </div>
     <div style="display:flex;align-items:center;gap:18px;flex-wrap:wrap">
       <div class="filters">
         <button class="f-btn active" data-f="all">Todas</button>
@@ -1112,7 +1123,7 @@ const DATA = [
     endereco:"Rua Itapeva, 350", unidade:"Unidade 518 · 5° Andar",
     status:"pronto", entrega:"Pronto", tipo:"NR", mobiliado:false,
     metragem:"54m²", deposito:false, dorms:"1 Dorm", vaga:"Sem Vaga",
-    valor:"1.367.000,00", link:null, driveLink:"https://drive.google.com/drive/folders/1iUCzOAlZ5PHkUXnKu3lBJDu_HSNYezKI?usp=sharing",
+    valor:"1.400.000,00", link:null, driveLink:"https://drive.google.com/drive/folders/1iUCzOAlZ5PHkUXnKu3lBJDu_HSNYezKI?usp=sharing",
     incorporadora:"Mitre", incorporadoraLogo:"https://lh3.googleusercontent.com/d/1NWoVGecHNR2fWjHjVGyz8n3BfZwnkKIJ=w400",
     mapQuery:"Rua Itapeva, 350, Bela Vista, São Paulo, SP",
     pois:[
@@ -1195,12 +1206,17 @@ const DATA = [
       {icon:"🏫",nome:"Escola Vila Zappi",dist:"350m"},
     ],
     fotos:[
-      "https://lh3.googleusercontent.com/d/1fD-dV2gL6scE4_aC9yo6YRz6M71NTyCH=w2000",
-      "https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=1200&q=85",
-      "https://images.unsplash.com/photo-1505691938895-1758d7feb511?w=1200&q=85",
+      "https://lh3.googleusercontent.com/d/1E1rYFRv6BCObnHcurr-E5FRlzVCCK9oh=w2000",
+      "https://lh3.googleusercontent.com/d/1CrwTe-duW2y2ZySiMEZfS2KDspXfbJ0g=w2000",
+      "https://lh3.googleusercontent.com/d/1D8vnZdq2IL0s4FlS6-dm3KrcMlfX1G3v=w2000",
+      "https://lh3.googleusercontent.com/d/1HNE1y5aX3nC47TxVHQLAxhCChP1ZUykO=w2000",
+      "https://lh3.googleusercontent.com/d/1LVMr8KShfeWXuknXhW5KKaEZlEmwFIe7=w2000",
+      "https://lh3.googleusercontent.com/d/1_DaFwSuDl4oAbOtVf9aD8O4yEkeQ4cgh=w2000",
+      "https://lh3.googleusercontent.com/d/1g38iuAIYv4j3IztxsCNNaZv8hTGo4GJN=w2000",
+      "https://lh3.googleusercontent.com/d/1l8JO9n3V5WppkEcdhWc8ZCRhDJiaOo_8=w2000",
     ],
     plantas:[
-      {label:"Planta Studio", img:"https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=900&q=80"},
+      {label:"Planta Studio", img:"https://lh3.googleusercontent.com/d/1F_8g1vYOlez-AEhMZiIXIluHQUeWvIE5=w2000"},
     ]
   },
   {
@@ -1218,11 +1234,17 @@ const DATA = [
       {icon:"🏫",nome:"Escola Vila Zappi",dist:"350m"},
     ],
     fotos:[
-      "https://lh3.googleusercontent.com/d/1fD-dV2gL6scE4_aC9yo6YRz6M71NTyCH=w2000",
-      "https://images.unsplash.com/photo-1556909172-54557c7e4fb7?w=1200&q=85",
+      "https://lh3.googleusercontent.com/d/1E1rYFRv6BCObnHcurr-E5FRlzVCCK9oh=w2000",
+      "https://lh3.googleusercontent.com/d/1CrwTe-duW2y2ZySiMEZfS2KDspXfbJ0g=w2000",
+      "https://lh3.googleusercontent.com/d/1D8vnZdq2IL0s4FlS6-dm3KrcMlfX1G3v=w2000",
+      "https://lh3.googleusercontent.com/d/1HNE1y5aX3nC47TxVHQLAxhCChP1ZUykO=w2000",
+      "https://lh3.googleusercontent.com/d/1LVMr8KShfeWXuknXhW5KKaEZlEmwFIe7=w2000",
+      "https://lh3.googleusercontent.com/d/1_DaFwSuDl4oAbOtVf9aD8O4yEkeQ4cgh=w2000",
+      "https://lh3.googleusercontent.com/d/1g38iuAIYv4j3IztxsCNNaZv8hTGo4GJN=w2000",
+      "https://lh3.googleusercontent.com/d/1l8JO9n3V5WppkEcdhWc8ZCRhDJiaOo_8=w2000",
     ],
     plantas:[
-      {label:"Planta Studio", img:"https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=900&q=80"},
+      {label:"Planta Studio", img:"https://lh3.googleusercontent.com/d/1F_8g1vYOlez-AEhMZiIXIluHQUeWvIE5=w2000"},
     ]
   },
   {
@@ -1230,7 +1252,7 @@ const DATA = [
     endereco:"Rua Cavour, 439", unidade:"Unidade 82 · 8° Andar",
     status:"obras", entrega:"ago/27", tipo:"Tipo", mobiliado:false,
     metragem:"83m²", deposito:false, dorms:"3 Dorms", vaga:"01 Vaga Det.",
-    valor:"830.000,00", link:null, driveLink:"https://drive.google.com/drive/folders/1jSO0NBrNf5TStZ_TmtB2MCZ_LXlFfC2Z?usp=sharing",
+    valor:"870.000,00", link:null, driveLink:"https://drive.google.com/drive/folders/1jSO0NBrNf5TStZ_TmtB2MCZ_LXlFfC2Z?usp=sharing",
     incorporadora:"Cordoba", incorporadoraLogo:"https://lh3.googleusercontent.com/d/1J9tfJ7RulqarYV3M_U6jnwJ5l5oymXL-=w400",
     mapQuery:"Rua Cavour, 439, Vila Prudente, São Paulo, SP",
     pois:[
@@ -1314,27 +1336,54 @@ const DATA = [
 function render(f) {
   const grid = document.getElementById('grid');
   grid.querySelectorAll('.card').forEach(c=>c.remove());
-  // Exclude "breve" items — they appear on the BREVE LANÇAMENTO section
-  const items = DATA.filter(d=>{
+
+  // Filter out breve (shown in dedicated section)
+  const filtered = DATA.filter(d=>{
     if(d.status==='breve') return false;
     return f==='all'||d.status===f;
   });
-  document.getElementById('cnt').textContent = items.length+(items.length!==1?' imóveis':' imóvel');
-  items.forEach((d,i)=>{
-    const idx = DATA.indexOf(d);
+
+  // Group by (nome + endereco)
+  const groupsMap = {};
+  filtered.forEach(d => {
+    const key = d.nome + '|' + d.endereco;
+    if(!groupsMap[key]) groupsMap[key] = {items:[], indices:[]};
+    groupsMap[key].items.push(d);
+    groupsMap[key].indices.push(DATA.indexOf(d));
+  });
+  const groups = Object.values(groupsMap);
+
+  // Update counter — count GROUPS but show "N unidades" hint
+  const totalUnits = filtered.length;
+  document.getElementById('cnt').textContent = groups.length + (groups.length!==1?' empreendimentos':' empreendimento') + ' · ' + totalUnits + (totalUnits!==1?' unidades':' unidade');
+
+  groups.forEach((g,gi)=>{
+    const d = g.items[0]; // representative item
+    const isMulti = g.items.length > 1;
+    const idxList = g.indices;
+
     const thumb = d.fotos&&d.fotos.length
       ?`<img src="${d.fotos[0]}" alt="${d.nome}" loading="lazy">`
       :`<div class="ph"><div class="ph-icon">🏙</div><div class="ph-txt">Sem foto</div></div>`;
     const stLbl = d.status==='pronto'?'Pronto':'Em Obras · '+d.entrega;
     const extras=[d.mobiliado?'Mobiliado':'',d.deposito?'+Dep.':''].filter(Boolean).join(' · ');
+
+    // Price display: single price or range
+    const valores = g.items.map(it => parseFloat(it.valor.replace(/\./g,'').replace(',','.'))).filter(v=>!isNaN(v));
+    const min = Math.min(...valores), max = Math.max(...valores);
+    const valorDisplay = min === max
+      ? 'R$ ' + d.valor
+      : 'R$ ' + min.toLocaleString('pt-BR').replace(',00','') + ' — ' + max.toLocaleString('pt-BR').replace(',00','');
+
     const c=document.createElement('div');
     c.className='card';
-    c.style.animationDelay=(i*.07)+'s';
+    c.style.animationDelay=(gi*.07)+'s';
     c.innerHTML=`
       <div class="card-img">
         ${thumb}
         <div class="badge ${d.status}">${stLbl}</div>
         <div class="tag">${d.tipo}${extras?' · '+extras:''}</div>
+        ${isMulti?`<div class="multi-badge">${g.items.length} UNIDADES</div>`:''}
         ${d.fotos&&d.fotos.length>1?`<div class="img-count">📷 ${d.fotos.length}</div>`:''}
       </div>
       <div class="card-body">
@@ -1347,23 +1396,36 @@ function render(f) {
           <div><div class="spec-v">${d.vaga}</div><div class="spec-l">Garagem</div></div>
         </div>
         <div class="card-foot">
-          <div class="price">R$ ${d.valor}</div>
+          <div class="price">${isMulti?'<span style="font-size:9px;color:var(--muted);font-weight:500;display:block;letter-spacing:1px;text-transform:uppercase;margin-bottom:1px">A partir de</span>':''}${valorDisplay}</div>
           <div class="arrow-btn">→</div>
         </div>
       </div>`;
-    c.addEventListener('click',()=>openModal(idx));
+    c.addEventListener('click',()=>openModalGroup(idxList, 0));
     c.addEventListener('mouseenter',()=>document.body.classList.add('hovering'));
     c.addEventListener('mouseleave',()=>document.body.classList.remove('hovering'));
     grid.appendChild(c);
   });
-  document.getElementById('noRes').style.display=items.length?'none':'block';
+  document.getElementById('noRes').style.display=groups.length?'none':'block';
 }
 
 /* ──────────── MODAL ──────────── */
 let _d=null,_fi=0,_lfi=0;
+let _groupIndices=null, _activeGroupIdx=0;
 
 function openModal(idx){
-  _d=DATA[idx]; _fi=0;
+  // Find which group this idx belongs to
+  const d = DATA[idx];
+  const key = d.nome + '|' + d.endereco;
+  const groupIndices = DATA.map((it,i)=>({it,i})).filter(x=>(x.it.nome+'|'+x.it.endereco)===key).map(x=>x.i);
+  const activeIdx = groupIndices.indexOf(idx);
+  openModalGroup(groupIndices, activeIdx < 0 ? 0 : activeIdx);
+}
+
+function openModalGroup(idxList, activeIdx=0){
+  _groupIndices = idxList;
+  _activeGroupIdx = activeIdx;
+  const idx = idxList[activeIdx];
+  _d = DATA[idx]; _fi = 0;
   document.getElementById('mBread').textContent=_d.bairro+' · '+_d.nome;
   buildOverview();
   buildFotos(0);
@@ -1373,6 +1435,18 @@ function openModal(idx){
   document.getElementById('ov').classList.add('open');
   document.getElementById('mScroll').scrollTop=0;
 }
+
+window.selectGroupUnit = function(activeIdx){
+  if(!_groupIndices) return;
+  _activeGroupIdx = activeIdx;
+  const idx = _groupIndices[activeIdx];
+  _d = DATA[idx]; _fi = 0;
+  buildOverview();
+  buildFotos(0);
+  buildPlantas(0);
+  buildMapa();
+  document.getElementById('mScroll').scrollTop=0;
+};
 function closeModal(){document.getElementById('ov').classList.remove('open');}
 document.getElementById('ov').addEventListener('click',e=>{if(e.target.id==='ov')closeModal();});
 document.addEventListener('keydown',e=>{if(e.key==='Escape')closeLbox()||closeModal();});
@@ -1396,6 +1470,17 @@ function buildOverview(){
   const mLink=`https://maps.google.com/?q=${encodeURIComponent(d.mapQuery)}`;
   document.getElementById('t-overview').innerHTML=`
     <div class="m-hero-img">${hImg}</div>
+    ${_groupIndices && _groupIndices.length > 1 ? `
+      <div class="unit-selector">
+        <div class="unit-sel-label">Unidades disponíveis</div>
+        <div class="unit-sel-tabs">
+          ${_groupIndices.map((i,j)=>{
+            const u = DATA[i];
+            const unitNum = u.unidade.replace('Unidade ','').split(' ·')[0];
+            return `<button class="unit-tab ${j===_activeGroupIdx?'active':''}" onclick="selectGroupUnit(${j})">Un. ${unitNum}<span class="unit-tab-val">R$ ${u.valor}</span></button>`;
+          }).join('')}
+        </div>
+      </div>` : ''}
     <div class="m-badge-row"><span class="badge ${d.status}" style="position:static;display:inline-block">${stLbl}</span></div>
     <div class="m-name">${d.nome}</div>
     <div class="m-addr">${d.endereco} · ${d.bairro}</div>
