@@ -312,7 +312,7 @@ var D=[
 {id:9,n:"HAUS MITRE EDITION NY",b:"Brooklin",e:"Rua Michigan, 962",u:"Un. 143 · 14° T.B",s:"obras",ent:"set/27",t:"Tipo",m:"164m²",d:"4",v:"3",val:"3.300.000,00",dr:"https://drive.google.com/drive/folders/1xoOHUnMxAnrEKZyEp1zvBxAssqqKA3td",mq:"Rua Michigan 962 Brooklin São Paulo SP",desc:"Luxo 164m², 4 suítes, 3 vagas no Brooklin. Entrega set/27.",f:["https://lh3.googleusercontent.com/d/1hj2vUDInYopxwN18kDB_O4UIPL0FqEyS=w2000","https://lh3.googleusercontent.com/d/1qwGFjIx_pgW8r4wMgB7G34uxadNGxo-j=w2000","https://lh3.googleusercontent.com/d/1yAJy6CyyyZxGOiaUOH93sJm5JgkVbK_o=w2000","https://lh3.googleusercontent.com/d/18VvKLL28dArGlKkLeS4LyYV0OZnhvmcM=w2000","https://lh3.googleusercontent.com/d/19NtDDl7p45Jhx9YcaJKQqG9Ka2RfbeaA=w2000"],co:[-23.6055,-46.6930],inc:"Mitre",il:"https://lh3.googleusercontent.com/d/1NWoVGecHNR2fWjHjVGyz8n3BfZwnkKIJ=w400",mob:0,dep:0,poi:[{i:"🚇",n:"Metrô Brooklin",d:"600m"},{i:"🛒",n:"Market Place",d:"500m"},{i:"✈️",n:"Congonhas",d:"4km"},{i:"🌳",n:"Burle Marx",d:"2km"}],pl:[]}
 ];
 
-var F=[...D],ai=3,fpi=0,fH=false,map=null,mkrs=[];
+var F=[...D],ai=-1,fpi=0,fH=false,map=null,mkrs=[];
 function fp(x){var n=parseFloat(x.replace(/\./g,'').replace(',','.'));return isNaN(n)?x:n>=1e6?(n/1e6).toFixed(1).replace('.',',')+' M':'R$ '+x;}
 function sL(s,e){return s==='pronto'?'Pronto':s==='obras'?'Obras · '+e:'Breve';}
 
@@ -322,7 +322,7 @@ function initMap(){
   map=new mapboxgl.Map({container:'map',style:'mapbox://styles/mapbox/light-v11',center:[-46.64,-23.59],zoom:11.5});
   map.addControl(new mapboxgl.NavigationControl({showCompass:false}),'top-right');
   map.on('load',function(){
-    mkr();fit();sel(ai);
+    mkr();fit();document.getElementById('featCard').style.display='none';fH=true;rList();
     // Refine with geocoding
     geoAll().then(function(){ mkr(); fit(); });
   });
@@ -468,7 +468,7 @@ window.applyF=function(){
   var f=document.querySelector('.pill.on[data-f]').dataset.f;var q=document.getElementById('sIn').value.toLowerCase();var ba=brs[bi];
   F=D.filter(function(d){if(f!=='all'&&d.s!==f)return false;if(ba!=='Todos'&&d.b!==ba)return false;if(q&&d.n.toLowerCase().indexOf(q)<0&&d.b.toLowerCase().indexOf(q)<0)return false;return true;});
   document.querySelector('.pill[data-f="all"]').textContent='Todos · '+F.length;
-  if(F.length){var pi=F.findIndex(function(d){return d.id===(D[ai]?D[ai].id:-1);});ai=pi>=0?pi:0;mkr();sel(ai);}else{mkr();rList();}
+  if(F.length){if(ai>=0){var pi=F.findIndex(function(d){return d.id===(D[ai]?D[ai].id:-1);});if(pi>=0){ai=pi;mkr();sel(ai);}else{ai=-1;mkr();document.getElementById('featCard').style.display='none';fH=true;rList();}}else{mkr();rList();}}else{mkr();rList();}
 };
 
 /* ═══ TABELÃO ═══ */
