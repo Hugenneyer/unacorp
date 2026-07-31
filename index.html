@@ -2,526 +2,616 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>UNACORP · Portfólio 2026</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
-<link href="https://api.mapbox.com/mapbox-gl-js/v3.4.0/mapbox-gl.css" rel="stylesheet">
-<script src="https://api.mapbox.com/mapbox-gl-js/v3.4.0/mapbox-gl.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>UNACORP · Catálogo de Imóveis</title>
 <style>
-:root{--bg:#EDEEF2;--surf:#fff;--txt:#111;--sub:#888;--bdr:#EFEFEF;--bdr2:#E0E0E0;--gold:#B8860B;--gold-bg:#FFFBEC;--green:#16A34A;--amber:#D97706;--r:12px}
-*{margin:0;padding:0;box-sizing:border-box}
-html,body{height:100%;overflow:hidden;font-family:'Inter',sans-serif;background:var(--bg);color:var(--txt);font-size:13px;-webkit-font-smoothing:antialiased}
-::-webkit-scrollbar{width:5px;height:5px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:#D0D0D0;border-radius:99px}::-webkit-scrollbar-thumb:hover{background:#B0B0B0}
-::selection{background:var(--gold);color:#fff}
-.app{display:flex;flex-direction:column;height:100vh;padding:10px;gap:0}
+:root{
+  --bg:#FAFAF8; --ink:#161613; --sub:#75756E; --line:#E7E5DE;
+  --gold:#A67C00; --gold-soft:#F5EEDC; --green:#16A34A; --amber:#D97706;
+  --card:#FFFFFF; --shadow:0 1px 3px rgba(20,20,15,.06),0 8px 24px rgba(20,20,15,.05);
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html{scroll-behavior:smooth}
+body{font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;background:var(--bg);color:var(--ink);font-size:14px;line-height:1.5}
+img{display:block}
+button{font-family:inherit;cursor:pointer;border:none;background:none}
+a{color:inherit;text-decoration:none}
+::-webkit-scrollbar{width:8px;height:8px}::-webkit-scrollbar-thumb{background:#D5D3CC;border-radius:4px}
 
-/* ═══ TOPBAR ═══ */
-.topbar{display:flex;align-items:center;justify-content:space-between;padding:0 24px;height:58px;background:var(--surf);border-radius:16px 16px 0 0;border-bottom:1px solid var(--bdr);flex-shrink:0}
-.tb-logo{display:flex;align-items:center;text-decoration:none}
-.tb-logo img{height:28px}
-.tb-nav{display:flex;gap:2px;background:#F5F5F5;padding:4px;border-radius:10px}
-.tb-nav a{font-size:12px;font-weight:500;color:var(--sub);padding:7px 16px;border-radius:8px;text-decoration:none;transition:all .15s}
-.tb-nav a:hover{color:var(--txt)}
-.tb-nav a.on{background:var(--surf);color:var(--txt);font-weight:600;box-shadow:0 1px 3px rgba(0,0,0,.08)}
-.tb-right{display:flex;align-items:center;gap:12px}
-.tb-user{display:flex;align-items:center;gap:8px;font-weight:600;font-size:12.5px;color:var(--sub)}
-.tb-av{width:32px;height:32px;border-radius:10px;background:linear-gradient(135deg,var(--gold),#C9A84C);display:flex;align-items:center;justify-content:center;color:#fff;font-size:12px;font-weight:700;font-family:'Instrument Serif',serif}
-.tb-icon{width:34px;height:34px;border-radius:10px;border:1.5px solid var(--bdr);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:15px;background:var(--surf);transition:all .15s;position:relative}
-.tb-icon:hover{background:#F5F5F5;border-color:var(--bdr2)}
-.tb-dot{position:absolute;top:6px;right:6px;width:6px;height:6px;background:var(--gold);border-radius:50%;border:1.5px solid var(--surf)}
-@media(max-width:768px){.tb-nav{display:none}.topbar{padding:0 16px;height:52px}}
+/* ═══ HEADER ═══ */
+.hd{position:sticky;top:0;z-index:50;background:rgba(250,250,248,.92);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+.hd-in{max-width:1280px;margin:0 auto;padding:0 24px;height:60px;display:flex;align-items:center;gap:16px}
+.logo{font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;font-weight:700;font-size:19px;letter-spacing:3px}
+.logo em{font-style:normal;color:var(--gold)}
+.hd-sp{flex:1}
+.hd-btn{display:flex;align-items:center;gap:7px;padding:9px 16px;border-radius:99px;background:var(--ink);color:#fff;font-size:12.5px;font-weight:600;transition:.2s}
+.hd-btn:hover{background:var(--gold)}
 
-/* ═══ FILTERS ═══ */
-.filters{display:flex;align-items:center;gap:8px;padding:10px 24px;background:var(--surf);border-bottom:1px solid var(--bdr);flex-shrink:0;overflow-x:auto;-ms-overflow-style:none;scrollbar-width:none}
-.filters::-webkit-scrollbar{display:none}
-.pill{display:inline-flex;align-items:center;gap:5px;padding:7px 14px;border-radius:99px;font-size:11.5px;font-weight:500;cursor:pointer;border:1.5px solid var(--bdr);background:var(--surf);color:var(--sub);transition:all .15s;white-space:nowrap;flex-shrink:0;user-select:none}
-.pill:hover{border-color:var(--bdr2);color:var(--txt)}
-.pill.on{background:var(--txt);border-color:var(--txt);color:#fff;font-weight:600}
-.pill.gold{background:var(--gold);border-color:var(--gold);color:#fff}
-.sep{width:1px;height:22px;background:var(--bdr);flex-shrink:0}
-.search{display:flex;align-items:center;gap:6px;padding:7px 14px;background:#F5F5F5;border:1.5px solid var(--bdr);border-radius:99px;min-width:160px;max-width:220px;flex:1;transition:border-color .15s}
-.search:focus-within{border-color:var(--txt);background:var(--surf)}
-.search input{border:none;background:transparent;font-family:inherit;font-size:12px;outline:none;width:100%;color:var(--txt)}
-.search input::placeholder{color:#BBB}
+/* ═══ INTRO ═══ */
+.intro{max-width:1280px;margin:0 auto;padding:44px 24px 8px}
+.intro-ey{font-size:10px;letter-spacing:3.5px;text-transform:uppercase;color:var(--gold);font-weight:700;margin-bottom:10px}
+.intro h1{font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;font-weight:700;font-size:clamp(28px,4.5vw,44px);font-weight:400;line-height:1.12;max-width:560px}
+.intro p{color:var(--sub);margin-top:10px;font-size:14.5px;max-width:480px}
 
-/* ═══ BODY ═══ */
-.body{display:grid;grid-template-columns:1fr 450px;flex:1;overflow:hidden;background:var(--surf);border-radius:0 0 16px 16px}
-@media(max-width:960px){.body{grid-template-columns:1fr}}
+/* ═══ TOOLBAR ═══ */
+.tb{position:sticky;top:60px;z-index:40;background:rgba(250,250,248,.94);backdrop-filter:blur(12px);border-bottom:1px solid var(--line);margin-top:26px}
+.tb-in{max-width:1280px;margin:0 auto;padding:12px 24px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.srch{display:flex;align-items:center;gap:8px;background:var(--card);border:1px solid var(--line);border-radius:99px;padding:8px 14px;min-width:200px;flex:1;max-width:300px}
+.srch input{border:none;outline:none;background:none;font-family:inherit;font-size:13px;width:100%;color:var(--ink)}
+.chips{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none}
+.chips::-webkit-scrollbar{display:none}
+.chip{white-space:nowrap;padding:8px 15px;border-radius:99px;border:1px solid var(--line);background:var(--card);font-size:12.5px;font-weight:500;color:var(--sub);transition:.18s}
+.chip.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+.chip:hover:not(.on){border-color:#C9C6BD;color:var(--ink)}
+.tb-sp{flex:1}
+.sort{display:flex;align-items:center;gap:6px;padding:8px 14px;border-radius:99px;border:1px solid var(--line);background:var(--card);font-size:12.5px;font-weight:500;color:var(--sub);white-space:nowrap;transition:.18s}
+.sort:hover{color:var(--ink)}
+.count{font-size:12px;color:var(--sub);white-space:nowrap}
+.count b{color:var(--ink)}
 
-/* ═══ MAP ═══ */
-.map-wrap{position:relative;overflow:hidden}
-#map{width:100%;height:100%}
-.mapboxgl-popup-content{background:var(--surf);border:1px solid var(--bdr);border-radius:14px;box-shadow:0 12px 32px rgba(0,0,0,.12);padding:0;overflow:hidden;font-family:inherit;width:240px}
-.mapboxgl-popup-close-button{font-size:18px;color:#CCC;padding:8px 10px;transition:color .15s}
-.mapboxgl-popup-close-button:hover{color:var(--txt);background:transparent}
-.mapboxgl-popup-tip{border-top-color:var(--surf)}
-.mapboxgl-ctrl-attrib,.mapboxgl-ctrl-logo{display:none!important}
-.pop{padding:14px}
-.pop-img{width:100%;height:120px;object-fit:cover;border-radius:10px;margin-bottom:10px;background:#F0F0F0}
-.pop-name{font-family:'Instrument Serif',serif;font-size:15px;color:var(--txt);margin-bottom:2px}
-.pop-addr{font-size:11px;color:var(--sub);margin-bottom:8px}
-.pop-row{display:flex;gap:10px;padding:8px 0;border-top:1px solid var(--bdr);margin-bottom:8px}
-.pop-spec{font-size:10.5px;color:#666;display:flex;align-items:center;gap:3px}
-.pop-price{font-family:'Instrument Serif',serif;font-size:17px;color:var(--txt);margin-bottom:10px}
-.pop-btn{display:block;width:100%;padding:10px;background:var(--txt);color:#fff;border:none;border-radius:8px;font-size:11px;font-weight:600;cursor:pointer;font-family:inherit;transition:background .15s}
-.pop-btn:hover{background:var(--gold)}
-
-/* ═══ PANEL ═══ */
-.panel{border-left:1px solid var(--bdr);display:flex;flex-direction:column;overflow:hidden}
-
-/* Featured */
-.feat{flex-shrink:0;border-bottom:1px solid var(--bdr)}
-.feat-img{position:relative;height:230px;overflow:hidden;background:#F0F0F0}
-.feat-img img{width:100%;height:100%;object-fit:cover;transition:opacity .25s}
-.feat-badge{position:absolute;top:12px;left:12px;padding:5px 12px;border-radius:8px;font-size:10px;font-weight:700;letter-spacing:.5px;color:#fff;box-shadow:0 2px 8px rgba(0,0,0,.12)}
-.feat-badge.pronto{background:var(--green)}.feat-badge.obras{background:var(--amber)}.feat-badge.breve{background:var(--gold)}
-.feat-x{position:absolute;top:12px;right:12px;width:30px;height:30px;background:rgba(255,255,255,.92);backdrop-filter:blur(4px);border:none;border-radius:10px;cursor:pointer;font-size:13px;color:#666;display:flex;align-items:center;justify-content:center;transition:all .15s;z-index:2}
-.feat-x:hover{background:#fff;color:var(--txt);transform:scale(1.05)}
-.feat-dots{position:absolute;bottom:12px;left:50%;transform:translateX(-50%);display:flex;gap:5px}
-.feat-dot{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.45);cursor:pointer;transition:all .2s}
-.feat-dot.on{background:#fff;width:20px;border-radius:4px}
-.feat-arrows{position:absolute;bottom:12px;left:12px;display:flex;gap:4px}
-.feat-arr{width:28px;height:28px;background:rgba(255,255,255,.88);backdrop-filter:blur(4px);border:none;border-radius:8px;cursor:pointer;font-size:12px;display:flex;align-items:center;justify-content:center;transition:all .12s}
-.feat-arr:hover{background:#fff}
-.feat-body{padding:16px 18px}
-.feat-status{margin-bottom:8px}
-.feat-title{font-family:'Instrument Serif',serif;font-size:21px;color:var(--txt);letter-spacing:-.3px;margin-bottom:4px}
-.feat-addr{font-size:11.5px;color:var(--sub);margin-bottom:12px;display:flex;align-items:center;gap:4px}
-.feat-specs{display:flex;gap:6px;margin-bottom:12px;flex-wrap:wrap}
-.feat-tag{display:flex;align-items:center;gap:4px;padding:5px 10px;background:#F5F5F5;border-radius:6px;font-size:11.5px;color:#555;font-weight:500}
-.feat-desc{font-size:12px;line-height:1.7;color:var(--sub);margin-bottom:12px}
-.feat-desc a{color:var(--txt);font-weight:600;text-decoration:none}
-.feat-price-row{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;background:#FAFAFA;border:1px solid var(--bdr);border-radius:10px;margin-bottom:14px}
-.feat-price-label{font-size:10px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--sub)}
-.feat-price{font-family:'Instrument Serif',serif;font-size:22px;color:var(--txt)}
-.feat-btns{display:flex;gap:8px}
-.btn-p{flex:1;padding:12px;background:var(--txt);color:#fff;border:none;border-radius:10px;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit;transition:all .15s;display:flex;align-items:center;justify-content:center;gap:6px}
-.btn-p:hover{background:var(--gold);transform:translateY(-1px)}
-.btn-s{width:40px;height:40px;background:#F5F5F5;border:1.5px solid var(--bdr);border-radius:10px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:15px;flex-shrink:0;transition:all .12s}
-.btn-s:hover{background:#EAEAEA;border-color:var(--bdr2)}
-
-/* Listing */
-.list-head{padding:12px 18px 8px;display:flex;justify-content:space-between;align-items:center;flex-shrink:0}
-.list-title{font-size:11px;font-weight:600;letter-spacing:.5px;text-transform:uppercase;color:var(--sub)}
-.list-cnt{font-size:11px;font-weight:600;color:var(--gold)}
-.list-scroll{flex:1;overflow-y:auto;padding:0 18px 14px;display:flex;flex-direction:column;gap:10px}
-.list-scroll::-webkit-scrollbar{width:0}
-
-.card{display:flex;gap:14px;padding:12px;background:#FAFAFA;border:1.5px solid var(--bdr);border-radius:14px;cursor:pointer;transition:all .2s;flex-shrink:0;animation:fadeUp .35s ease forwards;opacity:0}
-.card:hover{border-color:var(--txt);background:var(--surf);box-shadow:0 6px 20px rgba(0,0,0,.06);transform:translateY(-1px)}
-.card-img{width:100px;height:100px;border-radius:10px;object-fit:cover;background:#F0F0F0;flex-shrink:0}
-.card-body{flex:1;min-width:0;display:flex;flex-direction:column;justify-content:center}
-.card-name{font-size:10px;font-weight:700;color:var(--sub);text-transform:uppercase;letter-spacing:.8px;margin-bottom:2px}
-.card-price{font-family:'Instrument Serif',serif;font-size:19px;color:var(--txt);margin-bottom:4px}
-.card-addr{font-size:11px;color:#AAA;margin-bottom:8px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.card-bottom{display:flex;align-items:center;justify-content:space-between}
-.card-specs{display:flex;gap:8px}
-.card-spec{font-size:11px;color:#888;display:flex;align-items:center;gap:3px}
-.badge{font-size:8.5px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:3px 8px;border-radius:6px;display:inline-flex;align-items:center;gap:4px}
-.badge::before{content:'';width:4px;height:4px;border-radius:50%;background:currentColor}
-.badge.pronto{background:#DCFCE7;color:#15803D}.badge.obras{background:#FEF3C7;color:#92400E}.badge.breve{background:var(--gold-bg);color:var(--gold)}
+/* ═══ GRID ═══ */
+.grid{max-width:1280px;margin:0 auto;padding:28px 24px 80px;display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:24px}
+.pc{background:var(--card);border:1px solid var(--line);border-radius:18px;overflow:hidden;cursor:pointer;transition:transform .25s cubic-bezier(.2,.8,.3,1),box-shadow .25s;animation:up .45s cubic-bezier(.2,.8,.3,1) both}
+.pc:hover{transform:translateY(-4px);box-shadow:var(--shadow)}
+@keyframes up{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+.pc-img{position:relative;height:230px;background:#EDEBE4;overflow:hidden}
+.pc-img img{width:100%;height:100%;object-fit:cover;transition:transform .5s ease}
+.pc:hover .pc-img img{transform:scale(1.045)}
+.pc-badge{position:absolute;top:12px;left:12px;padding:5px 11px;border-radius:99px;font-size:10px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;color:#fff;backdrop-filter:blur(6px)}
+.pc-badge.pronto{background:rgba(22,163,74,.92)}
+.pc-badge.obras{background:rgba(217,119,6,.92)}
+.pc-badge.breve{background:rgba(166,124,0,.92)}
+.pc-badge.def{background:rgba(107,114,128,.92)}
+.pc-corp{position:absolute;top:12px;right:12px;padding:5px 11px;border-radius:99px;font-size:10px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;background:rgba(30,58,138,.92);color:#fff;backdrop-filter:blur(6px)}
+.pc-unit{position:absolute;bottom:12px;right:12px;padding:4px 10px;border-radius:8px;background:rgba(20,20,15,.62);backdrop-filter:blur(6px);color:#fff;font-size:11px;font-weight:600}
+.pc-body{padding:18px 20px 20px}
+.pc-name{font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;font-weight:700;font-size:19px;letter-spacing:.5px;line-height:1.2}
+.pc-addr{font-size:12.5px;color:var(--sub);margin-top:3px}
+.pc-specs{display:flex;gap:14px;margin-top:12px;padding-top:12px;border-top:1px solid var(--line)}
+.pc-spec{font-size:12px;color:var(--sub);display:flex;align-items:center;gap:5px}
+.pc-spec b{color:var(--ink);font-weight:600}
+.pc-price{margin-top:12px;display:flex;align-items:baseline;justify-content:space-between}
+.pc-val{font-size:19px;font-weight:700;letter-spacing:-.3px}
+.pc-val small{font-size:11px;font-weight:600;color:var(--sub);margin-right:3px}
+.pc-cta{font-size:12px;font-weight:600;color:var(--gold)}
+.empty{grid-column:1/-1;text-align:center;padding:70px 20px;color:var(--sub)}
+.empty b{display:block;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;font-weight:700;font-size:20px;color:var(--ink);margin-bottom:6px}
 
 /* ═══ TABELÃO ═══ */
-.modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:1000;display:flex;align-items:center;justify-content:center;padding:16px;opacity:0;pointer-events:none;transition:opacity .2s;backdrop-filter:blur(6px)}
-.modal-bg.open{opacity:1;pointer-events:all}
-.modal{background:var(--surf);border-radius:18px;width:100%;max-width:1100px;max-height:90vh;display:flex;flex-direction:column;transform:translateY(12px) scale(.98);transition:transform .25s;overflow:hidden;box-shadow:0 30px 80px rgba(0,0,0,.18)}
-.modal-bg.open .modal{transform:none}
-.m-head{display:flex;align-items:center;justify-content:space-between;padding:20px 24px;border-bottom:1px solid var(--bdr);flex-shrink:0}
-.m-ey{font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:4px}
-.m-title{font-family:'Instrument Serif',serif;font-size:22px;color:var(--txt)}
-.m-title em{color:var(--gold);font-style:italic}
-.m-sub{font-size:11px;color:var(--sub)}
-.m-x{width:34px;height:34px;border-radius:10px;background:#F5F5F5;border:none;color:#888;font-size:15px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .15s}
-.m-x:hover{background:var(--txt);color:#fff}
-.m-filters{display:flex;gap:4px;padding:12px 24px;border-bottom:1px solid var(--bdr);flex-shrink:0}
-.m-f{padding:7px 14px;background:#F5F5F5;border:1px solid var(--bdr);border-radius:8px;font-family:inherit;font-size:11px;font-weight:600;color:var(--sub);cursor:pointer;transition:all .15s}
-.m-f:hover{color:var(--txt)}.m-f.on{background:var(--txt);color:#fff;border-color:var(--txt)}
-.m-scroll{overflow:auto;flex:1}
-.tbl{width:100%;border-collapse:collapse;font-size:12px;min-width:950px}
-.tbl thead th{position:sticky;top:0;z-index:2;background:#FAFAFA;padding:12px;font-size:8.5px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--sub);text-align:left;border-bottom:1px solid var(--bdr)}
-.tbl .r{text-align:right}.tbl .c{text-align:center}
-.tgrp td{padding:10px 16px;font-size:9px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:#fff}
-.tgrp.pronto td{background:linear-gradient(90deg,#1a1a1a,var(--green))}
-.tgrp.obras td{background:linear-gradient(90deg,#1a1a1a,var(--amber))}
-.tgrp.breve td{background:linear-gradient(90deg,#1a1a1a,var(--gold))}
-.tgrp .gd{display:inline-block;width:6px;height:6px;border-radius:50%;background:#fff;margin-right:8px;vertical-align:middle}
-.trow{cursor:pointer;transition:background .1s}.trow:hover{background:#FFFDF5}
-.trow td{padding:12px;border-bottom:1px solid var(--bdr);color:#666}
-.trow td:first-child{font-weight:600;color:var(--txt)}
-.tstg{font-size:8.5px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:3px 8px;border-radius:4px}
-.tstg.pronto{background:#DCFCE7;color:#15803D}.tstg.obras{background:#FEF3C7;color:#92400E}.tstg.breve{background:var(--gold-bg);color:var(--gold)}
-.tlink{padding:4px 10px;background:var(--txt);color:#fff;border-radius:4px;font-size:8.5px;font-weight:700;letter-spacing:1px;text-transform:uppercase;text-decoration:none;transition:background .15s}
-.tlink:hover{background:var(--gold)}.tlink.off{background:#F0F0F0;color:#CCC;pointer-events:none}
+.tab-bg{position:fixed;top:0;left:0;right:0;bottom:0;z-index:120;background:rgba(20,20,15,.5);display:none;align-items:center;justify-content:center;padding:20px}
+.tab-bg.open{display:flex}
+.tab-m{background:var(--bg);border-radius:20px;width:100%;max-width:1080px;max-height:88vh;display:flex;flex-direction:column;overflow:hidden}
+.tab-hd{padding:20px 24px 14px;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:12px;flex-shrink:0}
+.tab-hd h2{font-size:19px;font-weight:700}
+.tab-hd .sub{font-size:12px;color:var(--sub)}
+.tab-sc{flex:1;overflow:auto}
+table.tb-tbl{width:100%;border-collapse:collapse;font-size:12.5px;min-width:820px}
+.tb-tbl th{position:sticky;top:0;background:var(--bg);text-align:left;padding:10px 14px;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--sub);border-bottom:1px solid var(--line);white-space:nowrap;z-index:1}
+.tb-tbl td{padding:12px 14px;border-bottom:1px solid var(--line);white-space:nowrap;vertical-align:middle}
+.tb-tbl tr.row{cursor:pointer;transition:background .15s}
+.tb-tbl tr.row:hover{background:#F2F0EA}
+.tb-name{font-weight:700}
+.tb-badge{display:inline-block;padding:3px 9px;border-radius:99px;font-size:9.5px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#fff}
+.tb-badge.pronto{background:var(--green)}.tb-badge.obras{background:var(--amber)}.tb-badge.breve{background:var(--gold)}
+.tb-badge.def{background:#6B7280}
+.tb-val{font-weight:700}
+.tb-val input{width:120px;padding:6px 9px;border:1px solid var(--gold);border-radius:8px;font-family:inherit;font-size:12.5px;font-weight:700;outline:none;background:#FFFDF5}
+.tab-ft{padding:12px 24px;border-top:1px solid var(--line);display:flex;align-items:center;gap:10px;flex-shrink:0;flex-wrap:wrap}
+.adm-link{margin-left:auto;font-size:11.5px;color:var(--sub);cursor:pointer;text-decoration:underline;background:none}
+.adm-link:hover{color:var(--gold)}
+.adm-btn{padding:9px 16px;border-radius:99px;font-size:12.5px;font-weight:600;border:1px solid var(--line);background:var(--card);transition:.2s}
+.adm-btn:hover{border-color:var(--gold);color:var(--gold)}
+.adm-btn.primary{background:var(--ink);color:#fff;border-color:var(--ink)}
+.adm-btn.primary:hover{background:var(--gold);border-color:var(--gold);color:#fff}
+.adm-tag{display:inline-flex;align-items:center;gap:6px;padding:6px 12px;border-radius:99px;background:var(--gold-soft);color:var(--gold);font-size:11px;font-weight:700}
+.adm-note{font-size:11px;color:var(--sub);flex-basis:100%}
+
+/* ═══ LOGIN ═══ */
+.lg-bg{position:fixed;top:0;left:0;right:0;bottom:0;z-index:160;background:rgba(20,20,15,.5);display:none;align-items:center;justify-content:center;padding:20px}
+.lg-bg.open{display:flex}
+.lg{background:var(--bg);border-radius:20px;max-width:360px;width:100%;padding:26px;position:relative}
+.lg h2{font-size:19px;font-weight:700;margin-bottom:4px}
+.lg p{font-size:12.5px;color:var(--sub);margin-bottom:16px}
+.lg input{width:100%;padding:12px 14px;border:1px solid var(--line);border-radius:12px;font-family:inherit;font-size:13.5px;margin-bottom:10px;outline:none;background:var(--card)}
+.lg input:focus{border-color:var(--gold)}
+.lg-err{font-size:12px;color:#DC2626;margin-bottom:10px;display:none}
 
 /* ═══ DETAIL ═══ */
-.det-bg{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:1100;display:flex;align-items:center;justify-content:center;padding:20px;opacity:0;pointer-events:none;transition:opacity .2s;backdrop-filter:blur(8px)}
-.det-bg.open{opacity:1;pointer-events:all}
-.det{background:var(--surf);border-radius:18px;width:100%;max-width:860px;max-height:90vh;display:flex;flex-direction:column;transform:translateY(12px) scale(.98);transition:transform .25s;overflow:hidden;box-shadow:0 30px 80px rgba(0,0,0,.2)}
-.det-bg.open .det{transform:none}
-.det-top{display:flex;align-items:center;justify-content:space-between;padding:14px 22px;border-bottom:1px solid var(--bdr);flex-shrink:0}
-.det-bread{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--sub)}
-.det-tabs{display:flex;border-bottom:1px solid var(--bdr);padding:0 22px;flex-shrink:0}
-.dtab{padding:12px 16px;font-size:11px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:#BBB;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:all .12s}
-.dtab.on{color:var(--txt);border-bottom-color:var(--txt)}.dtab:hover:not(.on){color:var(--sub)}
-.det-scr{overflow-y:auto;flex:1;scroll-behavior:smooth}.det-scr::-webkit-scrollbar{width:4px}
-.dp{display:none;padding:22px}.dp.on{display:block}
-.det-hero{position:relative;height:300px;border-radius:var(--r);overflow:hidden;margin-bottom:18px;background:#F0F0F0;cursor:pointer}
-.det-hero img{width:100%;height:100%;object-fit:cover;transition:opacity .2s}
-.det-hero-nav{position:absolute;bottom:12px;left:12px;display:flex;gap:5px}
-.det-hero-btn{width:28px;height:28px;background:rgba(255,255,255,.88);border:none;border-radius:8px;cursor:pointer;font-size:12px;display:flex;align-items:center;justify-content:center}
-.det-hero-cnt{position:absolute;bottom:12px;right:12px;background:rgba(0,0,0,.6);color:#fff;font-size:10px;font-weight:600;padding:4px 10px;border-radius:99px}
-.det-name{font-family:'Instrument Serif',serif;font-size:26px;color:var(--txt);margin-bottom:3px}
-.det-addr{font-size:12px;color:var(--sub);margin-bottom:3px}.det-unit{font-size:11px;color:#BBB;margin-bottom:16px}
-.det-builder{display:flex;align-items:center;gap:12px;padding:14px;background:#FAFAFA;border:1px solid var(--bdr);border-radius:var(--r);margin-bottom:14px}
-.det-builder-logo{height:36px;max-width:100px;object-fit:contain;border-radius:6px;padding:4px 8px;border:1px solid var(--bdr);background:var(--surf)}
-.dspecs{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:14px}
-.dsp{background:#FAFAFA;border:1px solid var(--bdr);border-radius:10px;padding:12px 14px}
-.dsp-l{font-size:8px;letter-spacing:2px;text-transform:uppercase;color:var(--sub);font-weight:600;margin-bottom:4px}
-.dsp-v{font-size:13px;font-weight:600;color:var(--txt)}
-.det-price{display:flex;align-items:center;justify-content:space-between;padding:18px 22px;background:var(--txt);color:#fff;border-radius:var(--r);margin-bottom:14px;position:relative;overflow:hidden}
-.det-price::before{content:'';position:absolute;top:0;left:0;width:3px;height:100%;background:var(--gold)}
-.det-cta{display:flex;gap:8px;flex-wrap:wrap}
-.det-btn{flex:1;padding:13px;background:var(--txt);color:#fff;border:none;border-radius:10px;font-family:inherit;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;cursor:pointer;text-decoration:none;display:flex;align-items:center;justify-content:center;gap:6px;transition:all .15s}
-.det-btn:hover{background:var(--gold)}.det-btn.off{opacity:.35;pointer-events:none;background:#DDD;color:#AAA}
-.det-btn2{padding:13px 16px;background:#F5F5F5;border:1.5px solid var(--bdr);color:var(--txt);border-radius:10px;font-family:inherit;font-size:11px;font-weight:600;letter-spacing:1px;text-transform:uppercase;cursor:pointer;text-decoration:none;display:flex;align-items:center;justify-content:center;gap:6px;transition:all .15s}
-.det-btn2:hover{border-color:var(--txt)}
-.d-photo-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
-.d-thumb{border-radius:10px;overflow:hidden;cursor:pointer;aspect-ratio:4/3;background:#F0F0F0;transition:all .15s}
-.d-thumb:hover{transform:scale(1.02);box-shadow:0 4px 14px rgba(0,0,0,.08)}
-.d-thumb img{width:100%;height:100%;object-fit:cover}
-.d-thumb.big{aspect-ratio:16/9;grid-column:1/-1}
-.d-planta{height:420px;background:#F5F5F5;border:1px solid var(--bdr);border-radius:var(--r);overflow:hidden;display:flex;align-items:center;justify-content:center;cursor:zoom-in;margin-bottom:10px}
-.d-planta img{max-width:100%;max-height:100%;object-fit:contain;padding:20px}
-.d-map{border-radius:var(--r);overflow:hidden;border:1px solid var(--bdr);height:300px;margin-bottom:14px}
-.d-map iframe{width:100%;height:100%;border:none}
-.d-pois{display:grid;grid-template-columns:repeat(2,1fr);gap:6px}
-.d-poi{display:flex;align-items:center;gap:8px;padding:9px 12px;background:#FAFAFA;border:1px solid var(--bdr);border-radius:8px}
-.d-poi-n{font-size:11px;font-weight:500;color:var(--txt)}.d-poi-d{font-size:10px;color:var(--sub);margin-top:1px}
-.sec-label{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--sub);font-weight:600;margin-bottom:10px}
+.dt-bg{position:fixed;top:0;left:0;right:0;bottom:0;z-index:100;background:rgba(20,20,15,.45);display:none}
+.dt-bg.open{display:block}
+.dt{position:fixed;top:0;left:0;right:0;bottom:0;z-index:101;background:var(--bg);display:none;flex-direction:column;overflow:hidden}
+.dt.open{display:flex}
+.dt-hd{display:flex;align-items:center;gap:12px;padding:16px 22px;border-bottom:1px solid var(--line);background:var(--bg);flex-shrink:0}
+.dt-bread{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--sub);font-weight:600}
+.dt-x{margin-left:auto;width:34px;height:34px;border-radius:50%;border:1px solid var(--line);background:var(--card);display:flex;align-items:center;justify-content:center;font-size:14px;transition:.2s}
+.dt-x:hover{background:var(--ink);color:#fff}
+.dt-sc{flex:1;overflow-y:auto;overscroll-behavior:contain}
 
-/* ═══ CONTACT ═══ */
-.c-bg{position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:1200;display:flex;align-items:center;justify-content:center;padding:20px;opacity:0;pointer-events:none;transition:opacity .2s;backdrop-filter:blur(6px)}
-.c-bg.open{opacity:1;pointer-events:all}
-.c-modal{background:var(--surf);border-radius:18px;width:100%;max-width:420px;overflow:hidden;transform:translateY(12px) scale(.98);transition:transform .25s;box-shadow:0 30px 80px rgba(0,0,0,.15)}
-.c-bg.open .c-modal{transform:none}
-.c-item{display:flex;align-items:center;gap:12px;padding:12px 14px;background:#FAFAFA;border:1.5px solid var(--bdr);border-radius:12px;text-decoration:none;transition:all .15s;cursor:pointer;margin-bottom:8px}
-.c-item:hover{border-color:var(--gold);background:var(--surf);transform:translateX(3px);box-shadow:0 4px 12px rgba(0,0,0,.05)}
-.c-ico{width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.gal{position:relative;background:#111;flex-shrink:0}
+.gal-main{width:100%;height:min(58vh,540px);object-fit:cover;opacity:1;transition:opacity .2s;cursor:zoom-in}
+.gal-grad{position:absolute;left:0;right:0;bottom:0;height:110px;background:linear-gradient(transparent,rgba(0,0,0,.55));pointer-events:none}
+.gal-title{position:absolute;left:0;right:0;bottom:0;padding:0 26px 20px;color:#fff;pointer-events:none}
+.gal-title .gt-badge{display:inline-block;padding:5px 12px;border-radius:99px;font-size:10px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;margin-bottom:8px}
+.gal-title .gt-badge.pronto{background:var(--green)}.gal-title .gt-badge.obras{background:var(--amber)}.gal-title .gt-badge.breve{background:var(--gold)}
+.gal-title .gt-badge.def{background:#6B7280}
+.gal-title h1{font-size:clamp(24px,3.6vw,38px);font-weight:700;letter-spacing:-.5px;line-height:1.1;text-shadow:0 2px 12px rgba(0,0,0,.4)}
+.gal-title .gt-addr{font-size:13.5px;opacity:.9;margin-top:5px;text-shadow:0 1px 8px rgba(0,0,0,.5)}
+.gal-nav{position:absolute;top:0;left:0;right:0;bottom:0;display:flex;align-items:center;justify-content:space-between;padding:0 14px;pointer-events:none}
+.gal-b{pointer-events:auto;width:40px;height:40px;border-radius:50%;background:rgba(255,255,255,.92);font-size:16px;display:flex;align-items:center;justify-content:center;transition:.2s;box-shadow:0 2px 8px rgba(0,0,0,.2)}
+.gal-b:hover{background:#fff;transform:scale(1.06)}
+.gal-ct{position:absolute;bottom:12px;right:14px;padding:4px 11px;border-radius:99px;background:rgba(0,0,0,.55);color:#fff;font-size:11px;font-weight:600}
+.thumbs{display:flex;gap:8px;padding:12px 22px;overflow-x:auto;background:var(--card);border-bottom:1px solid var(--line)}
+.thumb{width:72px;height:52px;border-radius:8px;object-fit:cover;cursor:pointer;opacity:.55;transition:.2s;flex-shrink:0;border:2px solid transparent}
+.thumb.on{opacity:1;border-color:var(--gold)}
+
+.dt-body{padding:30px 26px 50px;max-width:1140px;margin:0 auto;width:100%}
+@media(min-width:920px){
+  .dt-body{display:grid;grid-template-columns:1fr 340px;gap:48px;align-items:start}
+  .dt-aside{position:sticky;top:24px;margin-top:0}
+  .dt-foot{display:none}
+}
+.dt-aside{margin-top:26px;background:var(--card);border:1px solid var(--line);border-radius:18px;padding:24px;box-shadow:var(--shadow)}
+.dt-aside .as-l{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--sub);font-weight:700}
+.dt-aside .as-price{font-size:30px;font-weight:700;letter-spacing:-.8px;margin:6px 0 2px}
+.dt-aside .as-price small{font-size:14px;color:var(--sub);font-weight:600;margin-right:4px}
+.dt-aside .as-unit{font-size:12.5px;color:var(--sub);margin-bottom:16px}
+.as-row{display:flex;justify-content:space-between;padding:9px 0;border-top:1px solid var(--line);font-size:13px}
+.as-row .k{color:var(--sub)}
+.as-row .v{font-weight:600}
+.dt-aside .wa-btn{width:100%;justify-content:center;margin:16px 0 0}
+.dt-aside .dt-link{width:100%;justify-content:center;margin-top:8px}
+.dt-status{display:inline-flex;padding:5px 12px;border-radius:99px;font-size:10px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;color:#fff;margin-bottom:12px}
+.dt-status.pronto{background:var(--green)}.dt-status.obras{background:var(--amber)}.dt-status.breve{background:var(--gold)}
+.dt-status.def{background:#6B7280}
+.dt-name{font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;font-weight:700;font-size:30px;line-height:1.15}
+.dt-addr{color:var(--sub);margin-top:6px;font-size:14px}
+.dt-price{margin-top:16px;font-size:28px;font-weight:700;letter-spacing:-.5px}
+.dt-price small{font-size:13px;color:var(--sub);font-weight:600;margin-right:4px}
+.dt-specs{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:10px;margin-top:22px}
+.dt-spec{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px}
+.dt-spec .l{font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--sub);font-weight:600}
+.dt-spec .v{font-size:16px;font-weight:600;margin-top:4px}
+.dt-sec{margin-top:30px}
+.dt-sec h3{font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;font-weight:700;font-size:17px;letter-spacing:.5px;margin-bottom:12px}
+.dt-desc{color:#3E3E38;font-size:14.5px;line-height:1.65}
+.poi-row{display:flex;flex-wrap:wrap;gap:8px}
+.poi{display:flex;align-items:center;gap:8px;background:var(--card);border:1px solid var(--line);border-radius:99px;padding:8px 14px;font-size:12.5px}
+.poi b{font-weight:600}
+.poi span{color:var(--sub)}
+.plants{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px}
+.plant{border:1px solid var(--line);border-radius:14px;overflow:hidden;cursor:pointer;background:var(--card);transition:.2s}
+.plant:hover{box-shadow:var(--shadow)}
+.plant img{width:100%;height:170px;object-fit:cover;background:#F0EEE8}
+.plant .pl-l{padding:10px 14px;font-size:12.5px;font-weight:600}
+.mapimg{width:100%;border-radius:14px;border:1px solid var(--line);display:block}
+.dt-links{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
+.dt-link{display:flex;align-items:center;gap:7px;padding:10px 16px;border-radius:12px;border:1px solid var(--line);background:var(--card);font-size:12.5px;font-weight:600;transition:.2s}
+.dt-link:hover{border-color:var(--gold);color:var(--gold)}
+
+.dt-foot{flex-shrink:0;background:var(--bg);border-top:1px solid var(--line);padding:14px 22px;display:flex;align-items:center;gap:14px}
+.dt-fprice{font-size:17px;font-weight:700}
+.dt-fprice small{font-size:11px;color:var(--sub);display:block;font-weight:600}
+.wa-btn{margin-left:auto;display:flex;align-items:center;gap:8px;padding:12px 22px;border-radius:99px;background:#25D366;color:#fff;font-size:13.5px;font-weight:700;transition:.2s;box-shadow:0 4px 14px rgba(37,211,102,.35)}
+.wa-btn:hover{transform:translateY(-1px);box-shadow:0 6px 18px rgba(37,211,102,.45)}
 
 /* ═══ LIGHTBOX ═══ */
-.lb{position:fixed;inset:0;background:rgba(0,0,0,.95);z-index:1300;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .2s}
-.lb.open{opacity:1;pointer-events:all}
-.lb img{max-width:90vw;max-height:88vh;object-fit:contain;border-radius:4px}
-.lb-x{position:absolute;top:16px;right:20px;width:34px;height:34px;border-radius:10px;background:rgba(255,255,255,.08);border:none;color:#fff;font-size:14px;cursor:pointer;display:flex;align-items:center;justify-content:center}
-.lb-nav{position:absolute;bottom:24px;left:50%;transform:translateX(-50%);display:flex;gap:8px}
-.lb-b{padding:8px 16px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);color:#fff;border-radius:8px;cursor:pointer;font-size:14px;transition:all .12s}
-.lb-b:hover{background:rgba(184,134,11,.25);color:var(--gold)}
+.lb{position:fixed;top:0;left:0;right:0;bottom:0;z-index:200;background:rgba(10,10,8,.94);display:none;align-items:center;justify-content:center}
+.lb.open{display:flex}
+.lb img{max-width:94vw;max-height:88vh;border-radius:8px;object-fit:contain}
+.lb-x{position:absolute;top:18px;right:18px;width:40px;height:40px;border-radius:50%;background:rgba(255,255,255,.14);color:#fff;font-size:16px}
 
-@keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+/* ═══ CONTACT MODAL ═══ */
+.cm-bg{position:fixed;top:0;left:0;right:0;bottom:0;z-index:150;background:rgba(20,20,15,.5);backdrop-filter:blur(4px);display:none;align-items:center;justify-content:center;padding:20px}
+.cm-bg.open{display:flex}
+.cm{background:var(--bg);border-radius:20px;max-width:540px;width:100%;max-height:90vh;display:flex;flex-direction:column;overflow:hidden;animation:pop .3s cubic-bezier(.2,.9,.3,1.2)}
+.cm-scroll{overflow-y:auto;padding:16px 24px 24px}
+.step{display:flex;gap:12px;padding:10px 0;align-items:flex-start}
+.step-n{width:26px;height:26px;border-radius:50%;background:var(--gold-soft);color:var(--gold);font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.step-t{font-size:13px;font-weight:600}
+.step-d{font-size:12px;color:var(--sub);margin-top:1px}
+.info-row{display:flex;align-items:flex-start;gap:10px;padding:9px 12px;background:var(--card);border:1px solid var(--line);border-radius:12px;margin-top:8px;font-size:12.5px}
+.info-row .ic{flex-shrink:0}
+.info-row b{font-weight:600}
+@keyframes pop{from{opacity:0;transform:scale(.94)}to{opacity:1;transform:none}}
+.cm-hd{padding:22px 24px 16px;border-bottom:1px solid var(--line);position:relative}
+.cm-hd h2{font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;font-weight:700;font-size:21px}
+.cm-hd h2 em{font-style:normal;color:var(--gold)}
+.cm-sub{font-size:12.5px;color:var(--sub);margin-top:4px}
+.cm-resp{display:flex;align-items:center;gap:12px;padding:12px 14px;background:var(--gold-soft);border:1px solid rgba(166,124,0,.18);border-radius:14px;margin-bottom:4px}
+.cm-av{width:42px;height:42px;border-radius:50%;background:var(--gold);color:#fff;display:flex;align-items:center;justify-content:center;font-size:17px;font-weight:700;flex-shrink:0}
+.tax-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:2px}
+.tax-card{border:1px solid var(--line);border-radius:14px;padding:16px 14px;background:var(--card);text-align:center;transition:.2s}
+.tax-card:hover{border-color:var(--gold)}
+.tax-card .tx-l{font-size:9.5px;letter-spacing:2px;text-transform:uppercase;color:var(--sub);font-weight:700}
+.tax-card .tx-v{font-size:26px;font-weight:700;color:var(--gold);margin:6px 0 2px;letter-spacing:-.5px}
+.tax-card .tx-d{font-size:11px;color:var(--sub)}
+.cm-div{font-size:10px;letter-spacing:2.5px;text-transform:uppercase;color:var(--sub);font-weight:700;margin:18px 0 8px;display:flex;align-items:center;gap:10px}
+.cm-div::after{content:'';flex:1;height:1px;background:var(--line)}
+.cm-item{display:flex;align-items:center;gap:12px;padding:13px 14px;border:1px solid var(--line);border-radius:14px;margin-top:10px;background:var(--card);transition:.2s}
+.cm-item:hover{border-color:var(--gold)}
+.cm-ico{width:40px;height:40px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0}
+.cm-l{font-size:9.5px;letter-spacing:1.8px;text-transform:uppercase;color:var(--sub);font-weight:600}
+.cm-v{font-size:13.5px;font-weight:600;margin-top:1px}
+
+@media(max-width:640px){
+  .pc-img{height:130px}
+  .hd-in{padding:0 16px}
+  .intro{padding:30px 16px 4px}
+  .tb-in{padding:10px 16px}
+  .srch{min-width:0;max-width:none;order:-1;flex-basis:100%}
+  .grid{padding:20px 16px 70px;gap:16px;grid-template-columns:1fr 1fr}
+  .pc-body{padding:12px 13px 14px}
+  .pc-name{font-size:14.5px}
+  .pc-addr{font-size:11px}
+  .pc-specs{gap:8px;margin-top:9px;padding-top:9px;flex-wrap:wrap}
+  .pc-spec{font-size:10.5px}
+  .pc-val{font-size:15px}
+  .pc-cta{display:none}
+  .dt-body{padding:22px 16px 120px}
+  .dt-name{font-size:24px}
+  .count{display:none}
+}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
 </head>
 <body>
-<div class="app">
 
-<div class="topbar">
-  <a href="https://www.unacorp.com.br" target="_blank" class="tb-logo"><img src="https://lh3.googleusercontent.com/d/11dcTXDrI3BLvly948rPn6_VHCHwbf7FO=w400" alt="UNACORP"></a>
-  <nav class="tb-nav">
-    <a href="#" onclick="openTab();return false">Tabelão</a>
-    <a href="#" class="on">Portfólio</a>
-    <a href="#" onclick="openC();return false">Contato</a>
-  </nav>
-  <div class="tb-right">
-    <div class="tb-user">Lucas<div class="tb-av">L</div></div>
-    <button class="tb-icon" onclick="openC()">🔔<span class="tb-dot"></span></button>
+<!-- HEADER -->
+<header class="hd"><div class="hd-in">
+  <div class="logo">UNA<em>CORP</em></div>
+  <div class="hd-sp"></div>
+  <button class="hd-btn" style="background:var(--card);color:var(--ink);border:1px solid var(--line)" onclick="openTab()">📋 Tabelão</button>
+  <button class="hd-btn" onclick="openC()">🤝 Parcerias</button>
+</div></header>
+
+<!-- INTRO -->
+<section class="intro">
+  <div class="intro-ey">Catálogo · São Paulo</div>
+  <h1>Portfólio de oportunidades selecionadas</h1>
+  <p>Unidades prontas, em obras e pré-lançamentos nos melhores bairros de São Paulo.</p>
+</section>
+
+<!-- TOOLBAR -->
+<div class="tb"><div class="tb-in">
+  <div class="srch">🔍<input id="q" placeholder="Buscar por nome ou bairro..." oninput="apply()"></div>
+  <div class="chips" id="stChips">
+    <button class="chip on" data-s="all" onclick="setS(this)">Todos</button>
+    <button class="chip" data-s="pronto" onclick="setS(this)">Pronto</button>
+    <button class="chip" data-s="obras" onclick="setS(this)">Em obras</button>
+    <button class="chip" data-s="breve" onclick="setS(this)">Breve</button>
   </div>
-</div>
+  <button class="chip" id="bChip" onclick="cycleB()">Bairro ▾</button>
+  <button class="chip" id="tChip" onclick="cycleT()">Tipo ▾</button>
+  <div class="tb-sp"></div>
+  <button class="sort" id="sortBtn" onclick="cycleSort()">↕ Relevância</button>
+  <div class="count" id="count"></div>
+</div></div>
 
-<div class="filters">
-  <button class="pill on" data-f="all">Todos · 10</button>
-  <button class="pill" data-f="pronto">🟢 Pronto</button>
-  <button class="pill" data-f="obras">🟠 Em Obras</button>
-  <button class="pill" data-f="breve">🟡 Breve</button>
-  <div class="sep"></div>
-  <button class="pill" id="fB">Bairro ▾</button>
-  <div class="sep"></div>
-  <div class="search"><span style="font-size:13px;color:#BBB">⌕</span><input type="text" placeholder="Buscar..." id="sIn" oninput="applyF()"></div>
-</div>
+<!-- GRID -->
+<main class="grid" id="grid"></main>
 
-<div class="body">
-  <div class="map-wrap"><div id="map"></div></div>
-  <div class="panel">
-    <div class="feat" id="featCard">
-      <div class="feat-img"><img id="fImg" src=""><div class="feat-badge" id="fBadge"></div><button class="feat-x" onclick="closeFeat()">✕</button><div class="feat-dots" id="fDots"></div><div class="feat-arrows"><button class="feat-arr" onclick="fNav(-1)">‹</button><button class="feat-arr" onclick="fNav(1)">›</button></div></div>
-      <div class="feat-body">
-        <div class="feat-status" id="fSt"></div>
-        <div class="feat-title" id="fTi"></div>
-        <div class="feat-addr" id="fAd"></div>
-        <div class="feat-specs" id="fSp"></div>
-        <div class="feat-desc" id="fDe"></div>
-        <div class="feat-price-row"><div><div class="feat-price-label">Valor</div></div><div class="feat-price" id="fPr"></div></div>
-        <div class="feat-btns"><button class="btn-p" id="bDet">Ver empreendimento</button><button class="btn-s" onclick="openC()">💬</button><button class="btn-s" id="bDrv">📁</button></div>
-      </div>
-    </div>
-    <div class="list-head"><span id="lTi">Outros imóveis</span><span class="list-cnt" id="lCn"></span></div>
-    <div class="list-scroll" id="lSc"></div>
-  </div>
-</div>
+<!-- DETAIL -->
+<div class="dt-bg" id="dtBg" onclick="closeDt()"></div>
+<div class="dt" id="dt">
+  <div class="dt-hd"><span class="dt-bread" id="dtBread"></span><button class="dt-x" onclick="closeDt()">✕</button></div>
+  <div class="dt-sc" id="dtSc"></div>
+  <div class="dt-foot" id="dtFoot"></div>
 </div>
 
 <!-- TABELÃO -->
-<div class="modal-bg" id="tabBg" onclick="if(event.target===this)closeTab()"><div class="modal">
-  <div class="m-head"><div><div class="m-ey">Listagem Completa</div><div class="m-title"><em>Tabelão</em> · 2026</div><div class="m-sub" id="tSub"></div></div><button class="m-x" onclick="closeTab()">✕</button></div>
-  <div class="m-filters"><button class="m-f on" data-tf="all">Todos</button><button class="m-f" data-tf="breve">Breve</button><button class="m-f" data-tf="pronto">Pronto</button><button class="m-f" data-tf="obras">Em Obras</button></div>
-  <div class="m-scroll"><table class="tbl"><thead><tr><th>Empreendimento</th><th>Bairro</th><th>Estágio</th><th>Endereço</th><th>Unidade</th><th class="c">Tipo</th><th class="c">Área</th><th class="c">Dorms</th><th>Vaga</th><th class="r">Valor</th><th class="c">Material</th></tr></thead><tbody id="tBd"></tbody></table></div>
-</div></div>
-
-<!-- DETAIL -->
-<div class="det-bg" id="dBg" onclick="if(event.target===this)closeDet()"><div class="det">
-  <div class="det-top"><span class="det-bread" id="dBr"></span><button class="m-x" onclick="closeDet()">✕</button></div>
-  <div class="det-tabs"><div class="dtab on" data-d="ov">Visão Geral</div><div class="dtab" data-d="fo">Fotos</div><div class="dtab" data-d="pl">Plantas</div><div class="dtab" data-d="mp">Mapa</div></div>
-  <div class="det-scr" id="dSc"><div class="dp on" id="dp-ov"></div><div class="dp" id="dp-fo"></div><div class="dp" id="dp-pl"></div><div class="dp" id="dp-mp"></div></div>
-</div></div>
-
-<!-- CONTACT -->
-<div class="c-bg" id="cBg" onclick="if(event.target===this)closeC()"><div class="c-modal">
-  <div style="padding:22px 24px 18px;border-bottom:1px solid var(--bdr);position:relative"><button class="m-x" style="position:absolute;top:14px;right:14px" onclick="closeC()">✕</button><div class="m-ey">Contato</div><div class="m-title">Fale com a <em>UNACORP</em></div><div style="font-size:11.5px;color:var(--sub);margin-top:4px">Pronto para apresentar oportunidades.</div></div>
-  <div style="padding:16px 24px 22px">
-    <div style="display:flex;align-items:center;gap:12px;padding:12px;background:var(--gold-bg);border:1px solid rgba(184,134,11,.15);border-radius:12px;margin-bottom:12px"><div class="tb-av" style="width:42px;height:42px;font-size:16px">L</div><div><div style="font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--sub);margin-bottom:2px">Responsável</div><div style="font-size:14px;font-weight:600">Lucas</div></div></div>
-    <a href="https://wa.me/5511977481984?text=Olá%20Lucas%2C%20vi%20o%20portfólio." target="_blank" class="c-item"><div class="c-ico" style="background:#25D366;color:#fff">💬</div><div><div style="font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--sub);margin-bottom:2px">WhatsApp</div><div style="font-size:13px;font-weight:600">(11) 97748-1984</div></div><span style="margin-left:auto;color:#CCC">→</span></a>
-    <a href="tel:+5511977481984" class="c-item"><div class="c-ico" style="background:var(--gold-bg);color:var(--gold)">☎</div><div><div style="font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--sub);margin-bottom:2px">Telefone</div><div style="font-size:13px;font-weight:600">(11) 97748-1984</div></div><span style="margin-left:auto;color:#CCC">→</span></a>
-    <a href="mailto:parcerias@unacorp.com.br" class="c-item"><div class="c-ico" style="background:#F0F0F0;color:#666">✉</div><div><div style="font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--sub);margin-bottom:2px">E-mail</div><div style="font-size:13px;font-weight:600">parcerias@unacorp.com.br</div></div><span style="margin-left:auto;color:#CCC">→</span></a>
+<div class="tab-bg" id="tabBg" onclick="if(event.target===this)closeTab()"><div class="tab-m">
+  <div class="tab-hd">
+    <div><h2>Tabelão de unidades</h2><div class="sub" id="tabSub"></div></div>
+    <span class="adm-tag" id="admTag" style="display:none">🔓 Modo edição</span>
+    <button class="dt-x" style="margin-left:auto" onclick="closeTab()">✕</button>
   </div>
+  <div class="tab-sc"><table class="tb-tbl">
+    <thead><tr><th>Empreendimento</th><th>Bairro</th><th>Unidade</th><th>Status</th><th>Entrega</th><th>Área</th><th>Dorms</th><th>Vagas</th><th>Valor</th></tr></thead>
+    <tbody id="tabBody"></tbody>
+  </table></div>
+  <div class="tab-ft" id="tabFt"></div>
+</div></div>
+
+<!-- LOGIN -->
+<div class="lg-bg" id="lgBg" onclick="if(event.target===this)closeLg()"><div class="lg">
+  <button class="dt-x" style="position:absolute;top:16px;right:16px" onclick="closeLg()">✕</button>
+  <h2>Área restrita</h2>
+  <p>Acesso para ajuste de valores do catálogo.</p>
+  <input id="lgU" placeholder="Usuário" autocomplete="off">
+  <input id="lgP" type="password" placeholder="Senha" onkeydown="if(event.key==='Enter')doLogin()">
+  <div class="lg-err" id="lgErr">Usuário ou senha incorretos.</div>
+  <button class="adm-btn primary" style="width:100%;padding:12px" onclick="doLogin()">Entrar</button>
 </div></div>
 
 <!-- LIGHTBOX -->
-<div class="lb" id="lb" onclick="if(event.target===this)closeLb()"><button class="lb-x" onclick="closeLb()">✕</button><img id="lbI"><div class="lb-nav"><button class="lb-b" onclick="lbN(-1)">←</button><button class="lb-b" onclick="lbN(1)">→</button></div></div>
+<div class="lb" id="lb" onclick="if(event.target===this)this.classList.remove('open')">
+  <button class="lb-x" onclick="document.getElementById('lb').classList.remove('open')">✕</button>
+  <img id="lbImg">
+</div>
+
+<!-- CONTACT / PARCERIAS -->
+<div class="cm-bg" id="cmBg" onclick="if(event.target===this)closeC()"><div class="cm">
+  <div class="cm-hd">
+    <button class="dt-x" style="position:absolute;top:16px;right:16px" onclick="closeC()">✕</button>
+    <div class="intro-ey" style="margin-bottom:6px">Canal de Parcerias</div>
+    <h2>Trabalhe com a <em>UNACORP</em></h2>
+    <div class="cm-sub">Comissionamento ágil e material completo para corretores parceiros.</div>
+  </div>
+  <div class="cm-scroll">
+    <div class="cm-resp">
+      <div class="cm-av">L</div>
+      <div><div class="cm-l">Responsável pelo canal</div><div class="cm-v">Lucas · UNACORP</div></div>
+    </div>
+
+    <div class="cm-div">Taxa de comissão</div>
+    <div class="tax-grid">
+      <div class="tax-card">
+        <div class="tx-l">Pessoa Física</div>
+        <div class="tx-v">4%</div>
+        <div class="tx-d">sobre o valor da venda</div>
+      </div>
+      <div class="tax-card">
+        <div class="tx-l">Pessoa Jurídica</div>
+        <div class="tx-v">5%</div>
+        <div class="tx-d">sobre o valor da venda</div>
+      </div>
+    </div>
+
+    <div class="cm-div">Como funciona</div>
+    <div class="step"><div class="step-n">1</div><div><div class="step-t">Indique seu cliente</div><div class="step-d">Envie nome e telefone pelo WhatsApp para registrar a indicação.</div></div></div>
+    <div class="step"><div class="step-n">2</div><div><div class="step-t">Acompanhamos a visita</div><div class="step-d">Agendamos e conduzimos a apresentação do empreendimento.</div></div></div>
+    <div class="step"><div class="step-n">3</div><div><div class="step-t">Venda concluída</div><div class="step-d">Comissão paga conforme a tabela PF ou PJ, sem burocracia.</div></div></div>
+
+    <div class="cm-div">Informações importantes</div>
+    <div class="info-row"><span class="ic">🗂</span><span><b>Material completo</b> de cada empreendimento disponível no Drive, dentro da página do imóvel.</span></div>
+    <div class="info-row"><span class="ic">🔒</span><span><b>Cliente protegido:</b> a indicação fica registrada em seu nome.</span></div>
+    <div class="info-row"><span class="ic">⚡</span><span><b>Retorno rápido:</b> respondemos indicações em horário comercial no mesmo dia.</span></div>
+
+    <div class="cm-div">Fale conosco</div>
+    <a href="https://wa.me/5511977481984?text=Olá%20Lucas%2C%20quero%20ser%20parceiro%20UNACORP." target="_blank" class="cm-item">
+      <div class="cm-ico" style="background:#25D366;color:#fff">💬</div>
+      <div><div class="cm-l">WhatsApp</div><div class="cm-v">(11) 97748-1984</div></div>
+      <span style="margin-left:auto;color:#CCC">→</span></a>
+    <a href="mailto:parcerias@unacorp.com.br" class="cm-item">
+      <div class="cm-ico" style="background:#F0F0EC;color:#666">✉</div>
+      <div><div class="cm-l">E-mail</div><div class="cm-v">parcerias@unacorp.com.br</div></div>
+      <span style="margin-left:auto;color:#CCC">→</span></a>
+  </div>
+</div></div>
 
 <script>
 var MBT='pk.eyJ1IjoiYXBwdGlwbyIsImEiOiJjbXBteTloZTkwYnYyMnJweHNkcXhzOWxpIn0.1TjvK4GLZai_NRMbn0uXqg';
 var D=[
-{id:0,n:"COMANDATUBA",b:"Itaim Bibi",e:"R. Cap. Guedes Portilho, 26",u:"Torre Única",s:"breve",ent:"Breve",t:"—",m:"—",d:"—",v:"—",val:"Sob Consulta",dr:null,mq:"Rua Capitão Guedes Portilho 26 Itaim Bibi São Paulo SP",desc:"Empreendimento exclusivo em pré-lançamento no Itaim Bibi.",f:["https://lh3.googleusercontent.com/d/1aRDmUM-mf5X0aZoDBOjojNQRQJvwbSa3=w2000"],co:[-23.5862,-46.6765],inc:"UNACORP & Exkalla",il:null,mob:0,dep:0,poi:[{i:"🛒",n:"Iguatemi",d:"500m"},{i:"🚇",n:"Faria Lima",d:"800m"}],pl:[]},
-{id:1,n:"URBO VILA PRUDENTE",b:"Vila Prudente",e:"Av. Vila Ema, 850",u:"Un. 178 · 17°",s:"pronto",ent:"Pronto",t:"Tipo",m:"63m²",d:"2",v:"1",val:"800.000,00",dr:"https://drive.google.com/drive/folders/1bLYUKmderamkwkZNIcjvPV2tc1NP7BtT",mq:"Avenida Vila Ema 850 Vila Prudente São Paulo SP",desc:"63m², 2 dorms, 1 vaga. Mobiliado e com depósito.",f:["https://lh3.googleusercontent.com/d/1-VKc4OfsW5i6ug7MvlUDLGNrhboSlo74=w2000","https://lh3.googleusercontent.com/d/1CPJuFG2Q7zguAyeyITYGGPaupj9crP6W=w2000","https://lh3.googleusercontent.com/d/1IGdUhqUAXGS75pZASTWCIxzfKa1hdo2g=w2000","https://lh3.googleusercontent.com/d/1NG6i2EKeN7Jbj6VTTyRFHwLHOqFcdhDM=w2000","https://lh3.googleusercontent.com/d/1YM7wt6Is3iRrvNo2O5vjAGxwEoo3rI62=w2000","https://lh3.googleusercontent.com/d/1fWkEk4PA2Y9ej0liM5TAlTKQ9o_W4x1h=w2000"],co:[-23.5840,-46.5640],inc:"Cordoba",il:"https://lh3.googleusercontent.com/d/1J9tfJ7RulqarYV3M_U6jnwJ5l5oymXL-=w400",mob:1,dep:1,poi:[{i:"🚇",n:"Metrô Vila Prudente",d:"350m"},{i:"🛒",n:"Anália Franco",d:"1,8km"}],pl:[{l:"Planta Tipo",img:"https://urbovilaprudente.com.br/assets/images/planta_01.jpg"}]},
-{id:2,n:"URBO VILA PRUDENTE",b:"Vila Prudente",e:"Av. Vila Ema, 850",u:"Un. 171 · 17°",s:"pronto",ent:"Pronto",t:"Tipo",m:"63m²",d:"2",v:"1",val:"800.000,00",dr:"https://drive.google.com/drive/folders/1bLYUKmderamkwkZNIcjvPV2tc1NP7BtT",mq:"Avenida Vila Ema 850 Vila Prudente São Paulo SP",desc:"Mesma localização, outra unidade disponível.",f:["https://lh3.googleusercontent.com/d/1-VKc4OfsW5i6ug7MvlUDLGNrhboSlo74=w2000","https://lh3.googleusercontent.com/d/1CPJuFG2Q7zguAyeyITYGGPaupj9crP6W=w2000"],co:[-23.5842,-46.5642],inc:"Cordoba",il:"https://lh3.googleusercontent.com/d/1J9tfJ7RulqarYV3M_U6jnwJ5l5oymXL-=w400",mob:1,dep:1,poi:[{i:"🚇",n:"Metrô Vila Prudente",d:"350m"}],pl:[{l:"Planta Tipo",img:"https://urbovilaprudente.com.br/assets/images/planta_01.jpg"}]},
-{id:3,n:"HAUS MITRE JARDINS",b:"Bela Vista",e:"Rua Itapeva, 350",u:"Un. 418 · 4°",s:"pronto",ent:"Pronto",t:"NR",m:"54m²",d:"1",v:"0",val:"1.367.000,00",dr:"https://drive.google.com/drive/folders/1iUCzOAlZ5PHkUXnKu3lBJDu_HSNYezKI",mq:"Rua Itapeva 350 Bela Vista São Paulo SP",desc:"Alto padrão. 250m do Metrô Trianon-MASP e Parque Trianon.",f:["https://lh3.googleusercontent.com/d/1o-lTnTbVQtXbAj84-h4j32ucH7e1vU1A=w2000","https://lh3.googleusercontent.com/d/11-G_251jSv6eDqUbonxCQ3F29iaAO2Cw=w2000","https://lh3.googleusercontent.com/d/11DXvN4VGv5l3N0J9gR-g9c9OEk4GPi9Z=w2000","https://lh3.googleusercontent.com/d/169BDwnOjxvoX8C0zGywjD9CXVCpwvB9b=w2000","https://lh3.googleusercontent.com/d/18fSXV7TbiQawmos3QYJ7ZnRFzH6fGNo8=w2000","https://lh3.googleusercontent.com/d/1OQdKeAeCI6GpBGQ6In3A6N1_Rj6Dea6Y=w2000","https://lh3.googleusercontent.com/d/1Up9JTjAsvJx6x_Kfac6PY8y8hiY6_1KL=w2000","https://lh3.googleusercontent.com/d/1ehfqitVTkWpBq2gUJZXEJZHbZWkp5o42=w2000"],co:[-23.5647,-46.6526],inc:"Mitre",il:"https://lh3.googleusercontent.com/d/1NWoVGecHNR2fWjHjVGyz8n3BfZwnkKIJ=w400",mob:0,dep:0,poi:[{i:"🚇",n:"Trianon-Masp",d:"250m"},{i:"🎭",n:"MASP",d:"300m"},{i:"🌳",n:"Parque Trianon",d:"400m"},{i:"🏥",n:"Sírio-Libanês",d:"600m"}],pl:[{l:"Planta 1D",img:"https://lh3.googleusercontent.com/d/1z0FZaDjVnC71UAVqPOwjDfHdt3NSSLLf=w2000"}]},
-{id:4,n:"HAUS MITRE JARDINS",b:"Bela Vista",e:"Rua Itapeva, 350",u:"Un. 518 · 5°",s:"pronto",ent:"Pronto",t:"NR",m:"54m²",d:"1",v:"0",val:"1.400.000,00",dr:"https://drive.google.com/drive/folders/1iUCzOAlZ5PHkUXnKu3lBJDu_HSNYezKI",mq:"Rua Itapeva 350 Bela Vista São Paulo SP",desc:"5° andar. Mesmo padrão premium na Paulista.",f:["https://lh3.googleusercontent.com/d/1o-lTnTbVQtXbAj84-h4j32ucH7e1vU1A=w2000","https://lh3.googleusercontent.com/d/169BDwnOjxvoX8C0zGywjD9CXVCpwvB9b=w2000","https://lh3.googleusercontent.com/d/18fSXV7TbiQawmos3QYJ7ZnRFzH6fGNo8=w2000"],co:[-23.5649,-46.6528],inc:"Mitre",il:"https://lh3.googleusercontent.com/d/1NWoVGecHNR2fWjHjVGyz8n3BfZwnkKIJ=w400",mob:0,dep:0,poi:[{i:"🚇",n:"Trianon-Masp",d:"250m"},{i:"🌳",n:"Parque Trianon",d:"400m"}],pl:[{l:"Planta 1D",img:"https://lh3.googleusercontent.com/d/1z0FZaDjVnC71UAVqPOwjDfHdt3NSSLLf=w2000"}]},
-{id:5,n:"TRIUNFO CAMPO BELO",b:"Campo Belo",e:"R. Barão do Triunfo, 551",u:"Un. 53 · 5°",s:"pronto",ent:"Pronto",t:"Tipo",m:"81m²",d:"2",v:"1",val:"1.450.000,00",dr:"https://drive.google.com/drive/folders/18I52WTrIyCKUNlmkBlzTUsUgnqCX_pMG",mq:"Rua Barão do Triunfo 551 Campo Belo São Paulo SP",desc:"Excelente em Campo Belo. Próximo metrô, shopping e Congonhas.",f:["https://lh3.googleusercontent.com/d/1liGK-ppdQ0qosynX3fSViT7QLmiVeTri=w2000","https://lh3.googleusercontent.com/d/14ZGbUQizX7Udq9yjdVMtJlqGNjI-_UX8=w2000","https://lh3.googleusercontent.com/d/16xD5CgnT2CP4AVTbi0tAi2wtLu1BQDre=w2000","https://lh3.googleusercontent.com/d/1JhK0llMV_AQ1YPreldPPg_okk5WefDyh=w2000","https://lh3.googleusercontent.com/d/1MBM2Xk_SIhhXZUyRhw52hGG742Q5yT9T=w2000"],co:[-23.6195,-46.6640],inc:"Courchevel",il:"https://lh3.googleusercontent.com/d/19bdZL9gSKtUiLp4dFHwa8OwdnUG7F4OD=w400",mob:0,dep:0,poi:[{i:"🚇",n:"Metrô Campo Belo",d:"500m"},{i:"🛒",n:"Shopping Campo Belo",d:"400m"},{i:"✈️",n:"Congonhas",d:"3km"}],pl:[{l:"Planta Tipo",img:"https://lh3.googleusercontent.com/d/1c5-K1bQCwvTq1Cobl0mUN5Bb_Qg13wuD=w2000"}]},
-{id:6,n:"RAÍZES RESERVE",b:"Vila Prudente",e:"Rua José Zappi, 363",u:"Un. 710 · 7°",s:"obras",ent:"mai/26",t:"Studio",m:"26m²",d:"1",v:"0",val:"260.000,00",dr:"https://drive.google.com/drive/folders/1-GS5VycKRDwTlXUvm-57jd6UqZQUc6Cq",mq:"Rua José Zappi 363 Vila Prudente São Paulo SP",desc:"Studio compacto 26m². Entrega mai/26. Perto do Metrô.",f:["https://lh3.googleusercontent.com/d/1E1rYFRv6BCObnHcurr-E5FRlzVCCK9oh=w2000","https://lh3.googleusercontent.com/d/1CrwTe-duW2y2ZySiMEZfS2KDspXfbJ0g=w2000","https://lh3.googleusercontent.com/d/1D8vnZdq2IL0s4FlS6-dm3KrcMlfX1G3v=w2000","https://lh3.googleusercontent.com/d/1HNE1y5aX3nC47TxVHQLAxhCChP1ZUykO=w2000","https://lh3.googleusercontent.com/d/1l8JO9n3V5WppkEcdhWc8ZCRhDJiaOo_8=w2000"],co:[-23.5825,-46.5735],inc:"Mitre",il:"https://lh3.googleusercontent.com/d/1NWoVGecHNR2fWjHjVGyz8n3BfZwnkKIJ=w400",mob:0,dep:0,poi:[{i:"🚇",n:"Metrô Vila Prudente",d:"400m"},{i:"🛒",n:"Mercado",d:"200m"}],pl:[{l:"Studio",img:"https://lh3.googleusercontent.com/d/1F_8g1vYOlez-AEhMZiIXIluHQUeWvIE5=w2000"}]},
-{id:7,n:"RAÍZES RESERVE",b:"Vila Prudente",e:"Rua José Zappi, 363",u:"Un. 809 · 8°",s:"obras",ent:"mai/26",t:"Studio",m:"26m²",d:"1",v:"0",val:"260.000,00",dr:"https://drive.google.com/drive/folders/1-GS5VycKRDwTlXUvm-57jd6UqZQUc6Cq",mq:"Rua José Zappi 363 Vila Prudente São Paulo SP",desc:"Studio 8° andar. Melhor vista, mesmo empreendimento.",f:["https://lh3.googleusercontent.com/d/1E1rYFRv6BCObnHcurr-E5FRlzVCCK9oh=w2000","https://lh3.googleusercontent.com/d/1HNE1y5aX3nC47TxVHQLAxhCChP1ZUykO=w2000"],co:[-23.5827,-46.5737],inc:"Mitre",il:"https://lh3.googleusercontent.com/d/1NWoVGecHNR2fWjHjVGyz8n3BfZwnkKIJ=w400",mob:0,dep:0,poi:[{i:"🚇",n:"Metrô Vila Prudente",d:"400m"}],pl:[{l:"Studio",img:"https://lh3.googleusercontent.com/d/1F_8g1vYOlez-AEhMZiIXIluHQUeWvIE5=w2000"}]},
-{id:8,n:"CAVOUR 439",b:"Vila Prudente",e:"Rua Cavour, 439",u:"Un. 82 · 8°",s:"obras",ent:"ago/27",t:"Tipo",m:"83m²",d:"3",v:"1",val:"900.000,00",dr:"https://drive.google.com/drive/folders/1jSO0NBrNf5TStZ_TmtB2MCZ_LXlFfC2Z",mq:"Rua Cavour 439 Vila Prudente São Paulo SP",desc:"83m², 3 dorms, 1 vaga. Entrega ago/27.",f:["https://lh3.googleusercontent.com/d/16PoYCHJ9cXxYfAQh2LvyBlhOSZnYnbl0=w2000","https://lh3.googleusercontent.com/d/1-ErvZOlu8Gjfq7QEK1UdXb5H3YRXEKwS=w2000","https://lh3.googleusercontent.com/d/1-ucux4z8BFo2K7eDXC0wKTURmJDAyI0f=w2000","https://lh3.googleusercontent.com/d/146c7tIuwGIPsk8axkBGCjLVrSj6vbKdh=w2000","https://lh3.googleusercontent.com/d/150N6NlJuV9LfASv7kk0psAzZRS42eF2A=w2000"],co:[-23.5805,-46.5680],inc:"Cordoba",il:"https://lh3.googleusercontent.com/d/1J9tfJ7RulqarYV3M_U6jnwJ5l5oymXL-=w400",mob:0,dep:0,poi:[{i:"🚇",n:"Metrô Vila Prudente",d:"300m"},{i:"🛒",n:"Comércio",d:"150m"}],pl:[{l:"Planta",img:"https://lh3.googleusercontent.com/d/1TGJwtCMysqJmazO01STg32-P6RWQ_ed5=w2000"}]},
-{id:9,n:"HAUS MITRE EDITION NY",b:"Brooklin",e:"Rua Michigan, 962",u:"Un. 143 · 14° T.B",s:"obras",ent:"set/27",t:"Tipo",m:"164m²",d:"4",v:"3",val:"3.300.000,00",dr:"https://drive.google.com/drive/folders/1xoOHUnMxAnrEKZyEp1zvBxAssqqKA3td",mq:"Rua Michigan 962 Brooklin São Paulo SP",desc:"Luxo 164m², 4 suítes, 3 vagas no Brooklin. Entrega set/27.",f:["https://lh3.googleusercontent.com/d/1hj2vUDInYopxwN18kDB_O4UIPL0FqEyS=w2000","https://lh3.googleusercontent.com/d/1qwGFjIx_pgW8r4wMgB7G34uxadNGxo-j=w2000","https://lh3.googleusercontent.com/d/1yAJy6CyyyZxGOiaUOH93sJm5JgkVbK_o=w2000","https://lh3.googleusercontent.com/d/18VvKLL28dArGlKkLeS4LyYV0OZnhvmcM=w2000","https://lh3.googleusercontent.com/d/19NtDDl7p45Jhx9YcaJKQqG9Ka2RfbeaA=w2000"],co:[-23.6055,-46.6930],inc:"Mitre",il:"https://lh3.googleusercontent.com/d/1NWoVGecHNR2fWjHjVGyz8n3BfZwnkKIJ=w400",mob:0,dep:0,poi:[{i:"🚇",n:"Metrô Brooklin",d:"600m"},{i:"🛒",n:"Market Place",d:"500m"},{i:"✈️",n:"Congonhas",d:"4km"},{i:"🌳",n:"Burle Marx",d:"2km"}],pl:[]}
+{id:0,n:"COMANDATUBA",b:"Itaim Bibi",e:"R. Cap. Guedes Portilho, 26",u:"Torre Única",s:"breve",ent:"Breve",t:"—",m:"—",d:"—",v:"—",val:"Sob Consulta",dr:null,desc:"Empreendimento exclusivo em pré-lançamento no Itaim Bibi.",f:["https://lh3.googleusercontent.com/d/1aRDmUM-mf5X0aZoDBOjojNQRQJvwbSa3=w2000"],co:[-23.5862,-46.6765],inc:"UNACORP & Exkalla",poi:[{i:"🛒",n:"Iguatemi",d:"500m"},{i:"🚇",n:"Faria Lima",d:"800m"}],pl:[],tp:'res'},
+{id:1,n:"URBO VILA PRUDENTE",b:"Vila Prudente",e:"Av. Vila Ema, 850",u:"Un. 178 · 17°",s:"pronto",ent:"Pronto",t:"Tipo",m:"63m²",d:"2",v:"1",val:"800.000,00",dr:"https://drive.google.com/drive/folders/1bLYUKmderamkwkZNIcjvPV2tc1NP7BtT",desc:"63m², 2 dormitórios, 1 vaga. Mobiliado e com depósito.",f:["https://lh3.googleusercontent.com/d/1-VKc4OfsW5i6ug7MvlUDLGNrhboSlo74=w2000","https://lh3.googleusercontent.com/d/1CPJuFG2Q7zguAyeyITYGGPaupj9crP6W=w2000","https://lh3.googleusercontent.com/d/1IGdUhqUAXGS75pZASTWCIxzfKa1hdo2g=w2000","https://lh3.googleusercontent.com/d/1NG6i2EKeN7Jbj6VTTyRFHwLHOqFcdhDM=w2000","https://lh3.googleusercontent.com/d/1YM7wt6Is3iRrvNo2O5vjAGxwEoo3rI62=w2000","https://lh3.googleusercontent.com/d/1fWkEk4PA2Y9ej0liM5TAlTKQ9o_W4x1h=w2000"],co:[-23.5840,-46.5640],inc:"Cordoba",poi:[{i:"🚇",n:"Metrô Vila Prudente",d:"350m"},{i:"🛒",n:"Anália Franco",d:"1,8km"}],pl:[{l:"Planta Tipo",img:"https://urbovilaprudente.com.br/assets/images/planta_01.jpg"}],tp:'res'},
+{id:2,n:"URBO VILA PRUDENTE",b:"Vila Prudente",e:"Av. Vila Ema, 850",u:"Un. 171 · 17°",s:"pronto",ent:"Pronto",t:"Tipo",m:"63m²",d:"2",v:"1",val:"800.000,00",dr:"https://drive.google.com/drive/folders/1bLYUKmderamkwkZNIcjvPV2tc1NP7BtT",desc:"Mesma localização, outra unidade disponível.",f:["https://lh3.googleusercontent.com/d/1-VKc4OfsW5i6ug7MvlUDLGNrhboSlo74=w2000","https://lh3.googleusercontent.com/d/1CPJuFG2Q7zguAyeyITYGGPaupj9crP6W=w2000"],co:[-23.5842,-46.5642],inc:"Cordoba",poi:[{i:"🚇",n:"Metrô Vila Prudente",d:"350m"}],pl:[{l:"Planta Tipo",img:"https://urbovilaprudente.com.br/assets/images/planta_01.jpg"}],tp:'res'},
+{id:3,n:"HAUS MITRE JARDINS",b:"Bela Vista",e:"Rua Itapeva, 350",u:"Un. 418 · 4°",s:"pronto",ent:"Pronto",t:"NR",m:"54m²",d:"1",v:"0",val:"1.367.000,00",dr:"https://drive.google.com/drive/folders/1iUCzOAlZ5PHkUXnKu3lBJDu_HSNYezKI",desc:"Alto padrão. 250m do Metrô Trianon-MASP e Parque Trianon.",f:["https://lh3.googleusercontent.com/d/1o-lTnTbVQtXbAj84-h4j32ucH7e1vU1A=w2000","https://lh3.googleusercontent.com/d/11-G_251jSv6eDqUbonxCQ3F29iaAO2Cw=w2000","https://lh3.googleusercontent.com/d/11DXvN4VGv5l3N0J9gR-g9c9OEk4GPi9Z=w2000","https://lh3.googleusercontent.com/d/169BDwnOjxvoX8C0zGywjD9CXVCpwvB9b=w2000","https://lh3.googleusercontent.com/d/18fSXV7TbiQawmos3QYJ7ZnRFzH6fGNo8=w2000","https://lh3.googleusercontent.com/d/1OQdKeAeCI6GpBGQ6In3A6N1_Rj6Dea6Y=w2000","https://lh3.googleusercontent.com/d/1Up9JTjAsvJx6x_Kfac6PY8y8hiY6_1KL=w2000","https://lh3.googleusercontent.com/d/1ehfqitVTkWpBq2gUJZXEJZHbZWkp5o42=w2000"],co:[-23.5647,-46.6526],inc:"Mitre",poi:[{i:"🚇",n:"Trianon-Masp",d:"250m"},{i:"🎭",n:"MASP",d:"300m"},{i:"🌳",n:"Parque Trianon",d:"400m"},{i:"🏥",n:"Sírio-Libanês",d:"600m"}],pl:[{l:"Planta 1D",img:"https://lh3.googleusercontent.com/d/1z0FZaDjVnC71UAVqPOwjDfHdt3NSSLLf=w2000"}],tp:'res'},
+{id:4,n:"HAUS MITRE JARDINS",b:"Bela Vista",e:"Rua Itapeva, 350",u:"Un. 518 · 5°",s:"pronto",ent:"Pronto",t:"NR",m:"54m²",d:"1",v:"0",val:"1.400.000,00",dr:"https://drive.google.com/drive/folders/1iUCzOAlZ5PHkUXnKu3lBJDu_HSNYezKI",desc:"5° andar. Mesmo padrão premium na Paulista.",f:["https://lh3.googleusercontent.com/d/1o-lTnTbVQtXbAj84-h4j32ucH7e1vU1A=w2000","https://lh3.googleusercontent.com/d/169BDwnOjxvoX8C0zGywjD9CXVCpwvB9b=w2000","https://lh3.googleusercontent.com/d/18fSXV7TbiQawmos3QYJ7ZnRFzH6fGNo8=w2000"],co:[-23.5649,-46.6528],inc:"Mitre",poi:[{i:"🚇",n:"Trianon-Masp",d:"250m"},{i:"🌳",n:"Parque Trianon",d:"400m"}],pl:[{l:"Planta 1D",img:"https://lh3.googleusercontent.com/d/1z0FZaDjVnC71UAVqPOwjDfHdt3NSSLLf=w2000"}],tp:'res'},
+{id:5,n:"TRIUNFO CAMPO BELO",b:"Campo Belo",e:"R. Barão do Triunfo, 551",u:"Un. 53 · 5°",s:"pronto",ent:"Pronto",t:"Tipo",m:"81m²",d:"2",v:"1",val:"1.450.000,00",dr:"https://drive.google.com/drive/folders/18I52WTrIyCKUNlmkBlzTUsUgnqCX_pMG",desc:"Excelente em Campo Belo. Próximo metrô, shopping e Congonhas.",f:["https://lh3.googleusercontent.com/d/1liGK-ppdQ0qosynX3fSViT7QLmiVeTri=w2000","https://lh3.googleusercontent.com/d/14ZGbUQizX7Udq9yjdVMtJlqGNjI-_UX8=w2000","https://lh3.googleusercontent.com/d/16xD5CgnT2CP4AVTbi0tAi2wtLu1BQDre=w2000","https://lh3.googleusercontent.com/d/1JhK0llMV_AQ1YPreldPPg_okk5WefDyh=w2000","https://lh3.googleusercontent.com/d/1MBM2Xk_SIhhXZUyRhw52hGG742Q5yT9T=w2000"],co:[-23.6195,-46.6640],inc:"Courchevel",poi:[{i:"🚇",n:"Metrô Campo Belo",d:"500m"},{i:"🛒",n:"Shopping Campo Belo",d:"400m"},{i:"✈️",n:"Congonhas",d:"3km"}],pl:[{l:"Planta Tipo",img:"https://lh3.googleusercontent.com/d/1c5-K1bQCwvTq1Cobl0mUN5Bb_Qg13wuD=w2000"}],tp:'res'},
+{id:6,n:"RAÍZES RESERVE",b:"Vila Prudente",e:"Rua José Zappi, 363",u:"Un. 710 · 7°",s:"obras",ent:"mai/26",t:"Studio",m:"26m²",d:"1",v:"0",val:"260.000,00",dr:"https://drive.google.com/drive/folders/1-GS5VycKRDwTlXUvm-57jd6UqZQUc6Cq",desc:"Studio compacto 26m². Entrega mai/26. Perto do Metrô.",f:["https://lh3.googleusercontent.com/d/1E1rYFRv6BCObnHcurr-E5FRlzVCCK9oh=w2000","https://lh3.googleusercontent.com/d/1CrwTe-duW2y2ZySiMEZfS2KDspXfbJ0g=w2000","https://lh3.googleusercontent.com/d/1D8vnZdq2IL0s4FlS6-dm3KrcMlfX1G3v=w2000","https://lh3.googleusercontent.com/d/1HNE1y5aX3nC47TxVHQLAxhCChP1ZUykO=w2000","https://lh3.googleusercontent.com/d/1l8JO9n3V5WppkEcdhWc8ZCRhDJiaOo_8=w2000"],co:[-23.5825,-46.5735],inc:"Mitre",poi:[{i:"🚇",n:"Metrô Vila Prudente",d:"400m"},{i:"🛒",n:"Mercado",d:"200m"}],pl:[{l:"Studio",img:"https://lh3.googleusercontent.com/d/1F_8g1vYOlez-AEhMZiIXIluHQUeWvIE5=w2000"}],tp:'res'},
+{id:7,n:"RAÍZES RESERVE",b:"Vila Prudente",e:"Rua José Zappi, 363",u:"Un. 809 · 8°",s:"obras",ent:"mai/26",t:"Studio",m:"26m²",d:"1",v:"0",val:"260.000,00",dr:"https://drive.google.com/drive/folders/1-GS5VycKRDwTlXUvm-57jd6UqZQUc6Cq",desc:"Studio 8° andar. Melhor vista, mesmo empreendimento.",f:["https://lh3.googleusercontent.com/d/1E1rYFRv6BCObnHcurr-E5FRlzVCCK9oh=w2000","https://lh3.googleusercontent.com/d/1HNE1y5aX3nC47TxVHQLAxhCChP1ZUykO=w2000"],co:[-23.5827,-46.5737],inc:"Mitre",poi:[{i:"🚇",n:"Metrô Vila Prudente",d:"400m"}],pl:[{l:"Studio",img:"https://lh3.googleusercontent.com/d/1F_8g1vYOlez-AEhMZiIXIluHQUeWvIE5=w2000"}],tp:'res'},
+{id:8,n:"CAVOUR 439",b:"Vila Prudente",e:"Rua Cavour, 439",u:"Un. 82 · 8°",s:"obras",ent:"ago/27",t:"Tipo",m:"83m²",d:"3",v:"1",val:"900.000,00",dr:"https://drive.google.com/drive/folders/1jSO0NBrNf5TStZ_TmtB2MCZ_LXlFfC2Z",desc:"83m², 3 dormitórios, 1 vaga. Entrega ago/27.",f:["https://lh3.googleusercontent.com/d/16PoYCHJ9cXxYfAQh2LvyBlhOSZnYnbl0=w2000","https://lh3.googleusercontent.com/d/1-ErvZOlu8Gjfq7QEK1UdXb5H3YRXEKwS=w2000","https://lh3.googleusercontent.com/d/1-ucux4z8BFo2K7eDXC0wKTURmJDAyI0f=w2000","https://lh3.googleusercontent.com/d/146c7tIuwGIPsk8axkBGCjLVrSj6vbKdh=w2000","https://lh3.googleusercontent.com/d/150N6NlJuV9LfASv7kk0psAzZRS42eF2A=w2000"],co:[-23.5805,-46.5680],inc:"Cordoba",poi:[{i:"🚇",n:"Metrô Vila Prudente",d:"300m"},{i:"🛒",n:"Comércio",d:"150m"}],pl:[{l:"Planta",img:"https://lh3.googleusercontent.com/d/1TGJwtCMysqJmazO01STg32-P6RWQ_ed5=w2000"}],tp:'res'},
+{id:9,n:"HAUS MITRE EDITION NY",b:"Brooklin",e:"Rua Michigan, 962",u:"Un. 143 · 14° T.B",s:"obras",ent:"set/27",t:"Tipo",m:"164m²",d:"4",v:"3",val:"3.300.000,00",dr:"https://drive.google.com/drive/folders/1xoOHUnMxAnrEKZyEp1zvBxAssqqKA3td",desc:"Luxo 164m², 4 suítes, 3 vagas no Brooklin. Entrega set/27.",f:["https://lh3.googleusercontent.com/d/1hj2vUDInYopxwN18kDB_O4UIPL0FqEyS=w2000","https://lh3.googleusercontent.com/d/1qwGFjIx_pgW8r4wMgB7G34uxadNGxo-j=w2000","https://lh3.googleusercontent.com/d/1yAJy6CyyyZxGOiaUOH93sJm5JgkVbK_o=w2000","https://lh3.googleusercontent.com/d/18VvKLL28dArGlKkLeS4LyYV0OZnhvmcM=w2000","https://lh3.googleusercontent.com/d/19NtDDl7p45Jhx9YcaJKQqG9Ka2RfbeaA=w2000"],co:[-23.6055,-46.6930],inc:"Mitre",poi:[{i:"🚇",n:"Metrô Brooklin",d:"600m"},{i:"🛒",n:"Market Place",d:"500m"},{i:"✈️",n:"Congonhas",d:"4km"},{i:"🌳",n:"Burle Marx",d:"2km"}],pl:[],tp:'res'},
+{id:10,n:"SALA COMERCIAL",b:"A definir",e:"Endereço a definir",u:"Sala · 52m²",s:"def",ent:"A definir",t:"Comercial",m:"52m²",d:"—",v:"2",val:"510.000,00",dr:null,desc:"Sala comercial de 52m² com 2 vagas de garagem e 2 banheiros.",f:[],co:[-23.5505,-46.6333],inc:"A definir",poi:[],pl:[],ban:"2",tp:'com'}
 ];
 
-var F=[...D],ai=-1,fpi=0,fH=false,map=null,mkrs=[];
-function fp(x){var n=parseFloat(x.replace(/\./g,'').replace(',','.'));return isNaN(n)?x:n>=1e6?(n/1e6).toFixed(1).replace('.',',')+' M':'R$ '+x;}
-function sL(s,e){return s==='pronto'?'Pronto':s==='obras'?'Obras · '+e:'Breve';}
+var F=[...D], curS='all', tipos=['Todos','Residencial','Corporativo'], ti=0, bairros=['Todos','Vila Prudente','Bela Vista','Campo Belo','Brooklin','Itaim Bibi'], bi=0, sortModes=['rel','asc','desc'], si=0;
+var curD=null, gi=0;
 
-/* ═══ MAP ═══ */
-function initMap(){
-  mapboxgl.accessToken=MBT;
-  map=new mapboxgl.Map({container:'map',style:'mapbox://styles/mapbox/light-v11',center:[-46.64,-23.59],zoom:11.5});
-  map.addControl(new mapboxgl.NavigationControl({showCompass:false}),'top-right');
-  map.on('load',function(){
-    mkr();fit();document.getElementById('featCard').style.display='none';fH=true;rList();
-    // Refine with geocoding
-    geoAll().then(function(){ mkr(); fit(); });
+function numVal(x){var n=parseFloat(String(x).replace(/\./g,'').replace(',','.'));return isNaN(n)?Infinity:n;}
+function stLabel(d){return d.s==='pronto'?'Pronto':d.s==='obras'?'Obras · '+d.ent:d.s==='breve'?'Breve':'Status a definir';}
+function priceHtml(d,cls){return d.val==='Sob Consulta'?'<span style="font-size:.8em;color:var(--sub)">Sob Consulta</span>':'<small>R$</small>'+d.val;}
+
+/* ═══ FILTER + SORT ═══ */
+window.setS=function(el){document.querySelectorAll('#stChips .chip').forEach(function(c){c.classList.toggle('on',c===el);});curS=el.dataset.s;apply();};
+window.cycleT=function(){ti=(ti+1)%tipos.length;var b=document.getElementById('tChip');b.textContent=tipos[ti]==='Todos'?'Tipo ▾':tipos[ti]+' ✕';b.classList.toggle('on',tipos[ti]!=='Todos');apply();};
+window.cycleB=function(){bi=(bi+1)%bairros.length;var b=document.getElementById('bChip');b.textContent=bairros[bi]==='Todos'?'Bairro ▾':bairros[bi]+' ✕';b.classList.toggle('on',bairros[bi]!=='Todos');apply();};
+window.cycleSort=function(){si=(si+1)%sortModes.length;var lbl={rel:'↕ Relevância',asc:'↑ Menor preço',desc:'↓ Maior preço'};document.getElementById('sortBtn').textContent=lbl[sortModes[si]];apply();};
+window.apply=function(){
+  var q=document.getElementById('q').value.toLowerCase(), ba=bairros[bi];
+  F=D.filter(function(d){
+    if(curS!=='all'&&d.s!==curS)return false;
+    if(tipos[ti]==='Residencial'&&d.tp!=='res')return false;
+    if(tipos[ti]==='Corporativo'&&d.tp!=='com')return false;
+    if(ba!=='Todos'&&d.b!==ba)return false;
+    if(q&&d.n.toLowerCase().indexOf(q)<0&&d.b.toLowerCase().indexOf(q)<0&&d.e.toLowerCase().indexOf(q)<0)return false;
+    return true;
   });
-}
-function geo(){
-  var qs={};D.forEach(function(d){if(d.mq){if(!qs[d.mq])qs[d.mq]=[];qs[d.mq].push(d);}});
-  var chain=Promise.resolve();
-  Object.keys(qs).forEach(function(q){
-    chain=chain.then(function(){
-      return fetch('https://api.mapbox.com/geocoding/v5/mapbox.places/'+encodeURIComponent(q)+'.json?access_token='+MBT+'&limit=5&country=BR&proximity=-46.64,-23.55&bbox=-46.85,-23.80,-46.35,-23.38&language=pt')
-      .then(function(r){return r.json();})
-      .then(function(data){
-        if(data.features&&data.features.length){
-          var best=data.features[0];
-          for(var i=0;i<data.features.length;i++){if(data.features[i].place_type&&data.features[i].place_type.indexOf('address')>=0){best=data.features[i];break;}}
-          var c=[best.center[1],best.center[0]];
-          qs[q].forEach(function(d){d.co=c;});
-          console.log('✓',q,'→',best.place_name);
-        }
-      }).catch(function(e){console.warn('✗',q,e);});
-    });
-  });
-  return chain;
-}
-function fit(){var b=new mapboxgl.LngLatBounds();var ok=0;D.forEach(function(d){if(d.co){b.extend([d.co[1],d.co[0]]);ok++;}});if(ok)map.fitBounds(b,{padding:60,maxZoom:14,duration:800});}
-function mkr(){
-  var aid=F[ai]?F[ai].id:-1;
-  var features=F.filter(function(d){return d.co;}).map(function(d){
-    var clr=d.s==='pronto'?'#16A34A':d.s==='obras'?'#D97706':'#B8860B';
-    return {type:'Feature',geometry:{type:'Point',coordinates:[d.co[1],d.co[0]]},properties:{id:d.id,price:d.val==='Sob Consulta'?'Consulta':'R$ '+fp(d.val),active:d.id===aid?1:0,color:clr}};
-  });
-  var geo={type:'FeatureCollection',features:features};
-  if(map.getSource('props')){
-    map.getSource('props').setData(geo);
-  } else {
-    map.addSource('props',{type:'geojson',data:geo});
-    // Pin dot
-    map.addLayer({id:'props-dot',type:'circle',source:'props',paint:{
-      'circle-radius':['case',['==',['get','active'],1],7,5],
-      'circle-color':['get','color'],
-      'circle-stroke-width':2.5,
-      'circle-stroke-color':'#fff'
-    }});
-    // Active pulse ring
-    map.addLayer({id:'props-ring',type:'circle',source:'props',filter:['==',['get','active'],1],paint:{
-      'circle-radius':12,
-      'circle-color':'transparent',
-      'circle-stroke-width':2,
-      'circle-stroke-color':['get','color'],
-      'circle-stroke-opacity':0.3
-    }});
-    // Price label offset above
-    map.addLayer({id:'props-txt',type:'symbol',source:'props',layout:{
-      'text-field':['get','price'],
-      'text-font':['DIN Pro Bold','Arial Unicode MS Bold'],
-      'text-size':['case',['==',['get','active'],1],12.5,11],
-      'text-offset':[0,-1.8],
-      'text-anchor':'bottom',
-      'text-allow-overlap':true,
-      'text-ignore-placement':true
-    },paint:{
-      'text-color':['case',['==',['get','active'],1],'#111','#444'],
-      'text-halo-color':'#fff',
-      'text-halo-width':2.5,
-      'text-halo-blur':0.5
-    }});
-    ['props-dot','props-txt','props-ring'].forEach(function(layer){
-      map.on('click',layer,function(e){
-        if(e.features&&e.features.length){var cid=e.features[0].properties.id;var fi=F.findIndex(function(x){return x.id===cid;});if(fi>=0)sel(fi);}
-      });
-      map.on('mouseenter',layer,function(){map.getCanvas().style.cursor='pointer';});
-      map.on('mouseleave',layer,function(){map.getCanvas().style.cursor='';});
-    });
-  }
-}
-function uMkr(aid){mkr();}
+  var m=sortModes[si];
+  if(m==='asc')F.sort(function(a,b){return numVal(a.val)-numVal(b.val);});
+  if(m==='desc')F.sort(function(a,b){return (numVal(b.val)===Infinity?-1:numVal(b.val))-(numVal(a.val)===Infinity?-1:numVal(a.val));});
+  render();
+};
 
-
-function geoAll(){
-  var qs={};D.forEach(function(d){if(d.mq){if(!qs[d.mq])qs[d.mq]=[];qs[d.mq].push(d);}});
-  var chain=Promise.resolve();
-  Object.keys(qs).forEach(function(q){
-    chain=chain.then(function(){
-      return fetch('https://api.mapbox.com/geocoding/v5/mapbox.places/'+encodeURIComponent(q)+'.json?access_token='+MBT+'&limit=5&country=BR&proximity=-46.64,-23.56&bbox=-46.85,-23.80,-46.35,-23.38&language=pt')
-      .then(function(r){return r.json();}).then(function(data){
-        if(data.features&&data.features.length){
-          var best=data.features[0];
-          for(var i=0;i<data.features.length;i++){if(data.features[i].place_type&&data.features[i].place_type.indexOf('address')>=0){best=data.features[i];break;}}
-          var c=[best.center[1],best.center[0]];
-          qs[q].forEach(function(d){d.co=c;});
-          console.log('✓ '+q+' → '+best.place_name+' ['+c[0].toFixed(5)+','+c[1].toFixed(5)+']');
-        }
-      }).catch(function(){});
-    });
-  });
-  return chain;
-}
-
-/* ═══ SELECT ═══ */
-function sel(i){
-  ai=i;var d=F[i];if(!d)return;
-  if(fH){document.getElementById('featCard').style.display='';fH=false;}
-  fpi=0;uFeat(d);uMkr(d.id);
-  if(d.co&&map)map.easeTo({center:[d.co[1],d.co[0]],zoom:Math.max(map.getZoom(),13),duration:300});
-  document.getElementById('bDet').onclick=function(){openDet(d.id);};
-  rList();
-}
-function uFeat(d){
-  var img=document.getElementById('fImg');img.style.opacity='0';img.src=d.f&&d.f.length?d.f[0]:'';img.onload=function(){img.style.opacity='1';};img.onerror=function(){img.style.opacity='1';};
-  var stL=d.s==='pronto'?'Pronto para Morar':d.s==='obras'?'Em Obras · '+d.ent:'Breve Lançamento';
-  var b=document.getElementById('fBadge');b.textContent=stL;b.className='feat-badge '+d.s;
-  document.getElementById('fSt').innerHTML='<span class="badge '+d.s+'">'+stL+'</span>';
-  document.getElementById('fTi').textContent=d.n;
-  document.getElementById('fAd').innerHTML='📍 '+d.e+', '+d.b;
-  document.getElementById('fSp').innerHTML='<span class="feat-tag">🛏 '+(d.d||'—')+'</span><span class="feat-tag">🚗 '+(d.v||'—')+'</span><span class="feat-tag">📐 '+d.m+'</span>';
-  var sh=d.desc.length>95?d.desc.slice(0,95)+'...':d.desc;
-  document.getElementById('fDe').innerHTML=sh+' <a href="#" onclick="openDet('+d.id+');return false">ver detalhes</a>';
-  document.getElementById('fPr').innerHTML=d.val==='Sob Consulta'?'<span style="font-size:14px;color:#AAA">Sob Consulta</span>':'R$ '+d.val;
-  var db=document.getElementById('bDrv');if(d.dr){db.onclick=function(){window.open(d.dr,'_blank');};db.style.opacity='1';}else{db.onclick=null;db.style.opacity='.35';}
-  var dots=document.getElementById('fDots');dots.innerHTML=d.f&&d.f.length>1?d.f.map(function(_,i){return '<div class="feat-dot '+(i===0?'on':'')+'" onclick="goFP('+i+')"></div>';}).join(''):'';
-}
-window.fNav=function(dir){var d=F[ai];if(!d||!d.f||d.f.length<2)return;fpi=(fpi+dir+d.f.length)%d.f.length;goFP(fpi);};
-window.goFP=function(i){var d=F[ai];if(!d||!d.f)return;fpi=i;var img=document.getElementById('fImg');img.style.opacity='0';setTimeout(function(){img.src=d.f[i];img.onload=function(){img.style.opacity='1';};},150);document.querySelectorAll('.feat-dot').forEach(function(x,j){x.classList.toggle('on',j===i);});};
-window.closeFeat=function(){document.getElementById('featCard').style.display='none';fH=true;rList();};
-
-/* ═══ LIST ═══ */
-function rList(){
-  var sc=document.getElementById('lSc');var items=fH?F:F.filter(function(_,i){return i!==ai;});
-  document.getElementById('lTi').textContent=fH?'Todos os imóveis':'Outros imóveis';
-  document.getElementById('lCn').textContent=items.length+' disponíveis';
-  sc.innerHTML=items.map(function(d,i){
-    var ri=F.indexOf(d);var pr=d.val==='Sob Consulta'?d.val:'R$ '+d.val;var st=sL(d.s,d.ent);
-    var img=d.f&&d.f.length?'<img class="card-img" src="'+d.f[0]+'">':'<div class="card-img" style="display:flex;align-items:center;justify-content:center;font-size:24px;opacity:.15">🏙</div>';
-    return '<div class="card" onclick="sel('+ri+')" style="animation-delay:'+(i*.04)+'s">'+img+'<div class="card-body"><div class="card-name">'+d.n+'</div><div class="card-price">'+pr+'</div><div class="card-addr">'+d.e+', '+d.b+'</div><div class="card-bottom"><div class="card-specs"><span class="card-spec">🛏 '+(d.d||'—')+'</span><span class="card-spec">🚗 '+(d.v||'—')+'</span><span class="card-spec">📐 '+d.m+'</span></div><span class="badge '+d.s+'">'+st+'</span></div></div></div>';
+/* ═══ GRID ═══ */
+function render(){
+  var g=document.getElementById('grid');
+  document.getElementById('count').innerHTML='<b>'+F.length+'</b> '+(F.length===1?'imóvel':'imóveis');
+  if(!F.length){g.innerHTML='<div class="empty"><b>Nenhum imóvel encontrado</b>Ajuste os filtros ou limpe a busca para ver todas as opções.</div>';return;}
+  g.innerHTML=F.map(function(d,i){
+    var img=d.f&&d.f.length?'<img src="'+d.f[0]+'" loading="lazy" alt="'+d.n+'">':'<div style="display:flex;align-items:center;justify-content:center;height:100%;font-size:30px;opacity:.15">🏙</div>';
+    return '<article class="pc" style="animation-delay:'+(i*.045)+'s" onclick="openDt('+d.id+')">'
+      +'<div class="pc-img">'+img+'<span class="pc-badge '+d.s+'">'+stLabel(d)+'</span>'
+      +(d.tp==='com'?'<span class="pc-corp">Corporativo</span>':'')
+      +'<span class="pc-unit">'+d.u+'</span></div>'
+      +'<div class="pc-body">'
+        +'<h2 class="pc-name">'+d.n+'</h2>'
+        +'<div class="pc-addr">'+d.e+' · '+d.b+'</div>'
+        +'<div class="pc-specs">'
+          +(d.tp==='com'?'<span class="pc-spec">🚿 <b>'+(d.ban||'—')+'</b></span>':'<span class="pc-spec">🛏 <b>'+(d.d||'—')+'</b></span>')
+          +'<span class="pc-spec">🚗 <b>'+(d.v||'—')+'</b></span><span class="pc-spec">📐 <b>'+d.m+'</b></span></div>'
+        +'<div class="pc-price"><span class="pc-val">'+priceHtml(d)+'</span><span class="pc-cta">Ver detalhes →</span></div>'
+      +'</div></article>';
   }).join('');
 }
 
-/* ═══ FILTERS ═══ */
-document.querySelectorAll('.pill[data-f]').forEach(function(b){b.onclick=function(){document.querySelectorAll('.pill[data-f]').forEach(function(x){x.classList.toggle('on',x===b);});applyF();};});
-var brs=['Todos','Vila Prudente','Bela Vista','Campo Belo','Brooklin','Itaim Bibi'],bi=0;
-document.getElementById('fB').onclick=function(){bi=(bi+1)%brs.length;this.textContent=brs[bi]==='Todos'?'Bairro ▾':brs[bi]+' ✕';applyF();};
-window.applyF=function(){
-  var f=document.querySelector('.pill.on[data-f]').dataset.f;var q=document.getElementById('sIn').value.toLowerCase();var ba=brs[bi];
-  F=D.filter(function(d){if(f!=='all'&&d.s!==f)return false;if(ba!=='Todos'&&d.b!==ba)return false;if(q&&d.n.toLowerCase().indexOf(q)<0&&d.b.toLowerCase().indexOf(q)<0)return false;return true;});
-  document.querySelector('.pill[data-f="all"]').textContent='Todos · '+F.length;
-  if(F.length){if(ai>=0){var pi=F.findIndex(function(d){return d.id===(D[ai]?D[ai].id:-1);});if(pi>=0){ai=pi;mkr();sel(ai);}else{ai=-1;mkr();document.getElementById('featCard').style.display='none';fH=true;rList();}}else{mkr();rList();}}else{mkr();rList();}
-};
-
-/* ═══ TABELÃO ═══ */
-window.openTab=function(){bTab('all');document.getElementById('tabBg').classList.add('open');};
-window.closeTab=function(){document.getElementById('tabBg').classList.remove('open');};
-document.querySelectorAll('.m-f').forEach(function(b){b.onclick=function(){document.querySelectorAll('.m-f').forEach(function(x){x.classList.remove('on');});b.classList.add('on');bTab(b.dataset.tf);};});
-function bTab(f){
-  var gs={breve:{l:'BREVE LANÇAMENTO',c:'breve',it:[]},pronto:{l:'PRONTO PARA MORAR',c:'pronto',it:[]},obras:{l:'EM OBRAS',c:'obras',it:[]}};var tot=0;
-  D.forEach(function(d){if(f!=='all'&&d.s!==f)return;gs[d.s].it.push(d);tot++;});
-  var h='';['breve','pronto','obras'].forEach(function(k){var g=gs[k];if(!g.it.length)return;
-    h+='<tr class="tgrp '+g.c+'"><td colspan="11"><span class="gd"></span>'+g.l+' · '+g.it.length+'</td></tr>';
-    g.it.forEach(function(d){var sc=d.mob?'mob':d.s;var st=d.mob?'Mobiliado':d.s==='pronto'?'Pronto':d.s==='breve'?'Breve':d.ent;var val=d.val==='Sob Consulta'?d.val:'R$ '+d.val;var lnk=d.dr?'<a href="'+d.dr+'" target="_blank" class="tlink" onclick="event.stopPropagation()">LINK ↗</a>':'<span class="tlink off">—</span>';
-      h+='<tr class="trow" onclick="closeTab();setTimeout(function(){openDet('+d.id+')},250)"><td>'+d.n+'</td><td>'+d.b+'</td><td><span class="tstg '+sc+'">'+st+'</span></td><td>'+d.e+'</td><td>'+d.u+'</td><td class="c">'+d.t+'</td><td class="c">'+d.m+(d.dep?'+D':'')+'</td><td class="c">'+(d.d||'—')+'</td><td>'+(d.v||'—')+'</td><td class="r">'+val+'</td><td class="c">'+lnk+'</td></tr>';
-    });
-  });
-  document.getElementById('tBd').innerHTML=h||'<tr><td colspan="11" style="padding:50px;text-align:center;color:#BBB">Vazio.</td></tr>';
-  document.getElementById('tSub').textContent=tot+' oportunidades';
-}
-
 /* ═══ DETAIL ═══ */
-var dd=null,dpi=0;
-window.openDet=function(id){dd=D.find(function(x){return x.id===id;});if(!dd)return;dpi=0;document.getElementById('dBr').textContent=dd.b+' · '+dd.n;bOV();bFO();bPL();bMP();sDT('ov');document.getElementById('dBg').classList.add('open');document.getElementById('dSc').scrollTop=0;};
-window.closeDet=function(){document.getElementById('dBg').classList.remove('open');};
-document.querySelectorAll('.dtab').forEach(function(t){t.onclick=function(){sDT(t.dataset.d);};});
-function sDT(n){document.querySelectorAll('.dtab').forEach(function(t){t.classList.toggle('on',t.dataset.d===n);});document.querySelectorAll('.dp').forEach(function(p){p.classList.toggle('on',p.id==='dp-'+n);});document.getElementById('dSc').scrollTop=0;}
-function bOV(){var d=dd;var st=d.s==='pronto'?'Pronto para Morar':d.s==='obras'?'Em Obras · '+d.ent:'Breve Lançamento';var hi=d.f&&d.f.length?'<img id="dHI" src="'+d.f[0]+'" style="transition:opacity .2s">':'<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:48px;opacity:.1">🏙</div>';var logo=d.il?'<img class="det-builder-logo" src="'+d.il+'">':'';var mq=encodeURIComponent(d.e+', '+d.b+', São Paulo, SP');var dr=d.dr||'#';
-  document.getElementById('dp-ov').innerHTML='<div class="det-hero" onclick="openLb(0)">'+hi+'<div class="det-hero-nav"><button class="det-hero-btn" onclick="event.stopPropagation();dHN(-1)">‹</button><button class="det-hero-btn" onclick="event.stopPropagation();dHN(1)">›</button></div>'+(d.f&&d.f.length>1?'<div class="det-hero-cnt">'+d.f.length+' fotos</div>':'')+'</div><div style="margin-bottom:8px"><span class="badge '+d.s+'">'+st+'</span></div><div class="det-name">'+d.n+'</div><div class="det-addr">📍 '+d.e+', '+d.b+'</div><div class="det-unit">'+d.u+'</div><div class="det-builder"><div style="flex:1"><div style="font-size:8px;letter-spacing:2px;text-transform:uppercase;color:var(--sub);font-weight:600;margin-bottom:2px">Incorporação</div><div style="font-size:13px;font-weight:600">'+d.inc+'</div></div>'+logo+'</div><div class="dspecs"><div class="dsp"><div class="dsp-l">Metragem</div><div class="dsp-v">'+d.m+(d.dep?'+D':'')+'</div></div><div class="dsp"><div class="dsp-l">Dorms</div><div class="dsp-v">'+(d.d||'—')+'</div></div><div class="dsp"><div class="dsp-l">Garagem</div><div class="dsp-v">'+(d.v||'—')+'</div></div><div class="dsp"><div class="dsp-l">Tipo</div><div class="dsp-v">'+d.t+'</div></div><div class="dsp"><div class="dsp-l">Mobiliado</div><div class="dsp-v">'+(d.mob?'Sim':'Não')+'</div></div><div class="dsp"><div class="dsp-l">Entrega</div><div class="dsp-v">'+d.ent+'</div></div></div><div class="det-price"><div><div style="font-size:9px;letter-spacing:2.5px;text-transform:uppercase;color:rgba(255,255,255,.45);font-weight:600">Valor</div></div><div style="font-family:Instrument Serif,serif;font-size:26px"><span style="font-size:12px;color:rgba(255,255,255,.5);margin-right:4px;font-family:Inter">R$</span>'+d.val+'</div></div><div class="det-cta"><a href="'+dr+'" target="_blank" class="det-btn'+(d.dr?'':' off')+'">📁 Drive</a><a href="https://maps.google.com/?q='+mq+'" target="_blank" class="det-btn2">📍 Maps</a><button class="det-btn2" onclick="openC();closeDet()">💬 Contato</button></div>';}
-function bFO(){var f=dd.f||[];if(!f.length){document.getElementById('dp-fo').innerHTML='<div style="padding:60px;text-align:center;color:#BBB">Sem fotos.</div>';return;}document.getElementById('dp-fo').innerHTML='<div class="sec-label">Galeria · '+f.length+' fotos</div><div class="d-photo-grid">'+f.map(function(u,i){return '<div class="d-thumb'+(i===0?' big':'')+'" onclick="openLb('+i+')"><img src="'+u+'" loading="lazy"></div>';}).join('')+'</div>';}
-function bPL(){var p=dd.pl||[];if(!p.length){document.getElementById('dp-pl').innerHTML='<div style="padding:60px;text-align:center;color:#BBB">Planta em breve.</div>';return;}var h='<div class="sec-label">Plantas</div>';p.forEach(function(x){h+='<div style="font-size:11px;font-weight:600;color:#666;margin-bottom:6px">'+x.l+'</div><div class="d-planta" onclick="openLbS(\''+x.img+'\')"><img src="'+x.img+'"></div>';});document.getElementById('dp-pl').innerHTML=h;}
-function bMP(){var mq=encodeURIComponent(dd.e+', '+dd.b+', São Paulo, SP');var ph='';if(dd.poi&&dd.poi.length){ph='<div class="sec-label">Pontos de Interesse</div><div class="d-pois">'+dd.poi.map(function(p){return '<div class="d-poi"><span style="font-size:14px;width:22px;text-align:center;flex-shrink:0">'+p.i+'</span><div><div class="d-poi-n">'+p.n+'</div><div class="d-poi-d">'+p.d+'</div></div></div>';}).join('')+'</div>';}document.getElementById('dp-mp').innerHTML='<div class="sec-label">Localização</div><div style="background:#FAFAFA;border:1px solid var(--bdr);border-radius:var(--r);padding:14px 16px;margin-bottom:10px;display:flex;align-items:center;justify-content:space-between;gap:12px"><div><div style="font-size:8px;letter-spacing:2px;text-transform:uppercase;color:var(--sub);font-weight:600;margin-bottom:3px">Endereço</div><div style="font-family:Instrument Serif,serif;font-size:17px">'+dd.e+'</div><div style="font-size:11px;color:var(--sub);margin-top:1px">'+dd.b+' · São Paulo – SP</div></div><a href="https://maps.google.com/?q='+mq+'" target="_blank" style="padding:8px 14px;border:1.5px solid var(--bdr);border-radius:8px;font-size:10px;font-weight:600;color:var(--gold);text-decoration:none;white-space:nowrap;transition:all .15s">Maps →</a></div><div class="d-map"><iframe src="https://maps.google.com/maps?q='+mq+'&output=embed&z=16" allowfullscreen loading="lazy"></iframe></div>'+ph;}
-window.dHN=function(dir){if(!dd||!dd.f||dd.f.length<2)return;dpi=(dpi+dir+dd.f.length)%dd.f.length;var img=document.getElementById('dHI');if(img){img.style.opacity='0';setTimeout(function(){img.src=dd.f[dpi];img.onload=function(){img.style.opacity='1';};},120);}};
-
-/* ═══ LIGHTBOX ═══ */
-var lbF=[],lbI=0;
-window.openLb=function(i){if(!dd||!dd.f)return;lbF=dd.f;lbI=i;document.getElementById('lbI').src=lbF[i];document.getElementById('lb').classList.add('open');};
-window.openLbS=function(s){lbF=[s];lbI=0;document.getElementById('lbI').src=s;document.getElementById('lb').classList.add('open');};
-window.closeLb=function(){document.getElementById('lb').classList.remove('open');};
-window.lbN=function(dir){if(!lbF.length)return;lbI=(lbI+dir+lbF.length)%lbF.length;document.getElementById('lbI').src=lbF[lbI];};
+window.openDt=function(id){
+  var d=D.find(function(x){return x.id===id;});if(!d)return;
+  curD=d;gi=0;
+  document.getElementById('dtBread').textContent=d.b+' · '+d.u;
+  var sc=document.getElementById('dtSc');
+  var gal='';
+  if(d.f&&d.f.length){
+    gal='<div class="gal"><img class="gal-main" id="galMain" src="'+d.f[0]+'" onclick="openLb()">'
+      +'<div class="gal-grad"></div>'
+      +'<div class="gal-title"><span class="gt-badge '+d.s+'">'+stLabel(d)+'</span><h1>'+d.n+'</h1><div class="gt-addr">📍 '+d.e+', '+d.b+' — São Paulo</div></div>'
+      +(d.f.length>1?'<div class="gal-nav"><button class="gal-b" onclick="galN(-1)">←</button><button class="gal-b" onclick="galN(1)">→</button></div><span class="gal-ct" id="galCt">1 / '+d.f.length+'</span>':'')
+      +'</div>'
+      +(d.f.length>1?'<div class="thumbs">'+d.f.map(function(u,i){return '<img class="thumb '+(i===0?'on':'')+'" src="'+u+'" onclick="galGo('+i+')">';}).join('')+'</div>':'');
+  }
+  var mapUrl='https://api.mapbox.com/styles/v1/mapbox/light-v11/static/pin-l+A67C00('+d.co[1]+','+d.co[0]+')/'+d.co[1]+','+d.co[0]+',14.2/700x340@2x?access_token='+MBT;
+  var gmaps='https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(d.e+', '+d.b+', São Paulo');
+  var waLink='https://wa.me/5511977481984?text='+encodeURIComponent('Olá Lucas, tenho interesse no '+d.n+' ('+d.u+').');
+  sc.innerHTML=gal
+    +'<div class="dt-body">'
+      +'<div class="dt-main">'
+        +'<div class="dt-specs">'
+          +'<div class="dt-spec"><div class="l">Unidade</div><div class="v">'+d.u+'</div></div>'
+          +'<div class="dt-spec"><div class="l">Área</div><div class="v">'+d.m+'</div></div>'
+          +(d.tp==='com'
+             ?'<div class="dt-spec"><div class="l">Banheiros</div><div class="v">'+(d.ban||'—')+'</div></div>'
+             :'<div class="dt-spec"><div class="l">Dorms</div><div class="v">'+(d.d||'—')+'</div></div>')
+          +'<div class="dt-spec"><div class="l">Vagas</div><div class="v">'+(d.v||'—')+'</div></div>'
+          +'<div class="dt-spec"><div class="l">Entrega</div><div class="v">'+d.ent+'</div></div>'
+          +'<div class="dt-spec"><div class="l">Incorporadora</div><div class="v" style="font-size:13.5px">'+d.inc+'</div></div>'
+        +'</div>'
+        +'<div class="dt-sec"><h3>Sobre o imóvel</h3><p class="dt-desc">'+d.desc+'</p></div>'
+        +(d.poi&&d.poi.length?'<div class="dt-sec"><h3>Por perto</h3><div class="poi-row">'+d.poi.map(function(p){return '<span class="poi">'+p.i+' <b>'+p.n+'</b><span>'+p.d+'</span></span>';}).join('')+'</div></div>':'')
+        +(d.pl&&d.pl.length?'<div class="dt-sec"><h3>Plantas</h3><div class="plants">'+d.pl.map(function(p){return '<div class="plant" onclick="openLbUrl(\''+p.img+'\')"><img src="'+p.img+'" loading="lazy"><div class="pl-l">'+p.l+'</div></div>';}).join('')+'</div></div>':'')
+        +'<div class="dt-sec"><h3>Localização</h3><a href="'+gmaps+'" target="_blank"><img class="mapimg" src="'+mapUrl+'" loading="lazy" alt="Mapa"></a>'
+          +'<div class="dt-links"><a class="dt-link" href="'+gmaps+'" target="_blank">🗺 Abrir no Google Maps</a></div></div>'
+      +'</div>'
+      +'<aside class="dt-aside">'
+        +'<div class="as-l">Valor</div>'
+        +'<div class="as-price">'+priceHtml(d)+'</div>'
+        +'<div class="as-unit">'+d.n+' · '+d.u+'</div>'
+        +'<div class="as-row"><span class="k">Status</span><span class="v">'+stLabel(d)+'</span></div>'
+        +'<div class="as-row"><span class="k">Área</span><span class="v">'+d.m+'</span></div>'
+        +(d.tp==='com'
+           ?'<div class="as-row"><span class="k">Banheiros / Vagas</span><span class="v">'+(d.ban||'—')+' / '+(d.v||'—')+'</span></div>'
+           :'<div class="as-row"><span class="k">Dorms / Vagas</span><span class="v">'+(d.d||'—')+' / '+(d.v||'—')+'</span></div>')
+        +'<div class="as-row"><span class="k">Bairro</span><span class="v">'+d.b+'</span></div>'
+        +'<a class="wa-btn" target="_blank" href="'+waLink+'">💬 Tenho interesse</a>'
+        +(d.dr?'<a class="dt-link" href="'+d.dr+'" target="_blank">📁 Material completo (Drive)</a>':'')
+      +'</aside>'
+    +'</div>';
+  document.getElementById('dtFoot').innerHTML=
+    '<div class="dt-fprice"><small>'+d.n+'</small>'+priceHtml(d)+'</div>'
+    +'<a class="wa-btn" target="_blank" href="'+waLink+'">💬 Tenho interesse</a>';
+  document.getElementById('dtBg').classList.add('open');
+  document.getElementById('dt').classList.add('open');
+  document.body.style.overflow='hidden';
+  sc.scrollTop=0;
+};
+window.closeDt=function(){
+  document.getElementById('dtBg').classList.remove('open');
+  document.getElementById('dt').classList.remove('open');
+  document.body.style.overflow='';
+};
+window.galGo=function(i){
+  if(!curD||!curD.f)return;gi=i;
+  var img=document.getElementById('galMain');
+  img.style.opacity='0';
+  setTimeout(function(){img.src=curD.f[gi];img.onload=function(){img.style.opacity='1';};},150);
+  var ct=document.getElementById('galCt');if(ct)ct.textContent=(gi+1)+' / '+curD.f.length;
+  document.querySelectorAll('.thumb').forEach(function(t,j){t.classList.toggle('on',j===gi);});
+};
+window.galN=function(dir){if(!curD||!curD.f)return;galGo((gi+dir+curD.f.length)%curD.f.length);};
+window.openLb=function(){if(!curD)return;document.getElementById('lbImg').src=curD.f[gi];document.getElementById('lb').classList.add('open');};
+window.openLbUrl=function(u){document.getElementById('lbImg').src=u;document.getElementById('lb').classList.add('open');};
 
 /* ═══ CONTACT ═══ */
-window.openC=function(){document.getElementById('cBg').classList.add('open');};
-window.closeC=function(){document.getElementById('cBg').classList.remove('open');};
+window.openC=function(){document.getElementById('cmBg').classList.add('open');};
+window.closeC=function(){document.getElementById('cmBg').classList.remove('open');};
 
-/* ═══ ESC ═══ */
-document.addEventListener('keydown',function(e){if(e.key==='Escape'){
-  if(document.getElementById('lb').classList.contains('open'))return closeLb();
-  if(document.getElementById('tabBg').classList.contains('open'))return closeTab();
-  if(document.getElementById('dBg').classList.contains('open'))return closeDet();
-  closeC();
-}});
+/* ═══ KEYBOARD ═══ */
+document.addEventListener('keydown',function(e){
+  if(e.key==='Escape'){document.getElementById('lb').classList.remove('open');closeDt();closeC();closeTab();closeLg();}
+  if(document.getElementById('dt').classList.contains('open')){
+    if(e.key==='ArrowRight')galN(1);
+    if(e.key==='ArrowLeft')galN(-1);
+  }
+});
 
-/* ═══ INIT ═══ */
-setTimeout(initMap,100);
+/* ═══ SWIPE (mobile gallery) ═══ */
+var tx=null;
+document.addEventListener('touchstart',function(e){if(document.getElementById('dt').classList.contains('open')&&e.target.closest('.gal'))tx=e.touches[0].clientX;},{passive:true});
+document.addEventListener('touchend',function(e){if(tx===null)return;var dx=e.changedTouches[0].clientX-tx;if(Math.abs(dx)>45)galN(dx<0?1:-1);tx=null;},{passive:true});
+
+/* ═══ OVERRIDES (valores ajustados no admin) ═══ */
+function loadOv(){try{return JSON.parse(localStorage.getItem('unacorp_ov')||'{}');}catch(e){return {};}}
+function saveOv(o){try{localStorage.setItem('unacorp_ov',JSON.stringify(o));}catch(e){}}
+(function(){var ov=loadOv();D.forEach(function(d){if(ov[d.id])d.val=ov[d.id];});})();
+
+/* ═══ TABELÃO ═══ */
+var adm=false, editing=false;
+window.openTab=function(){renderTab();document.getElementById('tabBg').classList.add('open');document.body.style.overflow='hidden';};
+window.closeTab=function(){editing=false;document.getElementById('tabBg').classList.remove('open');if(!document.getElementById('dt').classList.contains('open'))document.body.style.overflow='';};
+function renderTab(){
+  var tb=document.getElementById('tabBody');
+  document.getElementById('tabSub').textContent=D.length+' unidades no portfólio';
+  document.getElementById('admTag').style.display=adm&&editing?'inline-flex':'none';
+  tb.innerHTML=D.map(function(d){
+    var valCell=(adm&&editing)
+      ?'<input value="'+d.val.replace(/"/g,'&quot;')+'" data-vid="'+d.id+'">'
+      :(d.val==='Sob Consulta'?'<span style="color:var(--sub)">Sob Consulta</span>':'R$ '+d.val);
+    return '<tr class="row" '+(adm&&editing?'':'onclick="closeTab();openDt('+d.id+')"')+'>'
+      +'<td class="tb-name">'+d.n+'</td><td>'+d.b+'</td><td>'+d.u+'</td>'
+      +'<td><span class="tb-badge '+d.s+'">'+(d.s==='pronto'?'Pronto':d.s==='obras'?'Obras':'Breve')+'</span></td>'
+      +'<td>'+d.ent+'</td><td>'+d.m+'</td><td>'+(d.tp==='com'?(d.ban||'—')+' ban':(d.d||'—'))+'</td><td>'+(d.v||'—')+'</td>'
+      +'<td class="tb-val">'+valCell+'</td></tr>';
+  }).join('');
+  var ft=document.getElementById('tabFt');
+  if(!adm){
+    ft.innerHTML='<button class="adm-link" onclick="openLg()">🔒 Área restrita</button>';
+  } else if(!editing){
+    ft.innerHTML='<span class="adm-tag">🔓 Conectado</span>'
+      +'<button class="adm-btn primary" onclick="startEdit()">✏️ Editar valores</button>'
+      +'<button class="adm-btn" onclick="expHtml()">⬇ Baixar HTML atualizado</button>'
+      +'<button class="adm-link" onclick="logout()">Sair</button>';
+  } else {
+    ft.innerHTML='<button class="adm-btn primary" onclick="saveEdit()">💾 Salvar valores</button>'
+      +'<button class="adm-btn" onclick="cancelEdit()">Cancelar</button>'
+      +'<div class="adm-note">Formato: 900.000,00 · As alterações valem neste navegador. Para publicar no site, use "Baixar HTML atualizado" e suba o arquivo no Git.</div>';
+  }
+}
+window.startEdit=function(){editing=true;renderTab();};
+window.cancelEdit=function(){editing=false;renderTab();};
+window.saveEdit=function(){
+  var ov=loadOv();
+  document.querySelectorAll('#tabBody input[data-vid]').forEach(function(inp){
+    var id=parseInt(inp.dataset.vid),v=inp.value.trim();
+    var d=D.find(function(x){return x.id===id;});
+    if(d&&v&&v!==d.val){d.val=v;ov[id]=v;}
+  });
+  saveOv(ov);editing=false;renderTab();apply();
+};
+
+/* ═══ LOGIN ═══ */
+window.openLg=function(){document.getElementById('lgErr').style.display='none';document.getElementById('lgBg').classList.add('open');setTimeout(function(){document.getElementById('lgU').focus();},100);};
+window.closeLg=function(){document.getElementById('lgBg').classList.remove('open');};
+window.doLogin=function(){
+  var u=document.getElementById('lgU').value.trim(),p=document.getElementById('lgP').value;
+  if(u==='unacorp'&&p==='unacorp'){adm=true;closeLg();document.getElementById('lgU').value='';document.getElementById('lgP').value='';renderTab();}
+  else{document.getElementById('lgErr').style.display='block';}
+};
+window.logout=function(){adm=false;editing=false;renderTab();};
+
+/* ═══ EXPORTAR HTML ATUALIZADO ═══ */
+window.expHtml=function(){
+  fetch(location.href).then(function(r){return r.text();}).then(function(src){
+    D.forEach(function(d){
+      var reV=new RegExp('(\\{id:'+d.id+',[^{}]*?val:")[^"]*(")');
+      src=src.replace(reV,function(m,a,b){return a+d.val+b;});
+    });
+    var blob=new Blob([src],{type:'text/html'});
+    var a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='index.html';a.click();
+    setTimeout(function(){URL.revokeObjectURL(a.href);},2000);
+  }).catch(function(){alert('Não foi possível gerar o arquivo aqui. Esta função só funciona com o site publicado (não em arquivo local).');});
+};
+
+render();
 </script>
 </body>
 </html>
