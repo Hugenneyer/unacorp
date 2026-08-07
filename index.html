@@ -55,6 +55,8 @@ a{color:inherit;text-decoration:none}
 .pc:hover{transform:translateY(-4px);box-shadow:var(--shadow)}
 @keyframes up{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
 .pc-img{position:relative;height:230px;background:#EDEBE4;overflow:hidden}
+img.img-off{visibility:hidden}
+.ph{position:absolute;top:0;left:0;right:0;bottom:0;display:flex;align-items:center;justify-content:center;background:#EDEBE4;color:#B9B6AD;font-size:26px}
 .pc-img img{width:100%;height:100%;object-fit:cover;transition:transform .5s ease}
 .pc:hover .pc-img img{transform:scale(1.045)}
 .pc-badge{position:absolute;top:12px;left:12px;padding:5px 11px;border-radius:99px;font-size:10px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;color:#fff;backdrop-filter:blur(6px)}
@@ -62,6 +64,7 @@ a{color:inherit;text-decoration:none}
 .pc-badge.obras{background:rgba(217,119,6,.92)}
 .pc-badge.breve{background:rgba(166,124,0,.92)}
 .pc-badge.def{background:rgba(107,114,128,.92)}
+.pc-badge.lanc{background:rgba(13,148,136,.92)}
 .pc-corp{position:absolute;top:12px;right:12px;padding:5px 11px;border-radius:99px;font-size:10px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;background:rgba(30,58,138,.92);color:#fff;backdrop-filter:blur(6px)}
 .pc-unit{position:absolute;bottom:12px;right:12px;padding:4px 10px;border-radius:8px;background:rgba(20,20,15,.62);backdrop-filter:blur(6px);color:#fff;font-size:11px;font-weight:600}
 .pc-body{padding:18px 20px 20px}
@@ -94,6 +97,7 @@ table.tb-tbl{width:100%;border-collapse:collapse;font-size:12.5px;min-width:820p
 .tb-badge{display:inline-block;padding:3px 9px;border-radius:99px;font-size:9.5px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#fff}
 .tb-badge.pronto{background:var(--green)}.tb-badge.obras{background:var(--amber)}.tb-badge.breve{background:var(--gold)}
 .tb-badge.def{background:#6B7280}
+.tb-badge.lanc{background:#0D9488}
 .tb-val{font-weight:700}
 .tb-val input{width:120px;padding:6px 9px;border:1px solid var(--gold);border-radius:8px;font-family:inherit;font-size:12.5px;font-weight:700;outline:none;background:#FFFDF5}
 .tab-ft{padding:12px 24px;border-top:1px solid var(--line);display:flex;align-items:center;gap:10px;flex-shrink:0;flex-wrap:wrap}
@@ -134,6 +138,7 @@ table.tb-tbl{width:100%;border-collapse:collapse;font-size:12.5px;min-width:820p
 .gal-title .gt-badge{display:inline-block;padding:5px 12px;border-radius:99px;font-size:10px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;margin-bottom:8px}
 .gal-title .gt-badge.pronto{background:var(--green)}.gal-title .gt-badge.obras{background:var(--amber)}.gal-title .gt-badge.breve{background:var(--gold)}
 .gal-title .gt-badge.def{background:#6B7280}
+.gal-title .gt-badge.lanc{background:#0D9488}
 .gal-title h1{font-size:clamp(24px,3.6vw,38px);font-weight:700;letter-spacing:-.5px;line-height:1.1;text-shadow:0 2px 12px rgba(0,0,0,.4)}
 .gal-title .gt-addr{font-size:13.5px;opacity:.9;margin-top:5px;text-shadow:0 1px 8px rgba(0,0,0,.5)}
 .gal-nav{position:absolute;top:0;left:0;right:0;bottom:0;display:flex;align-items:center;justify-content:space-between;padding:0 14px;pointer-events:none}
@@ -163,6 +168,7 @@ table.tb-tbl{width:100%;border-collapse:collapse;font-size:12.5px;min-width:820p
 .dt-status{display:inline-flex;padding:5px 12px;border-radius:99px;font-size:10px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;color:#fff;margin-bottom:12px}
 .dt-status.pronto{background:var(--green)}.dt-status.obras{background:var(--amber)}.dt-status.breve{background:var(--gold)}
 .dt-status.def{background:#6B7280}
+.dt-status.lanc{background:#0D9488}
 .dt-name{font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;font-weight:700;font-size:30px;line-height:1.15}
 .dt-addr{color:var(--sub);margin-top:6px;font-size:14px}
 .dt-price{margin-top:16px;font-size:28px;font-weight:700;letter-spacing:-.5px}
@@ -278,6 +284,7 @@ table.tb-tbl{width:100%;border-collapse:collapse;font-size:12.5px;min-width:820p
     <button class="chip" data-s="pronto" onclick="setS(this)">Pronto</button>
     <button class="chip" data-s="obras" onclick="setS(this)">Em obras</button>
     <button class="chip" data-s="breve" onclick="setS(this)">Breve</button>
+    <button class="chip" data-s="lanc" onclick="setS(this)">Lançamento</button>
   </div>
   <button class="chip" id="bChip" onclick="cycleB()">Bairro ▾</button>
   <button class="chip" id="tChip" onclick="cycleT()">Tipo ▾</button>
@@ -381,23 +388,44 @@ table.tb-tbl{width:100%;border-collapse:collapse;font-size:12.5px;min-width:820p
 <script>
 var MBT='pk.eyJ1IjoiYXBwdGlwbyIsImEiOiJjbXBteTloZTkwYnYyMnJweHNkcXhzOWxpIn0.1TjvK4GLZai_NRMbn0uXqg';
 var D=[
-{id:1,n:"URBO VILA PRUDENTE",b:"Vila Prudente",e:"Av. Vila Ema, 850",u:"Un. 178 · 17°",s:"pronto",ent:"Pronto",t:"Tipo",m:"63m²",d:"2",v:"1",val:"800.000,00",dr:"https://drive.google.com/drive/folders/1bLYUKmderamkwkZNIcjvPV2tc1NP7BtT",desc:"63m², 2 dormitórios, 1 vaga. Mobiliado e com depósito.",f:["https://lh3.googleusercontent.com/d/1-VKc4OfsW5i6ug7MvlUDLGNrhboSlo74=w2000","https://lh3.googleusercontent.com/d/1CPJuFG2Q7zguAyeyITYGGPaupj9crP6W=w2000","https://lh3.googleusercontent.com/d/1IGdUhqUAXGS75pZASTWCIxzfKa1hdo2g=w2000","https://lh3.googleusercontent.com/d/1NG6i2EKeN7Jbj6VTTyRFHwLHOqFcdhDM=w2000","https://lh3.googleusercontent.com/d/1YM7wt6Is3iRrvNo2O5vjAGxwEoo3rI62=w2000","https://lh3.googleusercontent.com/d/1fWkEk4PA2Y9ej0liM5TAlTKQ9o_W4x1h=w2000"],co:[-23.5840,-46.5640],inc:"Cordoba",poi:[{i:"🚇",n:"Metrô Vila Prudente",d:"350m"},{i:"🛒",n:"Anália Franco",d:"1,8km"}],pl:[{l:"Planta Tipo",img:"https://urbovilaprudente.com.br/assets/images/planta_01.jpg"}],tp:'res'},
-{id:2,n:"URBO VILA PRUDENTE",b:"Vila Prudente",e:"Av. Vila Ema, 850",u:"Un. 171 · 17°",s:"pronto",ent:"Pronto",t:"Tipo",m:"63m²",d:"2",v:"1",val:"800.000,00",dr:"https://drive.google.com/drive/folders/1bLYUKmderamkwkZNIcjvPV2tc1NP7BtT",desc:"Mesma localização, outra unidade disponível.",f:["https://lh3.googleusercontent.com/d/1-VKc4OfsW5i6ug7MvlUDLGNrhboSlo74=w2000","https://lh3.googleusercontent.com/d/1CPJuFG2Q7zguAyeyITYGGPaupj9crP6W=w2000"],co:[-23.5842,-46.5642],inc:"Cordoba",poi:[{i:"🚇",n:"Metrô Vila Prudente",d:"350m"}],pl:[{l:"Planta Tipo",img:"https://urbovilaprudente.com.br/assets/images/planta_01.jpg"}],tp:'res'},
-{id:3,n:"HAUS MITRE JARDINS",b:"Bela Vista",e:"Rua Itapeva, 350",u:"Un. 418 · 4°",s:"pronto",ent:"Pronto",t:"NR",m:"54m²",d:"1",v:"0",val:"1.500.000,00",dr:"https://drive.google.com/drive/folders/1iUCzOAlZ5PHkUXnKu3lBJDu_HSNYezKI",desc:"Alto padrão. 250m do Metrô Trianon-MASP e Parque Trianon.",f:["https://lh3.googleusercontent.com/d/1o-lTnTbVQtXbAj84-h4j32ucH7e1vU1A=w2000","https://lh3.googleusercontent.com/d/11-G_251jSv6eDqUbonxCQ3F29iaAO2Cw=w2000","https://lh3.googleusercontent.com/d/11DXvN4VGv5l3N0J9gR-g9c9OEk4GPi9Z=w2000","https://lh3.googleusercontent.com/d/169BDwnOjxvoX8C0zGywjD9CXVCpwvB9b=w2000","https://lh3.googleusercontent.com/d/18fSXV7TbiQawmos3QYJ7ZnRFzH6fGNo8=w2000","https://lh3.googleusercontent.com/d/1OQdKeAeCI6GpBGQ6In3A6N1_Rj6Dea6Y=w2000","https://lh3.googleusercontent.com/d/1Up9JTjAsvJx6x_Kfac6PY8y8hiY6_1KL=w2000","https://lh3.googleusercontent.com/d/1ehfqitVTkWpBq2gUJZXEJZHbZWkp5o42=w2000"],co:[-23.5647,-46.6526],inc:"Mitre",poi:[{i:"🚇",n:"Trianon-Masp",d:"250m"},{i:"🎭",n:"MASP",d:"300m"},{i:"🌳",n:"Parque Trianon",d:"400m"},{i:"🏥",n:"Sírio-Libanês",d:"600m"}],pl:[{l:"Planta 1D",img:"https://lh3.googleusercontent.com/d/1z0FZaDjVnC71UAVqPOwjDfHdt3NSSLLf=w2000"}],tp:'res'},
-{id:4,n:"HAUS MITRE JARDINS",b:"Bela Vista",e:"Rua Itapeva, 350",u:"Un. 518 · 5°",s:"pronto",ent:"Pronto",t:"NR",m:"54m²",d:"1",v:"0",val:"1.500.000,00",dr:"https://drive.google.com/drive/folders/1iUCzOAlZ5PHkUXnKu3lBJDu_HSNYezKI",desc:"5° andar. Mesmo padrão premium na Paulista.",f:["https://lh3.googleusercontent.com/d/1o-lTnTbVQtXbAj84-h4j32ucH7e1vU1A=w2000","https://lh3.googleusercontent.com/d/169BDwnOjxvoX8C0zGywjD9CXVCpwvB9b=w2000","https://lh3.googleusercontent.com/d/18fSXV7TbiQawmos3QYJ7ZnRFzH6fGNo8=w2000"],co:[-23.5649,-46.6528],inc:"Mitre",poi:[{i:"🚇",n:"Trianon-Masp",d:"250m"},{i:"🌳",n:"Parque Trianon",d:"400m"}],pl:[{l:"Planta 1D",img:"https://lh3.googleusercontent.com/d/1z0FZaDjVnC71UAVqPOwjDfHdt3NSSLLf=w2000"}],tp:'res'},
-{id:5,n:"TRIUNFO CAMPO BELO",b:"Campo Belo",e:"R. Barão do Triunfo, 551",u:"Un. 53 · 5°",s:"pronto",ent:"Pronto",t:"Tipo",m:"81m²",d:"2",v:"1",val:"1.450.000,00",dr:"https://drive.google.com/drive/folders/18I52WTrIyCKUNlmkBlzTUsUgnqCX_pMG",desc:"Excelente em Campo Belo. Próximo metrô, shopping e Congonhas.",f:["https://lh3.googleusercontent.com/d/1liGK-ppdQ0qosynX3fSViT7QLmiVeTri=w2000","https://lh3.googleusercontent.com/d/14ZGbUQizX7Udq9yjdVMtJlqGNjI-_UX8=w2000","https://lh3.googleusercontent.com/d/16xD5CgnT2CP4AVTbi0tAi2wtLu1BQDre=w2000","https://lh3.googleusercontent.com/d/1JhK0llMV_AQ1YPreldPPg_okk5WefDyh=w2000","https://lh3.googleusercontent.com/d/1MBM2Xk_SIhhXZUyRhw52hGG742Q5yT9T=w2000"],co:[-23.6195,-46.6640],inc:"Courchevel",poi:[{i:"🚇",n:"Metrô Campo Belo",d:"500m"},{i:"🛒",n:"Shopping Campo Belo",d:"400m"},{i:"✈️",n:"Congonhas",d:"3km"}],pl:[{l:"Planta Tipo",img:"https://lh3.googleusercontent.com/d/1c5-K1bQCwvTq1Cobl0mUN5Bb_Qg13wuD=w2000"}],tp:'res'},
-{id:6,n:"RAÍZES RESERVE",b:"Vila Prudente",e:"Rua José Zappi, 363",u:"Un. 710 · 7°",s:"obras",ent:"mai/26",t:"Studio",m:"26m²",d:"1",v:"0",val:"260.000,00",dr:"https://drive.google.com/drive/folders/1-GS5VycKRDwTlXUvm-57jd6UqZQUc6Cq",desc:"Studio compacto 26m². Entrega mai/26. Perto do Metrô.",f:["https://lh3.googleusercontent.com/d/1E1rYFRv6BCObnHcurr-E5FRlzVCCK9oh=w2000","https://lh3.googleusercontent.com/d/1CrwTe-duW2y2ZySiMEZfS2KDspXfbJ0g=w2000","https://lh3.googleusercontent.com/d/1D8vnZdq2IL0s4FlS6-dm3KrcMlfX1G3v=w2000","https://lh3.googleusercontent.com/d/1HNE1y5aX3nC47TxVHQLAxhCChP1ZUykO=w2000","https://lh3.googleusercontent.com/d/1l8JO9n3V5WppkEcdhWc8ZCRhDJiaOo_8=w2000"],co:[-23.5825,-46.5735],inc:"Mitre",poi:[{i:"🚇",n:"Metrô Vila Prudente",d:"400m"},{i:"🛒",n:"Mercado",d:"200m"}],pl:[{l:"Studio",img:"https://lh3.googleusercontent.com/d/1F_8g1vYOlez-AEhMZiIXIluHQUeWvIE5=w2000"}],tp:'res'},
-{id:7,n:"RAÍZES RESERVE",b:"Vila Prudente",e:"Rua José Zappi, 363",u:"Un. 809 · 8°",s:"obras",ent:"mai/26",t:"Studio",m:"26m²",d:"1",v:"0",val:"260.000,00",dr:"https://drive.google.com/drive/folders/1-GS5VycKRDwTlXUvm-57jd6UqZQUc6Cq",desc:"Studio 8° andar. Melhor vista, mesmo empreendimento.",f:["https://lh3.googleusercontent.com/d/1E1rYFRv6BCObnHcurr-E5FRlzVCCK9oh=w2000","https://lh3.googleusercontent.com/d/1HNE1y5aX3nC47TxVHQLAxhCChP1ZUykO=w2000"],co:[-23.5827,-46.5737],inc:"Mitre",poi:[{i:"🚇",n:"Metrô Vila Prudente",d:"400m"}],pl:[{l:"Studio",img:"https://lh3.googleusercontent.com/d/1F_8g1vYOlez-AEhMZiIXIluHQUeWvIE5=w2000"}],tp:'res'},
-{id:8,n:"CAVOUR 439",b:"Vila Prudente",e:"Rua Cavour, 439",u:"Un. 82 · 8°",s:"obras",ent:"ago/27",t:"Tipo",m:"83m²",d:"3",v:"1",val:"900.000,00",dr:"https://drive.google.com/drive/folders/1jSO0NBrNf5TStZ_TmtB2MCZ_LXlFfC2Z",desc:"83m², 3 dormitórios, 1 vaga. Entrega ago/27.",f:["https://lh3.googleusercontent.com/d/16PoYCHJ9cXxYfAQh2LvyBlhOSZnYnbl0=w2000","https://lh3.googleusercontent.com/d/1-ErvZOlu8Gjfq7QEK1UdXb5H3YRXEKwS=w2000","https://lh3.googleusercontent.com/d/1-ucux4z8BFo2K7eDXC0wKTURmJDAyI0f=w2000","https://lh3.googleusercontent.com/d/146c7tIuwGIPsk8axkBGCjLVrSj6vbKdh=w2000","https://lh3.googleusercontent.com/d/150N6NlJuV9LfASv7kk0psAzZRS42eF2A=w2000"],co:[-23.5805,-46.5680],inc:"Cordoba",poi:[{i:"🚇",n:"Metrô Vila Prudente",d:"300m"},{i:"🛒",n:"Comércio",d:"150m"}],pl:[{l:"Planta",img:"https://lh3.googleusercontent.com/d/1TGJwtCMysqJmazO01STg32-P6RWQ_ed5=w2000"}],tp:'res'},
-{id:9,n:"HAUS MITRE EDITION NY",b:"Brooklin",e:"Rua Michigan, 962",u:"Un. 143 · 14° T.B",s:"obras",ent:"set/27",t:"Tipo",m:"164m²",d:"4",v:"3",val:"3.300.000,00",dr:"https://drive.google.com/drive/folders/1xoOHUnMxAnrEKZyEp1zvBxAssqqKA3td",desc:"Luxo 164m², 4 suítes, 3 vagas no Brooklin. Entrega set/27.",f:["https://lh3.googleusercontent.com/d/1hj2vUDInYopxwN18kDB_O4UIPL0FqEyS=w2000","https://lh3.googleusercontent.com/d/1qwGFjIx_pgW8r4wMgB7G34uxadNGxo-j=w2000","https://lh3.googleusercontent.com/d/1yAJy6CyyyZxGOiaUOH93sJm5JgkVbK_o=w2000","https://lh3.googleusercontent.com/d/18VvKLL28dArGlKkLeS4LyYV0OZnhvmcM=w2000","https://lh3.googleusercontent.com/d/19NtDDl7p45Jhx9YcaJKQqG9Ka2RfbeaA=w2000"],co:[-23.6055,-46.6930],inc:"Mitre",poi:[{i:"🚇",n:"Metrô Brooklin",d:"600m"},{i:"🛒",n:"Market Place",d:"500m"},{i:"✈️",n:"Congonhas",d:"4km"},{i:"🌳",n:"Burle Marx",d:"2km"}],pl:[],tp:'res'},
-{id:10,n:"SALA COMERCIAL",b:"Vila Clementino",e:"R. Borges Lagoa, 564 · Conj. 13",u:"Conj. 13 · 52m²",s:"def",ent:"A definir",t:"Comercial",m:"52m²",d:"—",v:"2",val:"510.000,00",dr:null,desc:"Sala comercial de 52m² com 2 vagas de garagem e 2 banheiros, no conjunto 13. Localizada na Vila Clementino, ao lado do complexo Hospital São Paulo / UNIFESP e a poucos minutos do Metrô Santa Cruz.",f:[],co:[-23.5969631,-46.642156],inc:"A definir",poi:[{i:"🏥",n:"Hospital São Paulo / UNIFESP",d:"~170m"},{i:"🛒",n:"Shopping Metrô Santa Cruz",d:"~560m"},{i:"🚇",n:"Metrô Santa Cruz",d:"~600m"}],pl:[],ban:"2",tp:'com'}
+{id:1,n:"URBO VILA PRUDENTE",b:"Vila Prudente",e:"Av. Vila Ema, 850",u:"Un. 178 · 17°",s:"pronto",ent:"Pronto",t:"Tipo",m:"63m²",d:"2",v:"1",val:"800.000,00",dr:"https://drive.google.com/drive/folders/1bLYUKmderamkwkZNIcjvPV2tc1NP7BtT",desc:"63m², 2 dormitórios, 1 vaga. Mobiliado e com depósito.",f:["https://drive.google.com/thumbnail?id=1-VKc4OfsW5i6ug7MvlUDLGNrhboSlo74&sz=w1600","https://drive.google.com/thumbnail?id=1CPJuFG2Q7zguAyeyITYGGPaupj9crP6W&sz=w1600","https://drive.google.com/thumbnail?id=1IGdUhqUAXGS75pZASTWCIxzfKa1hdo2g&sz=w1600","https://drive.google.com/thumbnail?id=1NG6i2EKeN7Jbj6VTTyRFHwLHOqFcdhDM&sz=w1600","https://drive.google.com/thumbnail?id=1YM7wt6Is3iRrvNo2O5vjAGxwEoo3rI62&sz=w1600","https://drive.google.com/thumbnail?id=1fWkEk4PA2Y9ej0liM5TAlTKQ9o_W4x1h&sz=w1600"],co:[-23.5840,-46.5640],inc:"Cordoba",poi:[{i:"🚇",n:"Metrô Vila Prudente",d:"350m"},{i:"🛒",n:"Anália Franco",d:"1,8km"}],pl:[{l:"Planta Tipo",img:"https://urbovilaprudente.com.br/assets/images/planta_01.jpg"}],tp:'res'},
+{id:2,n:"URBO VILA PRUDENTE",b:"Vila Prudente",e:"Av. Vila Ema, 850",u:"Un. 171 · 17°",s:"pronto",ent:"Pronto",t:"Tipo",m:"63m²",d:"2",v:"1",val:"800.000,00",dr:"https://drive.google.com/drive/folders/1bLYUKmderamkwkZNIcjvPV2tc1NP7BtT",desc:"Mesma localização, outra unidade disponível.",f:["https://drive.google.com/thumbnail?id=1-VKc4OfsW5i6ug7MvlUDLGNrhboSlo74&sz=w1600","https://drive.google.com/thumbnail?id=1CPJuFG2Q7zguAyeyITYGGPaupj9crP6W&sz=w1600"],co:[-23.5842,-46.5642],inc:"Cordoba",poi:[{i:"🚇",n:"Metrô Vila Prudente",d:"350m"}],pl:[{l:"Planta Tipo",img:"https://urbovilaprudente.com.br/assets/images/planta_01.jpg"}],tp:'res'},
+{id:3,n:"HAUS MITRE JARDINS",b:"Bela Vista",e:"Rua Itapeva, 350",u:"Un. 418 · 4°",s:"pronto",ent:"Pronto",t:"NR",m:"54m²",d:"1",v:"0",val:"1.500.000,00",dr:"https://drive.google.com/drive/folders/1iUCzOAlZ5PHkUXnKu3lBJDu_HSNYezKI",desc:"Alto padrão. 250m do Metrô Trianon-MASP e Parque Trianon.",f:["https://drive.google.com/thumbnail?id=1o-lTnTbVQtXbAj84-h4j32ucH7e1vU1A&sz=w1600","https://drive.google.com/thumbnail?id=11-G_251jSv6eDqUbonxCQ3F29iaAO2Cw&sz=w1600","https://drive.google.com/thumbnail?id=11DXvN4VGv5l3N0J9gR-g9c9OEk4GPi9Z&sz=w1600","https://drive.google.com/thumbnail?id=169BDwnOjxvoX8C0zGywjD9CXVCpwvB9b&sz=w1600","https://drive.google.com/thumbnail?id=18fSXV7TbiQawmos3QYJ7ZnRFzH6fGNo8&sz=w1600","https://drive.google.com/thumbnail?id=1OQdKeAeCI6GpBGQ6In3A6N1_Rj6Dea6Y&sz=w1600","https://drive.google.com/thumbnail?id=1Up9JTjAsvJx6x_Kfac6PY8y8hiY6_1KL&sz=w1600","https://drive.google.com/thumbnail?id=1ehfqitVTkWpBq2gUJZXEJZHbZWkp5o42&sz=w1600"],co:[-23.5647,-46.6526],inc:"Mitre",poi:[{i:"🚇",n:"Trianon-Masp",d:"250m"},{i:"🎭",n:"MASP",d:"300m"},{i:"🌳",n:"Parque Trianon",d:"400m"},{i:"🏥",n:"Sírio-Libanês",d:"600m"}],pl:[{l:"Planta 1D",img:"https://drive.google.com/thumbnail?id=1z0FZaDjVnC71UAVqPOwjDfHdt3NSSLLf&sz=w1600"}],tp:'res'},
+{id:4,n:"HAUS MITRE JARDINS",b:"Bela Vista",e:"Rua Itapeva, 350",u:"Un. 518 · 5°",s:"pronto",ent:"Pronto",t:"NR",m:"54m²",d:"1",v:"0",val:"1.500.000,00",dr:"https://drive.google.com/drive/folders/1iUCzOAlZ5PHkUXnKu3lBJDu_HSNYezKI",desc:"5° andar. Mesmo padrão premium na Paulista.",f:["https://drive.google.com/thumbnail?id=1o-lTnTbVQtXbAj84-h4j32ucH7e1vU1A&sz=w1600","https://drive.google.com/thumbnail?id=169BDwnOjxvoX8C0zGywjD9CXVCpwvB9b&sz=w1600","https://drive.google.com/thumbnail?id=18fSXV7TbiQawmos3QYJ7ZnRFzH6fGNo8&sz=w1600"],co:[-23.5649,-46.6528],inc:"Mitre",poi:[{i:"🚇",n:"Trianon-Masp",d:"250m"},{i:"🌳",n:"Parque Trianon",d:"400m"}],pl:[{l:"Planta 1D",img:"https://drive.google.com/thumbnail?id=1z0FZaDjVnC71UAVqPOwjDfHdt3NSSLLf&sz=w1600"}],tp:'res'},
+{id:5,n:"TRIUNFO CAMPO BELO",b:"Campo Belo",e:"R. Barão do Triunfo, 551",u:"Un. 53 · 5°",s:"pronto",ent:"Pronto",t:"Tipo",m:"81m²",d:"2",v:"1",val:"1.450.000,00",dr:"https://drive.google.com/drive/folders/18I52WTrIyCKUNlmkBlzTUsUgnqCX_pMG",desc:"Excelente em Campo Belo. Próximo metrô, shopping e Congonhas.",f:["https://drive.google.com/thumbnail?id=1liGK-ppdQ0qosynX3fSViT7QLmiVeTri&sz=w1600","https://drive.google.com/thumbnail?id=14ZGbUQizX7Udq9yjdVMtJlqGNjI-_UX8&sz=w1600","https://drive.google.com/thumbnail?id=16xD5CgnT2CP4AVTbi0tAi2wtLu1BQDre&sz=w1600","https://drive.google.com/thumbnail?id=1JhK0llMV_AQ1YPreldPPg_okk5WefDyh&sz=w1600","https://drive.google.com/thumbnail?id=1MBM2Xk_SIhhXZUyRhw52hGG742Q5yT9T&sz=w1600"],co:[-23.6195,-46.6640],inc:"Courchevel",poi:[{i:"🚇",n:"Metrô Campo Belo",d:"500m"},{i:"🛒",n:"Shopping Campo Belo",d:"400m"},{i:"✈️",n:"Congonhas",d:"3km"}],pl:[{l:"Planta Tipo",img:"https://drive.google.com/thumbnail?id=1c5-K1bQCwvTq1Cobl0mUN5Bb_Qg13wuD&sz=w1600"}],tp:'res'},
+{id:6,n:"RAÍZES RESERVE",b:"Vila Prudente",e:"Rua José Zappi, 363",u:"Un. 710 · 7°",s:"obras",ent:"mai/26",t:"Studio",m:"26m²",d:"1",v:"0",val:"260.000,00",dr:"https://drive.google.com/drive/folders/1-GS5VycKRDwTlXUvm-57jd6UqZQUc6Cq",desc:"Studio compacto 26m². Entrega mai/26. Perto do Metrô.",f:["https://drive.google.com/thumbnail?id=1E1rYFRv6BCObnHcurr-E5FRlzVCCK9oh&sz=w1600","https://drive.google.com/thumbnail?id=1CrwTe-duW2y2ZySiMEZfS2KDspXfbJ0g&sz=w1600","https://drive.google.com/thumbnail?id=1D8vnZdq2IL0s4FlS6-dm3KrcMlfX1G3v&sz=w1600","https://drive.google.com/thumbnail?id=1HNE1y5aX3nC47TxVHQLAxhCChP1ZUykO&sz=w1600","https://drive.google.com/thumbnail?id=1l8JO9n3V5WppkEcdhWc8ZCRhDJiaOo_8&sz=w1600"],co:[-23.5825,-46.5735],inc:"Mitre",poi:[{i:"🚇",n:"Metrô Vila Prudente",d:"400m"},{i:"🛒",n:"Mercado",d:"200m"}],pl:[{l:"Studio",img:"https://drive.google.com/thumbnail?id=1F_8g1vYOlez-AEhMZiIXIluHQUeWvIE5&sz=w1600"}],tp:'res'},
+{id:7,n:"RAÍZES RESERVE",b:"Vila Prudente",e:"Rua José Zappi, 363",u:"Un. 809 · 8°",s:"obras",ent:"mai/26",t:"Studio",m:"26m²",d:"1",v:"0",val:"260.000,00",dr:"https://drive.google.com/drive/folders/1-GS5VycKRDwTlXUvm-57jd6UqZQUc6Cq",desc:"Studio 8° andar. Melhor vista, mesmo empreendimento.",f:["https://drive.google.com/thumbnail?id=1E1rYFRv6BCObnHcurr-E5FRlzVCCK9oh&sz=w1600","https://drive.google.com/thumbnail?id=1HNE1y5aX3nC47TxVHQLAxhCChP1ZUykO&sz=w1600"],co:[-23.5827,-46.5737],inc:"Mitre",poi:[{i:"🚇",n:"Metrô Vila Prudente",d:"400m"}],pl:[{l:"Studio",img:"https://drive.google.com/thumbnail?id=1F_8g1vYOlez-AEhMZiIXIluHQUeWvIE5&sz=w1600"}],tp:'res'},
+{id:8,n:"CAVOUR 439",b:"Vila Prudente",e:"Rua Cavour, 439",u:"Un. 82 · 8°",s:"obras",ent:"ago/27",t:"Tipo",m:"83m²",d:"3",v:"1",val:"900.000,00",dr:"https://drive.google.com/drive/folders/1jSO0NBrNf5TStZ_TmtB2MCZ_LXlFfC2Z",desc:"83m², 3 dormitórios, 1 vaga. Entrega ago/27.",f:["https://drive.google.com/thumbnail?id=16PoYCHJ9cXxYfAQh2LvyBlhOSZnYnbl0&sz=w1600","https://drive.google.com/thumbnail?id=1-ErvZOlu8Gjfq7QEK1UdXb5H3YRXEKwS&sz=w1600","https://drive.google.com/thumbnail?id=1-ucux4z8BFo2K7eDXC0wKTURmJDAyI0f&sz=w1600","https://drive.google.com/thumbnail?id=146c7tIuwGIPsk8axkBGCjLVrSj6vbKdh&sz=w1600","https://drive.google.com/thumbnail?id=150N6NlJuV9LfASv7kk0psAzZRS42eF2A&sz=w1600"],co:[-23.5805,-46.5680],inc:"Cordoba",poi:[{i:"🚇",n:"Metrô Vila Prudente",d:"300m"},{i:"🛒",n:"Comércio",d:"150m"}],pl:[{l:"Planta",img:"https://drive.google.com/thumbnail?id=1TGJwtCMysqJmazO01STg32-P6RWQ_ed5&sz=w1600"}],tp:'res'},
+{id:9,n:"HAUS MITRE EDITION NY",b:"Brooklin",e:"Rua Michigan, 962",u:"Un. 143 · 14° T.B",s:"obras",ent:"set/27",t:"Tipo",m:"164m²",d:"4",v:"3",val:"3.300.000,00",dr:"https://drive.google.com/drive/folders/1xoOHUnMxAnrEKZyEp1zvBxAssqqKA3td",desc:"Luxo 164m², 4 suítes, 3 vagas no Brooklin. Entrega set/27.",f:["https://drive.google.com/thumbnail?id=1hj2vUDInYopxwN18kDB_O4UIPL0FqEyS&sz=w1600","https://drive.google.com/thumbnail?id=1qwGFjIx_pgW8r4wMgB7G34uxadNGxo-j&sz=w1600","https://drive.google.com/thumbnail?id=1yAJy6CyyyZxGOiaUOH93sJm5JgkVbK_o&sz=w1600","https://drive.google.com/thumbnail?id=18VvKLL28dArGlKkLeS4LyYV0OZnhvmcM&sz=w1600","https://drive.google.com/thumbnail?id=19NtDDl7p45Jhx9YcaJKQqG9Ka2RfbeaA&sz=w1600"],co:[-23.6055,-46.6930],inc:"Mitre",poi:[{i:"🚇",n:"Metrô Brooklin",d:"600m"},{i:"🛒",n:"Market Place",d:"500m"},{i:"✈️",n:"Congonhas",d:"4km"},{i:"🌳",n:"Burle Marx",d:"2km"}],pl:[],tp:'res'},
+{id:10,n:"SALA COMERCIAL",b:"Vila Clementino",e:"R. Borges Lagoa, 564 · Conj. 13",u:"Conj. 13 · 52m²",s:"def",ent:"A definir",t:"Comercial",m:"52m²",d:"—",v:"2",val:"510.000,00",dr:null,desc:"Sala comercial de 52m² com 2 vagas de garagem e 2 banheiros, no conjunto 13. Localizada na Vila Clementino, ao lado do complexo Hospital São Paulo / UNIFESP e a poucos minutos do Metrô Santa Cruz.",f:["https://drive.google.com/thumbnail?id=1-dZRWTD2Q71k5Hu9yvdcmvL8Nx7WnelV&sz=w1600","https://drive.google.com/thumbnail?id=1orUsRn95Xm3rX2CBLilJDcNfilNQ8FgW&sz=w1600","https://drive.google.com/thumbnail?id=1A6hpuY3eG6_ZR61epk3h13-tm5f82_Ox&sz=w1600","https://drive.google.com/thumbnail?id=17ttuGHS89G_kQUZl-UBLrK0xnosvE3pA&sz=w1600","https://drive.google.com/thumbnail?id=1QKSfeibWwaF-Q0d969dAB6YuzCEW50dh&sz=w1600","https://drive.google.com/thumbnail?id=10V6mRlKFdVagQ0J2QAQTsYACJ6Q0TH2r&sz=w1600","https://drive.google.com/thumbnail?id=1yWQ_YhwkPaXjpXTBQA31dSho-Bk3GULN&sz=w1600","https://drive.google.com/thumbnail?id=1S9Aaf39-IMzrXZcsqOPlpy3Fcz7_Os1C&sz=w1600"],co:[-23.5969631,-46.642156],inc:"A definir",poi:[{i:"🏥",n:"Hospital São Paulo / UNIFESP",d:"~170m"},{i:"🛒",n:"Shopping Metrô Santa Cruz",d:"~560m"},{i:"🚇",n:"Metrô Santa Cruz",d:"~600m"}],pl:[],ban:"2",tp:'com'},
+{id:11,n:"NAAEM",b:"Pinheiros",e:"Rua Capote Valente, 989",u:"Un. 1801",s:"lanc",ent:"30/04/2029",t:"Tipo",m:"249m²",d:"4",v:"3",val:"Sob Consulta",dr:"https://drive.google.com/drive/folders/1av-LBQITssfNcxebvvdRgrwOrUf6aZNh",desc:"Apartamento de 249m² com 4 suítes e 3 vagas de garagem, em Pinheiros. A 330m do Metrô Sumaré e próximo ao Hospital das Clínicas e à região dos Jardins. Lazer completo: lobby, restaurante, academia, sala de yoga, beauty space, kids zone, piscina infantil e sala de massagem.",f:["https://drive.google.com/thumbnail?id=1JZ_p7orTNhhIQEhGo5Wi1FWBylNIrCeK&sz=w1600","https://drive.google.com/thumbnail?id=1jp7iv5VHcZ6mSD-Kn01Uxm23UdBTAvaA&sz=w1600","https://drive.google.com/thumbnail?id=1w207QSzjse7lkwI-_jnHTfObQqeG4SFA&sz=w1600","https://drive.google.com/thumbnail?id=1k5uiW34P3pcMl2knUhRNIVYJ2sw4-lfR&sz=w1600","https://drive.google.com/thumbnail?id=1ge52HhoboWeHeRKy7nOndeGIn7iO3_7D&sz=w1600","https://drive.google.com/thumbnail?id=1AeJZZwYKrUJE33fRD4k93ZLkIwqP3rXe&sz=w1600","https://drive.google.com/thumbnail?id=1nlVmzI2Vy_JxFXa0_b26zrMNfPGLVMJ5&sz=w1600","https://drive.google.com/thumbnail?id=1pXqWxnjq2MVYd8w1-uvzoV5T0qnRrxcn&sz=w1600","https://drive.google.com/thumbnail?id=17Ke8nLjxYFi0E-7VNaD1Gu_Usj4hIm5C&sz=w1600","https://drive.google.com/thumbnail?id=1A8aLuKz5riKtnD8HhhHQOginzjV2R0in&sz=w1600","https://drive.google.com/thumbnail?id=14bidjo4BGfvVcN3Jop-hNT4HwR24nQpq&sz=w1600"],co:[-23.5536656,-46.6785538],inc:"Mitre",poi:[{i:"🚇",n:"Metrô Sumaré",d:"~330m"},{i:"🛒",n:"Mercado Cardeal Arcoverde",d:"~190m"},{i:"🏥",n:"Hospital das Clínicas",d:"~1km"},{i:"🚇",n:"Metrô Oscar Freire",d:"~1km"}],pl:[{l:"Planta 249m² · 4 suítes",img:"https://drive.google.com/thumbnail?id=1JzEuGBZiU_5OYZz0bRNP-ZZPmTffQXzz&sz=w1600"}],tp:'res'},
+{id:12,n:"CASA CERÂMICA",b:"Cerâmica · São Caetano",e:"Alameda Terracota, 65",u:"Un. 73",s:"lanc",ent:"A definir",t:"Tipo",m:"A definir",d:"—",v:"—",val:"Sob Consulta",dr:null,desc:"Lançamento da Lavvi em parceria com a Basilar, no Bairro Cerâmica — o último grande terreno residencial da região, com 10 mil m² e três torres. Gestão de serviços pela CBRE (concierge, mensageria, assessoria esportiva). Ao lado do ParkShopping São Caetano.",f:[],co:[-23.6223553,-46.5813298],inc:"Lavvi · Basilar",poi:[{i:"🛒",n:"ParkShopping São Caetano",d:"~400m"}],pl:[],tp:'res'}
 ];
 
-var F=[...D], curS='all', tipos=['Todos','Residencial','Corporativo'], ti=0, bairros=['Todos','Vila Prudente','Bela Vista','Campo Belo','Brooklin','Vila Clementino'], bi=0, sortModes=['rel','asc','desc'], si=0;
+var F=[...D], curS='all', tipos=['Todos','Residencial','Corporativo'], ti=0, bairros=['Todos','Vila Prudente','Bela Vista','Campo Belo','Brooklin','Vila Clementino','Pinheiros','Cerâmica · São Caetano'], bi=0, sortModes=['rel','asc','desc'], si=0;
 var curD=null, gi=0;
 
+/* ═══ IMAGENS: fallback automático ═══ */
+function gid(u){var m=/[?&]id=([A-Za-z0-9_-]+)/.exec(u)||/googleusercontent\.com\/d\/([A-Za-z0-9_-]+)/.exec(u);return m?m[1]:'';}
+function hesc(u){return String(u).replace(/&/g,'&amp;').replace(/"/g,'&quot;');}
+function iAttr(u){var g=gid(u);return 'src="'+hesc(u)+'"'+(g?' data-gid="'+g+'"':'')+' data-step="0" onerror="fixImg(this)"';}
+window.fixImg=function(el){
+  var g=el.getAttribute('data-gid')||'', st=parseInt(el.getAttribute('data-step')||'0')+1;
+  el.setAttribute('data-step',st);
+  if(g&&st===1){el.src='https://lh3.googleusercontent.com/d/'+g+'=w1600';return;}
+  if(g&&st===2){el.src='https://lh3.googleusercontent.com/d/'+g;return;}
+  el.onerror=null;
+  if(el.classList.contains('thumb')){el.style.display='none';return;}
+  el.classList.add('img-off');
+  var par=el.parentNode;
+  if(par&&par.classList&&!par.classList.contains('thumbs')&&!par.querySelector('.ph')){
+    if(getComputedStyle(par).position==='static')par.style.position='relative';
+    var ph=document.createElement('div');ph.className='ph';ph.textContent='🏙';par.appendChild(ph);
+  }
+};
+
 function numVal(x){var n=parseFloat(String(x).replace(/\./g,'').replace(',','.'));return isNaN(n)?Infinity:n;}
-function stLabel(d){return d.s==='pronto'?'Pronto':d.s==='obras'?'Obras · '+d.ent:d.s==='breve'?'Breve':'Status a definir';}
+function stLabel(d){return d.s==='pronto'?'Pronto':d.s==='obras'?'Obras · '+d.ent:d.s==='breve'?'Breve':d.s==='lanc'?'Lançamento':'Status a definir';}
 function priceHtml(d,cls){return d.val==='Sob Consulta'?'<span style="font-size:.8em;color:var(--sub)">Sob Consulta</span>':'<small>R$</small>'+d.val;}
 
 /* ═══ FILTER + SORT ═══ */
@@ -427,7 +455,7 @@ function render(){
   document.getElementById('count').innerHTML='<b>'+F.length+'</b> '+(F.length===1?'imóvel':'imóveis');
   if(!F.length){g.innerHTML='<div class="empty"><b>Nenhum imóvel encontrado</b>Ajuste os filtros ou limpe a busca para ver todas as opções.</div>';return;}
   g.innerHTML=F.map(function(d,i){
-    var img=d.f&&d.f.length?'<img src="'+d.f[0]+'" loading="lazy" alt="'+d.n+'">':'<div style="display:flex;align-items:center;justify-content:center;height:100%;font-size:30px;opacity:.15">🏙</div>';
+    var img=d.f&&d.f.length?'<img '+iAttr(d.f[0])+' loading="lazy" alt="'+d.n+'">':'<div style="display:flex;align-items:center;justify-content:center;height:100%;font-size:30px;opacity:.15">🏙</div>';
     return '<article class="pc" style="animation-delay:'+(i*.045)+'s" onclick="openDt('+d.id+')">'
       +'<div class="pc-img">'+img+'<span class="pc-badge '+d.s+'">'+stLabel(d)+'</span>'
       +(d.tp==='com'?'<span class="pc-corp">Corporativo</span>':'')
@@ -451,12 +479,12 @@ window.openDt=function(id){
   var sc=document.getElementById('dtSc');
   var gal='';
   if(d.f&&d.f.length){
-    gal='<div class="gal"><img class="gal-main" id="galMain" src="'+d.f[0]+'" onclick="openLb()">'
+    gal='<div class="gal"><img class="gal-main" id="galMain" '+iAttr(d.f[0])+' onclick="openLb()">'
       +'<div class="gal-grad"></div>'
       +'<div class="gal-title"><span class="gt-badge '+d.s+'">'+stLabel(d)+'</span><h1>'+d.n+'</h1><div class="gt-addr">📍 '+d.e+', '+d.b+' — São Paulo</div></div>'
       +(d.f.length>1?'<div class="gal-nav"><button class="gal-b" onclick="galN(-1)">←</button><button class="gal-b" onclick="galN(1)">→</button></div><span class="gal-ct" id="galCt">1 / '+d.f.length+'</span>':'')
       +'</div>'
-      +(d.f.length>1?'<div class="thumbs">'+d.f.map(function(u,i){return '<img class="thumb '+(i===0?'on':'')+'" src="'+u+'" onclick="galGo('+i+')">';}).join('')+'</div>':'');
+      +(d.f.length>1?'<div class="thumbs">'+d.f.map(function(u,i){return '<img class="thumb '+(i===0?'on':'')+'" '+iAttr(u)+' onclick="galGo('+i+')">';}).join('')+'</div>':'');
   }
   var mapUrl='https://api.mapbox.com/styles/v1/mapbox/light-v11/static/pin-l+A67C00('+d.co[1]+','+d.co[0]+')/'+d.co[1]+','+d.co[0]+',14.2/700x340@2x?access_token='+MBT;
   var gmaps='https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(d.e+', '+d.b+', São Paulo');
@@ -476,8 +504,8 @@ window.openDt=function(id){
         +'</div>'
         +'<div class="dt-sec"><h3>Sobre o imóvel</h3><p class="dt-desc">'+d.desc+'</p></div>'
         +(d.poi&&d.poi.length?'<div class="dt-sec"><h3>Por perto</h3><div class="poi-row">'+d.poi.map(function(p){return '<span class="poi">'+p.i+' <b>'+p.n+'</b><span>'+p.d+'</span></span>';}).join('')+'</div></div>':'')
-        +(d.pl&&d.pl.length?'<div class="dt-sec"><h3>Plantas</h3><div class="plants">'+d.pl.map(function(p){return '<div class="plant" onclick="openLbUrl(\''+p.img+'\')"><img src="'+p.img+'" loading="lazy"><div class="pl-l">'+p.l+'</div></div>';}).join('')+'</div></div>':'')
-        +'<div class="dt-sec"><h3>Localização</h3><a href="'+gmaps+'" target="_blank"><img class="mapimg" src="'+mapUrl+'" loading="lazy" alt="Mapa"></a>'
+        +(d.pl&&d.pl.length?'<div class="dt-sec"><h3>Plantas</h3><div class="plants">'+d.pl.map(function(p){return '<div class="plant" onclick="openLbUrl(\''+p.img+'\')"><img '+iAttr(p.img)+' loading="lazy"><div class="pl-l">'+p.l+'</div></div>';}).join('')+'</div></div>':'')
+        +'<div class="dt-sec"><h3>Localização</h3><a href="'+gmaps+'" target="_blank"><img class="mapimg" '+iAttr(mapUrl)+' loading="lazy" alt="Mapa"></a>'
           +'<div class="dt-links"><a class="dt-link" href="'+gmaps+'" target="_blank">🗺 Abrir no Google Maps</a></div></div>'
       +'</div>'
       +'<aside class="dt-aside">'
@@ -511,7 +539,14 @@ window.galGo=function(i){
   if(!curD||!curD.f)return;gi=i;
   var img=document.getElementById('galMain');
   img.style.opacity='0';
-  setTimeout(function(){img.src=curD.f[gi];img.onload=function(){img.style.opacity='1';};},150);
+  setTimeout(function(){
+    var u=curD.f[gi], ph=img.parentNode&&img.parentNode.querySelector('.ph');
+    if(ph)ph.remove();
+    img.classList.remove('img-off');
+    img.setAttribute('data-gid',gid(u));img.setAttribute('data-step','0');
+    img.onerror=function(){fixImg(img);};
+    img.src=u;img.onload=function(){img.style.opacity='1';};
+  },150);
   var ct=document.getElementById('galCt');if(ct)ct.textContent=(gi+1)+' / '+curD.f.length;
   document.querySelectorAll('.thumb').forEach(function(t,j){t.classList.toggle('on',j===gi);});
 };
@@ -556,7 +591,7 @@ function renderTab(){
       :(d.val==='Sob Consulta'?'<span style="color:var(--sub)">Sob Consulta</span>':'R$ '+d.val);
     return '<tr class="row" '+(adm&&editing?'':'onclick="closeTab();openDt('+d.id+')"')+'>'
       +'<td class="tb-name">'+d.n+'</td><td>'+d.b+'</td><td>'+d.u+'</td>'
-      +'<td><span class="tb-badge '+d.s+'">'+(d.s==='pronto'?'Pronto':d.s==='obras'?'Obras':'Breve')+'</span></td>'
+      +'<td><span class="tb-badge '+d.s+'">'+(d.s==='pronto'?'Pronto':d.s==='obras'?'Obras':d.s==='breve'?'Breve':d.s==='lanc'?'Lançamento':'A definir')+'</span></td>'
       +'<td>'+d.ent+'</td><td>'+d.m+'</td><td>'+(d.tp==='com'?(d.ban||'—')+' ban':(d.d||'—'))+'</td><td>'+(d.v||'—')+'</td>'
       +'<td class="tb-val">'+valCell+'</td></tr>';
   }).join('');
